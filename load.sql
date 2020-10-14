@@ -15,13 +15,13 @@ INSERT INTO Category VALUES('Clothing', NULL, NULL, NULL);
 INSERT INTO Category VALUES('School Supplies', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Electronics/Technology', NULL, NULL, NULL);
 
-INSERT INTO Items VALUES(100, 5, 'iPhone 12 Pro Max', 1200.00, 10, 'Yay new phone!', NULL);
-INSERT INTO Items VALUES(101, 6, 'Notebook', 7.99, 0, 'How else would we take notes??', NULL);
-INSERT INTO Items VALUES(102, 5, 'Good Vibes', 0.00, 10000, 'Crucial', NULL);
+-- INSERT INTO Items VALUES(100, 5, 'iPhone 12 Pro Max', 1200.00, 10, 'Yay new phone!', NULL);
+-- INSERT INTO Items VALUES(101, 6, 'Notebook', 7.99, 0, 'How else would we take notes??', NULL);
+-- INSERT INTO Items VALUES(102, 5, 'Good Vibes', 0.00, 10000, 'Crucial', NULL);
 
-INSERT INTO ItemInCategory(102, 'School Supplies');
-INSERT INTO ItemInCategory(100, 'Electronics/Technology');
-INSERT INTO ItemInCategory(101, 'School Supplies');
+-- INSERT INTO ItemInCategory(102, 'School Supplies');
+-- INSERT INTO ItemInCategory(100, 'Electronics/Technology');
+-- INSERT INTO ItemInCategory(101, 'School Supplies');
 
-INSERT INTO ItemReview(1, 102, 5, 'Exquisite vibes', CURRENT_TIME());
+-- INSERT INTO ItemReview(1, 102, 5, 'Exquisite vibes', CURRENT_TIME());
 -- INSERT INTO ItemReview(3, 100, 5, 'Exquisite vibes', CURRENT_TIME());
