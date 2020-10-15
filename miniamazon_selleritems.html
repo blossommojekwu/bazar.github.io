@@ -282,6 +282,7 @@ width:20%
 		$total=0;
 			for ($j = 0 ; $j < $rows ; ++$j)
 			{
+				# ADD CODE TO SHOW SELLER ITEMS
 				$result->data_seek($j);
 				$row = $result->fetch_array(MYSQLI_NUM);
 				echo "<img style='float:left;width:10%;height:10%' src=$row[1] >";
