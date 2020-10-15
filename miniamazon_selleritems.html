@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MiniAmazon.com: Online Shopping for Electronics, Apparel, Computers, Books, DVDs &amp; more</title>
+  <link rel="stylesheet" href="css/style1.css"/>
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<style>
+
+body {font-family: 'Amazon Ember', sans-serif; margin:0;width:auto;}
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #232F3E;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
+  width: 180px;
+	height: 50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.but{
+	margin: auto;
+}
+.card1{
+  width: 100%
+}
+.top-section{
+  width:199px;
+  height:400px;
+  overflow:hidden;
+  background:#fff;
+  positon:relative;
+  float:left;
+}
+.button1 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #37475A;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 6px;
+  width: 180px;
+	height: 50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1:hover span {
+  padding-right: 25px;
+}
+
+.button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+.image-conatiner{
+  width:225px;
+  height:240px;
+  display:grid;
+}
+.nav{
+    float:left;
+    padding:15px;
+}
+.nav img{
+  width:40px;
+  height:80px;
+  border:1px solid #ddd;
+}
+.content{
+  padding:25px;
+  float:left;
+  width:50%
+}
+
+/*.rating{
+  display:flex;
+}
+.rating input{
+
+}
+.rating label{
+  display:block;
+  cursor:pointer;
+  width:50px;
+  background:#ccc;
+
+}
+.rating label:before{
+  content:'\f005';
+  font-family: fontAwesome;
+  positon:relative;
+  display:block;
+  font-size:15px;
+  color:#101010;
+
+}
+.rating label:after{
+  content:'\f005';
+  font-family: fontAwesome;
+  positon:relative;
+  display:block;
+  font-size:15px;
+  color:#1f9cff;
+  top:0;
+  opacity:1;
+  transition:.5s;
+  text-shadow:0 2px 5px rgba(0,0,0,.5);
+
+
+}
+.rating label:hover:after
+.rating input:checked~{
+
+}*/
+
+.cart{
+float: left;
+width:20%
+}
+</style>
+  </head>
+  <body>
+	  <a id="banner" href="#"></a>
+
+	  <header>
+	    <a id="nav-top"></a>
+
+	    <div id="nav-belt">
+	      <div class="nav-left">
+	        <div id="nav-logo">
+	          <a href="index.php" class="nav-logo-link"></a>
+	          <a href="#" class="nav-logo-tagline">Try Prime</a>
+	        </div>
+	      </div>
+	      <div class="nav-right">
+	        <div id="nav-holiday">
+	          <a href="#"></a>
+	        </div>
+	      </div>
+	      <div class="nav-fill">
+	        <div id="nav-search">
+	          <form>
+	            <div class="nav-left">
+	              <span class="nav-search-label">All</span>
+	              <i class="fa fa-caret-down" aria-hidden="true"></i>
+	              <select id="nav-search-select">
+	                <option selected="selected" value="aps">All Departments</option>
+	                <option value="alexa-skills">Alexa Skills</option>
+	                <option value="instant-video">Amazon Video</option>
+	                <option value="warehouse-deals">Amazon Warehouse Deals</option>
+	                <option value="appliances">Appliances</option>
+	                <option value="mobile-apps">Apps &amp; Games</option>
+	                <option value="arts-crafts">Arts, Crafts &amp; Sewing</option>
+	                <option value="automotive">Automotive Parts &amp; Accessories</option>
+	                <option value="baby-products">Baby</option>
+	                <option value="beauty">Beauty &amp; Personal Care</option>
+	                <option value="stripbooks">Books</option>
+	                <option value="popular">CDs &amp; Vinyl</option>
+	                <option value="mobile">Cell Phones &amp; Accessories</option>
+	                <option value="fashion">Clothing, Shoes &amp; Jewelry</option>
+	                <option value="fashion-womens">&nbsp;&nbsp;&nbsp;Women</option>
+	                <option value="fashion-mens">&nbsp;&nbsp;&nbsp;Men</option>
+	                <option value="fashion-girls">&nbsp;&nbsp;&nbsp;Girls</option>
+	                <option value="fashion-boys">&nbsp;&nbsp;&nbsp;Boys</option>
+	                <option value="fashion-baby">&nbsp;&nbsp;&nbsp;Baby</option>
+	                <option value="collectibles">Collectibles &amp; Fine Art</option>
+	                <option value="computers">Computers</option>
+	                <option value="courses">Courses</option>
+	                <option value="financial">Credit and Payment Cards</option>
+	                <option value="digital-music">Digital Music</option>
+	                <option value="electronics">Electronics</option>
+	                <option value="gift-cards">Gift Cards</option>
+	                <option value="grocery">Grocery &amp; Gourmet Food</option>
+	                <option value="handmade">Handmade</option>
+	                <option value="hpc">Health, Household &amp; Baby Care</option>
+	                <option value="local-services">Home &amp; Business Services</option>
+	                <option value="garden">Home &amp; Kitchen</option>
+	                <option value="industrial">Industrial &amp; Scientific</option>
+	                <option value="digital-text">Kindle Store</option>
+	                <option value="fashion-luggage">Luggage &amp; Travel Gear</option>
+	                <option value="luxury-beauty">Luxury Beauty</option>
+	                <option value="magazines">Magazine Subscriptions</option>
+	                <option value="movies-tv">Movies &amp; TV</option>
+	                <option value="mi">Musical Instruments</option>
+	                <option value="office-products">Office Products</option>
+	                <option value="lawngarden">Patio, Lawn &amp; Garden</option>
+	                <option value="pets">Pet Supplies</option>
+	                <option value="prime-exclusive">Prime Exclusive</option>
+	                <option value="pantry">Prime Pantry</option>
+	                <option value="software">Software</option>
+	                <option value="sporting">Sports &amp; Outdoors</option>
+	                <option value="tools">Tools &amp; Home Improvement</option>
+	                <option value="toys-and-games">Toys &amp; Games</option>
+	                <option value="vehicles">Vehicles</option>
+	                <option value="videogames">Video Games</option>
+	                <option value="wine">Wine</option>
+	              </select>
+	            </div>
+	            <div class="nav-right">
+	              <i class="fa fa-search" aria-hidden="true"></i>
+	              <input type="submit">
+	            </div>
+	            <div class="nav-fill">
+	              <input type="text" autocomplete="off">
+	            </div>
+	          </form>
+	        </div>
+	      </div>
+	    </div>
+
+	    <nav id="nav-main">
+	      <div class="nav-left">
+	        <div class="nav-shop">
+	          <a class="nav-a" href="#">
+	            Departments
+	            <i class="fa fa-caret-down" aria-hidden="true"></i>
+	          </a>
+	        </div>
+	      </div>
+	      <div class="nav-right">
+	        <a class="nav-a" href="#">
+	          <span>EN</span>
+	          <i class="fa fa-globe" aria-hidden="true"></i>
+	          <i class="fa fa-caret-down" aria-hidden="true"></i>
+	        </a>
+
+	        <a class="nav-a" href="#">
+	          <span>Hello. Sign in</span>
+	          Accounts &amp; Lists
+	          <i class="fa fa-caret-down" aria-hidden="true"></i>
+	        </a>
+
+	        <a class="nav-a" href="#">
+	          Orders
+	        </a>
+
+	        <a class="nav-a" href="#">
+	          Try Prime
+	          <i class="fa fa-caret-down" aria-hidden="true"></i>
+	        </a>
+
+	        <a class="nav-a cart" href="#">
+	          <span>0</span>
+	          Cart
+	        </a>
+	      </div>
+	      <div class="nav-fill">
+	        <ul>
+	          <li><a href="#">Your Amazon.com</a></li>
+	          <li><a href="#">Today's Deals</a></li>
+	          <li><a href="#">Gift Cards &amp; Registry</a></li>
+	          <li><a href="#">Sell</a></li>
+	          <li><a href="#">Help</a></li>
+	        </ul>
+	      </div>
+	    </nav>
+	  </header>
+	  <br>
+<div>
+<?php
+		$user=$_SESSION['user_email'];
+		$query  = "SELECT * FROM cart where user_email='$user'";
+		$result = $conn->query($query);
+		$rows=$result->num_rows;
+		if ($rows==0)
+		{
+			echo "<h1>No Seller Items to Show</h1>";
+			echo "<p>You have not yet added any items to sell. Start selling books, CDs, videos, DVDs, electronics, and more by clicking "Sell on Amazon" at the bottom of this page. If you already have an Amazon account, add a seller profile in "My Account". </p><br>
+<p>If you instead wish to shop, continue shopping on the Amazon.in homepage, learn about today's deals, or visit your Wish List.</p>;
+		}
+		else
+		{
+		echo "<div style='width:80%'>";
+		echo "<h1>Seller Items</h1>";
+		echo"<p Style='padding-left:90%'> price</p> ";
+		echo"<hr>";
+		$total=0;
+			for ($j = 0 ; $j < $rows ; ++$j)
+			{
+				$result->data_seek($j);
+				$row = $result->fetch_array(MYSQLI_NUM);
+				echo "<img style='float:left;width:10%;height:10%' src=$row[1] >";
+				echo "<p style='float:left;width:80%'>$row[2] <p>₹$row[3]</p></p><hr style='width:100%'>";
+				$row[3] = floatval(preg_replace('/[^\d.]/', '', $row[3]));
+				$a=(float)$row[3];
+				$total=$total+$a;
+			}
+			echo"<p style='padding-left:90%'>Total: ₹$total</p>";
+			echo"";
+		echo"</div>";
+		}
+?>
+
+<table class="but">
+	<tr>
+	<td><button onclick="window.location.href='clear1.php'" class="button1">Modify Items</button>
+	<td><button onclick="window.location.href='checkout1.php'" class="button1"><span>See Past Orders</span></button>
+    <td><button onclick="window.location.href='clear1.php'" class="button1">Add Items</button>
+	</tr>
+</table>
+
+</div>
+
+	  <br><br>
+	    <footer>
+	      <div class="top text-center">
+	        <a href="#nav-top">Back to top</a>
+	      </div>
+
+	      <div class="middle">
+	        <div class="center">
+	          <ul>
+	            <li><h3>Get to Know Us</h3></li>
+	            <li><a href="#">Careers</a></li>
+	            <li><a href="#">About Amazon</a></li>
+	            <li><a href="#">Investor Relations</a></li>
+	            <li><a href="#">Amazon Devices</a></li>
+	          </ul>
+	          <ul>
+	            <li><h3>Make Money with Us</h3></li>
+	            <li><a href="#">Sell on Amazon</a></li>
+	            <li><a href="#">Sell Your Services on Amazon</a></li>
+	            <li><a href="#">Sell on Amazon Business</a></li>
+	            <li><a href="#">Sell Your Apps on Amazon</a></li>
+	            <li><a href="#">Become an Affiliate</a></li>
+	            <li><a href="#">Advertise Your Products</a></li>
+	            <li><a href="#">Self-Publish with Us</a></li>
+	            <li><a href="#">Become an Amazon Vendor</a></li>
+	            <li><a href="#">Sell Your Subscription on Amazon</a></li>
+	            <li><a href="#">› See all</a></li>
+	          </ul>
+	          <ul>
+	            <li><h3>Let Us Help You</h3></li>
+	            <li><a href="#">Your Account</a></li>
+	            <li><a href="#">Your Orders</a></li>
+	            <li><a href="#">Shipping Rates &amp; Policies</a></li>
+	            <li><a href="#">Amazon Prime</a></li>
+	            <li><a href="#">Returns &amp; Replacements</a></li>
+	            <li><a href="#">Manage Your Content and Devices</a></li>
+	            <li><a href="#">Amazon Assistant</a></li>
+	            <li><a href="#">Help</a></li>
+	          </ul>
+	        </div>
+
+	          <ul class="copy text-center">
+	            <li><a href="#">Conditions of Use</a></li>
+	            <li><a href="#">Privacy Notice</a></li>
+	            <li><a href="#">Interest-Based Ads</a></li>
+	            <li>&copy; 1996-2017, MiniAmazon.com, Inc. or its affiliates</li>
+	          </ul>
+	        </div>
+	      </div>
+	    </footer>
+<script>
+
+  function change_img(image){
+    container.src=image.src;
+  }
+  var con=document.getElementsByClassName("top-section");
+    var container= document.getElementById('1');
+    con.addEventListener('submit',con,false);
+  </script>
+	  </body>
+	  </html>
