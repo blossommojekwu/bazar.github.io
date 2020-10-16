@@ -3,7 +3,8 @@ CREATE TABLE Users
 email VARCHAR(256) NOT NULL,
 password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
-name VARCHAR(256) NOT NULL,
+first_name VARCHAR(256) NOT NULL,
+last_name VARCHAR(256) NOT NULL,
 image VARCHAR(256) -- Store images in directories in file system & store reference to image or file name here; file names must be unique
 );
 
@@ -12,7 +13,8 @@ CREATE TABLE Buyers
 email VARCHAR(256) NOT NULL,
 password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
-name VARCHAR(256) NOT NULL,
+first_name VARCHAR(256) NOT NULL,
+last_name VARCHAR(256) NOT NULL,
 image VARCHAR(256) -- Store images in directories in file system & store reference to image or file name here; file names must be unique
 );
 
@@ -21,7 +23,8 @@ CREATE TABLE Sellers
 email VARCHAR(256) NOT NULL,
 password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
-name VARCHAR(256) NOT NULL,
+first_name VARCHAR(256) NOT NULL,
+last_name VARCHAR(256) NOT NULL,
 image VARCHAR(256), -- Store images in directories in file system & store reference to image or file name here; file names must be unique
 description VARCHAR(1250), -- (Optional?) if this is too small/big, we can change it!
 avg_rating DECIMAL(10,2) NOT NULL
