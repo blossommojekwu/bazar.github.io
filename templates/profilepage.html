@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="css/profilepage.css">
+	<link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
+	<!-- Load icon library -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<title>Mini Amazon Profilepage</title>
+</head>
+
+
+<style type="text/css">
+
+.button2 {
+display: inline-block;
+  border-radius: 4px;
+  background-color: #37475A;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 6px;
+  width: 180px;
+  height: 50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  position: absolute;
+  top:0; 
+  right:0;
+
+}
+
+.button2 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button2 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button2:hover span {
+  padding-right: 25px;
+}
+
+.button2:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+	.button1 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #37475A;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 6px;
+  width: 180px;
+  height: 50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button1 span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button1:hover span {
+  padding-right: 25px;
+}
+
+.button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+</style>
+
+
+<body>
+	<div class="searchbar">
+	<img src="amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
+	<!-- The form -->
+	<form class="search" action="action_page.php">
+  	<input type="text" placeholder="Search for an item" name="search">
+  	<button type="submit"><i class="fa fa-search"></i></button>
+	</form>
+	</div>
+ 
+<button class="button2"> Logout </button>
+
+<!-- User -->
+                <span class="photo">
+                  <img alt="Image placeholder" src="css/mm.jpg" width="250" height="250">
+                </span>
+
+                <div class="hello">
+                	<h1>Hello Meghan!</h1>
+                </div>
+
+                <div class="name">
+                  <h2> Name: Meghan Markle</h2>
+                </div>
+
+                <div class="balance">
+                	<h3> Balance: $0.00 </h3>
+                </div>
+
+
+<!--Buttons -->
+
+<table class="but">
+	<tr>
+	<td><button class="button1"><span>Edit Info</span></button>
+	<td><button class="button1"><span>Make an account</span></button>
+    <td><button class="button1"><span>Change password</span></button>
+	</tr>
+</table>
+
+</body>
+</html>
