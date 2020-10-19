@@ -1,3 +1,8 @@
+
+
+
+
+
 CREATE TABLE Users
 (userID INTEGER NOT NULL PRIMARY KEY,
 email VARCHAR(256),
@@ -5,8 +10,7 @@ password VARCHAR(256),
 currentBalance DECIMAL(10,2),
 first_name VARCHAR(256),
 last_name VARCHAR(256),
-image VARCHAR(256) -- Store images in directories in file system & store reference to image or file name here; file names must be unique
-);
+image VARCHAR(256)); -- Store reference to image or file name here; file names must be unique
 
 CREATE TABLE Buyers
 (userID INTEGER NOT NULL PRIMARY KEY,
@@ -15,8 +19,7 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-image VARCHAR(256) -- Store images in directories in file system & store reference to image or file name here; file names must be unique
-);
+image VARCHAR(256)); -- Store reference to image or file name here; file names must be unique
 
 CREATE TABLE Sellers
 (userID INTEGER NOT NULL PRIMARY KEY,
@@ -25,25 +28,26 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-organization VARCHAR(256) NOT NULL, -- This will be the displayed store name; the user is welcome to set it to their own name, but this is the name displayed on the seller page
-image VARCHAR(256), -- Store images in directories in file system & store reference to image or file name here; file names must be unique; Optional
+organization VARCHAR(256) NOT NULL, -- Organization/Store name displayed; 
+				    -- the user can set it to their own name, 
+				    -- but this is the name displayed on the seller page
+image VARCHAR(256), -- Optional
 description VARCHAR(1250), -- Optional
-avg_rating DECIMAL(10,2) NOT NULL
-);
+avg_rating DECIMAL(10,2) NOT NULL);
 
 CREATE TABLE Items
 (itemID INTEGER NOT NULL PRIMARY KEY,
 sellerID INTEGER NOT NULL REFERENCES Sellers(userID),
 name VARCHAR(256) NOT NULL,
 price DECIMAL(10,2) NOT NULL,
-num INTEGER NOT NULL, --this is the count, but count is a keyword, so I changed it
-description VARCHAR(1250), -- Optional?
-image VARCHAR(256)
-);
+num INTEGER NOT NULL, --Number of items available
+description VARCHAR(1250), -- Optional
+image VARCHAR(256));
 
 CREATE TABLE Category
 (name VARCHAR(256) NOT NULL PRIMARY KEY,
-topItemOne INTEGER REFERENCES Items(itemID), --item ID for most popular item in category (NULL only if no items in category)
+topItemOne INTEGER REFERENCES Items(itemID), --item ID for most popular item in category 
+					     -- (NULL only if no items in category)
 topItemTwo INTEGER REFERENCES Items(itemID), --item ID for 2nd most popular in category
 topItemThree INTEGER REFERENCES Items(itemID) --item ID for 3rd most popular in category
 );
@@ -63,8 +67,8 @@ PRIMARY KEY(buyerID, itemID)
 CREATE TABLE Purchase
 (buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
 itemID INTEGER NOT NULL REFERENCES Items(itemID),
-dayTime TIMESTAMP NOT NULL, --combines date & time data (and adds time zone),
-num INTEGER NOT NULL, --replaces count bc count is a keyword
+dayTime TIMESTAMP NOT NULL, -- Date, Time, Timezone data
+num INTEGER NOT NULL, -- Quantity purchased
 PRIMARY KEY(buyerID, itemID, dayTime)
 );
 

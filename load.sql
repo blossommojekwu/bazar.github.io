@@ -1,12 +1,12 @@
-INSERT INTO Buyers VALUES(1, 'flanders@vegas.com', 'god', 50000.00, 'Ned', 'Flanders', NULL);
-INSERT INTO Buyers VALUES(2, 'marge@gmail.com', 'bartlisamaggie', 197.61, 'Marge', 'Simpson', NULL);
-INSERT INTO Buyers VALUES(3, 'homer.simpsons@gmail.com', 'MargeKnows', 0.00, 'Homer', 'Simpson', NULL);
-INSERT INTO Buyers VALUES(4, 'mvh@yahoo.com', 'BartisSoCool', 5.50, 'Milhouse', 'van Houten', NULL);
+INSERT INTO Buyers VALUES(5100, 'flanders@vegas.com', 'god', 50000.00, 'Ned', 'Flanders', NULL);
+INSERT INTO Buyers VALUES(5200, 'marge@gmail.com', 'bartlisamaggie', 197.61, 'Marge', 'Simpson', NULL);
+INSERT INTO Buyers VALUES(5300, 'homer.simpsons@gmail.com', 'MargeKnows', 0.00, 'Homer', 'Simpson', NULL);
+INSERT INTO Buyers VALUES(5400, 'mvh@yahoo.com', 'BartisSoCool', 5.50, 'Milhouse', 'van Houten', NULL);
 
-INSERT INTO Sellers VALUES(5, 'apu@yahoo.com', 'pass', 15.76, 'Apu','Nahasapeemapetilon', 'Kwik-E-Mart', NULL, NULL, 0);
-INSERT INTO Sellers VALUES(6, 'apu@yahoo.com', 'pass', 0.76, 'First', 'Last', 'Apu''s Competition', NULL, NULL, 0);
+INSERT INTO Sellers VALUES(5500, 'apu@yahoo.com', 'pass', 15.76, 'Apu','Nahasapeemapetilon', 'Kwik-E-Mart', NULL, NULL, 0);
+INSERT INTO Sellers VALUES(5600, 'apu@yahoo.com', 'pass', 0.76, 'First', 'Last', 'Apu''s Competition', NULL, NULL, 0);
 
-INSERT INTO Users VALUES(7, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO Users VALUES(5700, NULL, NULL, 0, NULL, NULL, NULL);
 
 INSERT INTO Category VALUES('Entertainment', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Home Decor', NULL, NULL, NULL);
@@ -14,17 +14,13 @@ INSERT INTO Category VALUES('Clothing', NULL, NULL, NULL);
 INSERT INTO Category VALUES('School Supplies', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Electronics/Technology', NULL, NULL, NULL);
 
-INSERT INTO Items VALUES(10000, 5, 'iPhone 12 Pro Max', 1200.00, 10, 'Yay new phone!', NULL);
-INSERT INTO Items VALUES(10100, 6, 'Notebook', 7.99, 0, 'How else would we take notes??', NULL);
-INSERT INTO Items VALUES(10200, 5, 'Good Vibes', 0.00, 10000, 'Crucial', NULL);
+INSERT INTO Items VALUES(10000, 5500, 'iPhone 12 Pro Max', 1200.00, 10, 'Yay new phone!', NULL);
+INSERT INTO Items VALUES(10100, 5600, 'Notebook', 7.99, 0, 'How else would we take notes??', NULL);
+INSERT INTO Items VALUES(10200, 5500, 'Good Vibes', 0.00, 10000, 'Crucial', NULL);
 
 INSERT INTO ItemInCategory(10200, 'School Supplies');
 INSERT INTO ItemInCategory(10000, 'Electronics/Technology');
 INSERT INTO ItemInCategory(10100, 'School Supplies');
-
-INSERT INTO ItemReview(1, 10200, 5, 'Exquisite vibes', CURRENT_TIME());
-INSERT INTO ItemReview(3, 10000, 5, 'Exquisite vibes part 2', CURRENT_TIME());
-
 
 
 INSERT INTO Users VALUES(1, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
