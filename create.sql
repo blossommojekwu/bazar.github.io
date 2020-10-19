@@ -147,4 +147,4 @@ CREATE TRIGGER updAveSellerRatings
 
 
 -- To do, add average rating of items + add trigger for ave update
-
+-- Add that sellers must also be buyers in constraints
