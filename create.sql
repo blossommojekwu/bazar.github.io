@@ -1,10 +1,10 @@
 CREATE TABLE Users
 (userID INTEGER NOT NULL PRIMARY KEY,
-email VARCHAR(256) NOT NULL,
-password VARCHAR(256) NOT NULL,
-currentBalance DECIMAL(10,2) NOT NULL,
-first_name VARCHAR(256) NOT NULL,
-last_name VARCHAR(256) NOT NULL,
+email VARCHAR(256),
+password VARCHAR(256),
+currentBalance DECIMAL(10,2),
+first_name VARCHAR(256),
+last_name VARCHAR(256),
 image VARCHAR(256) -- Store images in directories in file system & store reference to image or file name here; file names must be unique
 );
 
@@ -25,8 +25,9 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-image VARCHAR(256), -- Store images in directories in file system & store reference to image or file name here; file names must be unique
-description VARCHAR(1250), -- (Optional?) if this is too small/big, we can change it!
+organization VARCHAR(256) NOT NULL, -- This will be the displayed store name; the user is welcome to set it to their own name, but this is the name displayed on the seller page
+image VARCHAR(256), -- Store images in directories in file system & store reference to image or file name here; file names must be unique; Optional
+description VARCHAR(1250), -- Optional
 avg_rating DECIMAL(10,2) NOT NULL
 );
 
@@ -68,26 +69,45 @@ PRIMARY KEY(buyerID, itemID, dayTime)
 );
 
 CREATE TABLE ItemReview
-(buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
-itemID INTEGER NOT NULL REFERENCES Items(itemID),
-numStars INTEGER NOT NULL,
-comments VARCHAR(1250), --Optional
-dayTime TIMESTAMP NOT NULL,
+(buyerID INTEGER NOT NULL REFERENCES Buyers(userID), --Field set by website
+itemID INTEGER NOT NULL REFERENCES Items(itemID), --Field set by website
+numStars INTEGER NOT NULL, --Field for User to input
+comments VARCHAR(1250), --Optional, field for User to input
+dayTime TIMESTAMP NOT NULL, --Field set by website (current time of submission)
 PRIMARY KEY(buyerID, itemID)
 );
 
 CREATE TABLE SellerReview
-(buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
-sellerID INTEGER NOT NULL REFERENCES Sellers(userID),
-numStars INTEGER NOT NULL,
-comments VARCHAR(1250), --Optional
-dayTime TIMESTAMP NOT NULL,
+(buyerID INTEGER NOT NULL REFERENCES Buyers(userID), --Field set by website
+sellerID INTEGER NOT NULL REFERENCES Sellers(userID), --Field set by website
+numStars INTEGER NOT NULL, --Field for User to input
+comments VARCHAR(1250), --Optional, field for User to input
+dayTime TIMESTAMP NOT NULL, --Field set by website (current time of submission)
 PRIMARY KEY(buyerID, sellerID)
 );
 
--- TODO for Zoe: 
-	-- CONSTRAINTS TO ADD
-		-- Can't review an item you havent purchased at least once in the past
-	-- Double-check syntax
-	-- Fix load.sql file syntax
-	-- Add a ton more synthetic data with randomized script
+CREATE TRIGGER no_itempurchase_no_review BEFORE INSERT OR UPDATE ON ItemReview
+	FOR EACH ROW
+	BEGIN
+		IF NOT EXISTS(SELECT *
+			      FROM Purchase
+			      WHERE NEW.buyerID = Purchase.buyerID
+				AND NEW.itemID = Purchase.itemID)
+			THEN SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Cannot review an item you have never purchased.';
+		END IF;
+	END;
+
+CREATE TRIGGER no_sellerpurchase_no_review BEFORE INSERT OR UPDATE ON SellerReview
+	FOR EACH ROW
+	BEGIN
+		IF NOT EXISTS(SELECT *
+			      FROM Purchase
+			      WHERE NEW.buyerID = Purchase.buyerID
+				AND PURCHASE.itemID = Items.ID
+				AND Items.sellerID = NEW.sellerID)
+			THEN SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Cannot review a seller from whom you have never purchased an item.';
+		END IF;
+	END;
+
