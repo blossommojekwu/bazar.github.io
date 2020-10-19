@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="css/profilepage.css">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/profilepage.css')}}">
 	<link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
 	<!-- Load icon library -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -102,16 +102,20 @@ display: inline-block;
 
 
 <body>
-	<div class="searchbar">
-	<img src="amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
+	<!-- <div class="searchbar">
+	<img src="\static\png\amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
 	<!-- The form -->
-	<form class="search" action="action_page.php">
+	<!-- <form class="search" action="action_page.php">
   	<input type="text" placeholder="Search for an item" name="search">
   	<button type="submit"><i class="fa fa-search"></i></button>
 	</form>
-	</div>
+	</div> --> 
  
 <button class="button2"> Logout </button>
+
+<center>
+  <a href="{{ url_for('seller')}}">Seller Page</a>
+
 
 <!-- User -->
                 <span class="photo">

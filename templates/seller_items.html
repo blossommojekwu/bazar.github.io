@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="css/seller_items.css">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/seller_items.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
   <!-- Load icon library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <title>Mini Amazon Homepage</title>
+  <title>Seller Page</title>
 </head>
 <body>
-  <div class="searchbar">
-  <img src="amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
+  <!-- <div class="searchbar">
+  <img src="amazonLogo.png" alt="Logo" style="width:100px;height:40px;"> -->
   <!-- The form -->
-  <form class="search" action="action_page.php">
+  <!-- <form class="search" action="action_page.php">
     <input type="text" placeholder="Search for an item" name="search">
     <button type="submit"><i class="fa fa-search"></i></button>
   </form>
-  </div>
+  </div> -->
+  <h1>List an item!</h1>
+  <form method="POST" action="">
+    Item <input type="text" name="item"/>
+    <br>
+    Price <input type="number" name="price"/>
+    <br>
+    Quantity <input type="number" name="quantity"/>
+    <br>
+    Seller <input type="text" name="seller"/>
+    <br>
+    <input type="submit">
+
+
+</form>
 
   <!-- Seller Page -->
   <title>Seller Items</title>
@@ -25,7 +39,7 @@
 </br>
 <body>
 
-  <div class = "name"> Hello Meghan!
+  <!-- <div class = "name"> Hello Meghan!
   
   <div class="mom">
     <div class="child">
@@ -36,7 +50,7 @@
     </div> 
     </div>
     </div>    
-    </div>
+    </div> -->
 </div>
 
 </body>
