@@ -38,12 +38,12 @@ def seller():
         cur.execute("INSERT INTO market(item, price, quantity, seller) VALUES(%s, %s, %s, %s)", (item, price, quantity, seller))
         mysql.connection.commit()
         cur.close()
-        return redirect('/display')
+        #return redirect('/display')
     return render_template("seller_items.html")
 
 
 @app.route('/display')
-def users():
+def display():
     cur = mysql.connection.cursor()
     resultValue = cur.execute("SELECT * FROM market")
     if resultValue > 0:
