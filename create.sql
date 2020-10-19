@@ -86,42 +86,65 @@ dayTime TIMESTAMP NOT NULL, --Field set by website (current time of submission)
 PRIMARY KEY(buyerID, sellerID)
 );
 
-CREATE TRIGGER no_itempurchase_no_review BEFORE INSERT OR UPDATE ON ItemReview
-	FOR EACH ROW
+CREATE FUNCTION no_itempurchase_no_review() RETURNS TRIGGER AS $$
 	BEGIN
 		IF NOT EXISTS(SELECT *
 			      FROM Purchase
 			      WHERE NEW.buyerID = Purchase.buyerID
 				AND NEW.itemID = Purchase.itemID)
-			THEN SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'Cannot review an item you have never purchased.';
+			THEN RAISE EXCEPTION 'Cannot review an item you have never purchased.';
 		END IF;
+		RETURN NEW;
 	END;
+$$ LANGUAGE plpgsql;
 
-CREATE TRIGGER no_sellerpurchase_no_review BEFORE INSERT OR UPDATE ON SellerReview
-	FOR EACH ROW
+
+CREATE TRIGGER no_itempurchase_no_review
+  BEFORE INSERT OR UPDATE ON ItemReview
+  FOR EACH ROW
+  EXECUTE PROCEDURE no_itempurchase_no_review();
+
+CREATE FUNCTION no_sellerpurchase_no_review() RETURNS TRIGGER AS $$
 	BEGIN
 		IF NOT EXISTS(SELECT *
 			      FROM Purchase
 			      WHERE NEW.buyerID = Purchase.buyerID
 				AND PURCHASE.itemID = Items.ID
 				AND Items.sellerID = NEW.sellerID)
-			THEN SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'Cannot review a seller from whom you have never purchased an item.';
+			THEN RAISE EXCEPTION 'Cannot review a seller from whom you have never purchased an item.';
 		END IF;
+		RETURN NEW;
 	END;
+$$ LANGUAGE plpgsql;
 
-CREATE TRIGGER updAveSellerRatings AFTER INSERT OR UPDATE ON SellerReview
-	FOR EACH ROW
+CREATE TRIGGER no_sellerpurchase_no_review
+  BEFORE INSERT OR UPDATE ON SellerReview
+  FOR EACH ROW
+  EXECUTE PROCEDURE no_sellerpurchase_no_review();
+
+
+CREATE FUNCTION updAveSellerRatings() RETURNS TRIGGER AS $$
 	BEGIN
-		UPDATE Sellers
-		SET avg_rating
-		WITH X AS (SELECT AVG(numStars)
-				FROM SellerReview
-				WHERE Sellers.sellerID = SellerReview.sellerID
-				GROUP BY sellerID)
-		WHERE Sellers.sellerID = NEW.sellerID;
+		WITH X AS (SELECT sellerID, AVG(numStars) AS avgR
+                        FROM SellerReview
+                        WHERE Sellers.sellerID = SellerReview.sellerID
+                        GROUP BY sellerID)
+		UPDATE Sellers SET avg_rating = X.avgR
+		WHERE X.sellerID = NEW.sellerID;
 	END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER updAveSellerRatings
+  AFTER INSERT OR UPDATE ON SellerReview
+  FOR EACH ROW
+  EXECUTE PROCEDURE updAveSellerRatings();
+
+
+
+
+
+
+
 
 -- To do, add average rating of items + add trigger for ave update
 

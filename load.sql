@@ -3,10 +3,10 @@ INSERT INTO Buyers VALUES(2, 'marge@gmail.com', 'bartlisamaggie', 197.61, 'Marge
 INSERT INTO Buyers VALUES(3, 'homer.simpsons@gmail.com', 'MargeKnows', 0.00, 'Homer', 'Simpson', NULL);
 INSERT INTO Buyers VALUES(4, 'mvh@yahoo.com', 'BartisSoCool', 5.50, 'Milhouse', 'van Houten', NULL);
 
-INSERT INTO Sellers VALUES(5, 'apu@yahoo.com', 'pass', 15.76, 'Apu','Nahasapeemapetilon', NULL, NULL, 0);
-INSERT INTO Sellers VALUES(6, 'apu@yahoo.com', 'pass', 0.76, '', 'Apu''s Competition', NULL, NULL, 0);
+INSERT INTO Sellers VALUES(5, 'apu@yahoo.com', 'pass', 15.76, 'Apu','Nahasapeemapetilon', 'Kwik-E-Mart', NULL, NULL, 0);
+INSERT INTO Sellers VALUES(6, 'apu@yahoo.com', 'pass', 0.76, 'First', 'Last', 'Apu''s Competition', NULL, NULL, 0);
 
-INSERT INTO Users VALUES(7, 'vaclav@hotmail.com', 'KindaRich?', 11000.05, 'Crazy Vaclav', NULL);
+INSERT INTO Users VALUES(7, NULL, NULL, 0, NULL, NULL, NULL);
 
 INSERT INTO Category VALUES('Entertainment', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Home Decor', NULL, NULL, NULL);
@@ -293,7 +293,7 @@ INSERT INTO Sellers VALUES(263, 'nmcterlagh7a@diigo.com', 'sWbTyk', 5627, 'Nicki
 INSERT INTO Buyers VALUES(264, 'omacardle7b@ucla.edu', 'Mdq2iF', 110, 'Olly', 'MacArdle', NULL);
 INSERT INTO Users VALUES(265, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(266, 'gstiven7d@etsy.com', 'u10itagY', 3343, 'Giorgio', 'Stiven', 'Stiven', NULL, NULL, 0);
-INSERT INTO Buyers VALUES(267, 'aolahy7e@usgs.gov', 'eqhNDu', 806, 'Aura', 'O'Lahy', NULL);
+INSERT INTO Buyers VALUES(267, 'aolahy7e@usgs.gov', 'eqhNDu', 806, 'Aura', 'O''Lahy', NULL);
 INSERT INTO Users VALUES(268, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(269, 'dsetter7g@phpbb.com', 'IgW3O07NN', 5953, 'Dal', 'Setter', 'Setter', NULL, NULL, 0);
 INSERT INTO Buyers VALUES(270, 'bdolling7h@howstuffworks.com', 'SFG44whlpn8k', 593, 'Brande', 'Dolling', NULL);
@@ -647,7 +647,7 @@ INSERT INTO Sellers VALUES(617, 'gcolisbeh4@oaic.gov.au', 'N0jUbkV', 6419, 'Gene
 INSERT INTO Buyers VALUES(618, 'oalimanh5@hugedomains.com', '6KIDWfYudxbp', 331, 'Octavia', 'Aliman', NULL);
 INSERT INTO Users VALUES(619, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(620, 'ksprowsonh7@oracle.com', 'YFtqTc', 6145, 'Karilynn', 'Sprowson', 'Sprowson', NULL, NULL, 0);
-INSERT INTO Buyers VALUES(621, 'bolongainh8@usgs.gov', 'uXp7N0A0vuLn', 478, 'Brnaby', 'O'Longain', NULL);
+INSERT INTO Buyers VALUES(621, 'bolongainh8@usgs.gov', 'uXp7N0A0vuLn', 478, 'Brnaby', 'O''Longain', NULL);
 INSERT INTO Users VALUES(622, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(623, 'lfyrthha@bloglines.com', 'qNE1aczs65gr', 4721, 'Lizbeth', 'Fyrth', 'Fyrth', NULL, NULL, 0);
 INSERT INTO Buyers VALUES(624, 'mvelhb@auda.org.au', '9HYjY1AR', 998, 'Mikol', 'Vel', NULL);
@@ -827,7 +827,7 @@ INSERT INTO Sellers VALUES(797, 'gcraythornem4@nsw.gov.au', 'LOMBsAt', 3130, 'Gi
 INSERT INTO Buyers VALUES(798, 'jsturchm5@google.com', 'vnZD8FJlYsMP', 784, 'Jocelyn', 'Sturch', NULL);
 INSERT INTO Users VALUES(799, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(800, 'cemmisonm7@amazon.co.jp', 'hENC33KvEj1z', 1999, 'Carlina', 'Emmison', 'Emmison', NULL, NULL, 0);
-INSERT INTO Buyers VALUES(801, 'eodroughtm8@java.com', 'eP4QBAzg', 546, 'Ethelin', 'O'Drought', NULL);
+INSERT INTO Buyers VALUES(801, 'eodroughtm8@java.com', 'eP4QBAzg', 546, 'Ethelin', 'O''Drought', NULL);
 INSERT INTO Users VALUES(802, 'NULL', 'NULL', 0.00, 'NULL', 'NULL', NULL);
 INSERT INTO Sellers VALUES(803, 'strappma@independent.co.uk', 'o6hzIM1', 5020, 'Spencer', 'Trapp', 'Trapp', NULL, NULL, 0);
 INSERT INTO Buyers VALUES(804, 'snollimb@java.com', '6H7Q25Xow', 969, 'Sumner', 'Nolli', NULL);
@@ -1059,7 +1059,7 @@ INSERT INTO Category VALUES('Kitchen Supplies', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Cleaning Supplies', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Fruit', NULL, NULL, NULL);
 INSERT INTO Category VALUES('Beverages', NULL, NULL, NULL);
-
+INSERT INTO Category VALUES('Decorations', NULL, NULL, NULL);
 
 INSERT INTO Items VALUES(0, 317, '71', 19, 837, NULL, NULL);
 INSERT INTO ItemInCategory VALUES(0, 'Movies');
