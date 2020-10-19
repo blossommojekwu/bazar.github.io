@@ -111,3 +111,17 @@ CREATE TRIGGER no_sellerpurchase_no_review BEFORE INSERT OR UPDATE ON SellerRevi
 		END IF;
 	END;
 
+CREATE TRIGGER updAveSellerRatings AFTER INSERT OR UPDATE ON SellerReview
+	FOR EACH ROW
+	BEGIN
+		UPDATE Sellers
+		SET avg_rating
+		WITH X AS (SELECT AVG(numStars)
+				FROM SellerReview
+				WHERE Sellers.sellerID = SellerReview.sellerID
+				GROUP BY sellerID)
+		WHERE Sellers.sellerID = NEW.sellerID;
+	END;
+
+-- To do, add average rating of items + add trigger for ave update
+
