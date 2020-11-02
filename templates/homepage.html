@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+
 <head>
 	<link rel="stylesheet" href="{{ url_for('static',filename='css/homepage.css')}}">
 	<link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
@@ -8,6 +10,9 @@
 
 	<title>Mini Amazon Homepage</title>
 </head>
+
+
+
 <body>
 	<div class="searchbar">
 	<img src="/static/png/amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
@@ -22,7 +27,13 @@
 	<center>
 	<a href="{{ url_for('login')}}">Log in</a>
 	<br>
-	<a href="{{ url_for('account')}}">Account</a>	
+	<a href="{{ url_for('user')}}">Account</a>	
+	<br>
+	<a href="{{ url_for('registration')}}">Creat an Account</a>	
+	<br>
+	<a href="{{ url_for('cart')}}">Cart</a>	
+	<br>
+	<a href="{{ url_for('searchresults')}}">Temporary link to search results page</a>	
     </center>
 </div>
 
