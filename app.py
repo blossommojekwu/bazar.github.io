@@ -13,7 +13,7 @@ app = Flask(__name__)
 # Make secret key for session data
 app.secret_key = "yeet"
 
-# Configure db
+# Configure dbs
 # CHECK DB.YAML FILE TO SEE IF ALL OF THE PARAMETERS MATCH ON YOUR LOCAL MACHINE
 db = yaml.load(open('./templates/db.yaml'))
 app.config['MYSQL_HOST'] = db['mysql_host']
