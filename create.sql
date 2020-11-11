@@ -1,8 +1,3 @@
-
-
-
-
-
 CREATE TABLE Users
 (userID INTEGER NOT NULL PRIMARY KEY,
 email VARCHAR(256),
@@ -10,7 +5,7 @@ password VARCHAR(256),
 currentBalance DECIMAL(10,2),
 first_name VARCHAR(256),
 last_name VARCHAR(256),
-image VARCHAR(256)); -- Store reference to image or file name here; file names must be unique
+image VARCHAR(256)); 
 
 CREATE TABLE Buyers
 (userID INTEGER NOT NULL PRIMARY KEY,
@@ -19,7 +14,7 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-image VARCHAR(256)); -- Store reference to image or file name here; file names must be unique
+image VARCHAR(256)); 
 
 CREATE TABLE Sellers
 (userID INTEGER NOT NULL PRIMARY KEY,
@@ -28,9 +23,8 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-organization VARCHAR(256) NOT NULL, -- Organization/Store name displayed; 
-				    -- the user can set it to their own name, 
-				    -- but this is the name displayed on the seller page
+organization VARCHAR(256) NOT NULL, 
+
 image VARCHAR(256), -- Optional
 description VARCHAR(1250), -- Optional
 avg_rating DECIMAL(10,2) NOT NULL);
@@ -40,16 +34,16 @@ CREATE TABLE Items
 sellerID INTEGER NOT NULL REFERENCES Sellers(userID),
 name VARCHAR(256) NOT NULL,
 price DECIMAL(10,2) NOT NULL,
-num INTEGER NOT NULL, --Number of items available
-description VARCHAR(1250), -- Optional
+num INTEGER NOT NULL, 
+description VARCHAR(1250), 
 image VARCHAR(256));
 
 CREATE TABLE Category
 (name VARCHAR(256) NOT NULL PRIMARY KEY,
-topItemOne INTEGER REFERENCES Items(itemID), --item ID for most popular item in category 
-					     -- (NULL only if no items in category)
-topItemTwo INTEGER REFERENCES Items(itemID), --item ID for 2nd most popular in category
-topItemThree INTEGER REFERENCES Items(itemID) --item ID for 3rd most popular in category
+topItemOne INTEGER REFERENCES Items(itemID), 
+
+topItemTwo INTEGER REFERENCES Items(itemID), 
+topItemThree INTEGER REFERENCES Items(itemID) 
 );
 
 CREATE TABLE ItemInCategory
@@ -67,26 +61,26 @@ PRIMARY KEY(buyerID, itemID)
 CREATE TABLE Purchase
 (buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
 itemID INTEGER NOT NULL REFERENCES Items(itemID),
-dayTime TIMESTAMP NOT NULL, -- Date, Time, Timezone data
-num INTEGER NOT NULL, -- Quantity purchased
+dayTime TIMESTAMP NOT NULL, 
+num INTEGER NOT NULL,
 PRIMARY KEY(buyerID, itemID, dayTime)
 );
 
 CREATE TABLE ItemReview
-(buyerID INTEGER NOT NULL REFERENCES Buyers(userID), --Field set by website
-itemID INTEGER NOT NULL REFERENCES Items(itemID), --Field set by website
-numStars INTEGER NOT NULL, --Field for User to input
-comments VARCHAR(1250), --Optional, field for User to input
-dayTime TIMESTAMP NOT NULL, --Field set by website (current time of submission)
+(buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
+itemID INTEGER NOT NULL REFERENCES Items(itemID), 
+numStars INTEGER NOT NULL, 
+comments VARCHAR(1250), 
+dayTime TIMESTAMP NOT NULL, 
 PRIMARY KEY(buyerID, itemID)
 );
 
 CREATE TABLE SellerReview
-(buyerID INTEGER NOT NULL REFERENCES Buyers(userID), --Field set by website
-sellerID INTEGER NOT NULL REFERENCES Sellers(userID), --Field set by website
-numStars INTEGER NOT NULL, --Field for User to input
-comments VARCHAR(1250), --Optional, field for User to input
-dayTime TIMESTAMP NOT NULL, --Field set by website (current time of submission)
+(buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
+sellerID INTEGER NOT NULL REFERENCES Sellers(userID), 
+numStars INTEGER NOT NULL, 
+comments VARCHAR(1250), 
+dayTime TIMESTAMP NOT NULL, 
 PRIMARY KEY(buyerID, sellerID)
 );
 
@@ -142,13 +136,3 @@ CREATE TRIGGER updAveSellerRatings
   AFTER INSERT OR UPDATE ON SellerReview
   FOR EACH ROW
   EXECUTE PROCEDURE updAveSellerRatings();
-
-
-
-
-
-
-
-
--- To do, add average rating of items + add trigger for ave update
--- Add that sellers must also be buyers in constraints

@@ -1,9 +1,29 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title%}User Page{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+<form action = "#" method = "POST">
+    <input type = "email" name = "email" placeholder = "Enter Email" value = "{{email if email}}"/>
+    <input type = "submit" value = "submit"/>
+
+</form>
+{% endblock %}
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<link rel="stylesheet" href="{{ url_for('static',filename='css/profilepage.css')}}">
 	<link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
-	<!-- Load icon library -->
+	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<title>Mini Amazon Profilepage</title>
@@ -102,15 +122,7 @@ display: inline-block;
 
 
 <body>
-	<!-- <div class="searchbar">
-	<img src="\static\png\amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
-	<!-- The form -->
-	<!-- <form class="search" action="action_page.php">
-  	<input type="text" placeholder="Search for an item" name="search">
-  	<button type="submit"><i class="fa fa-search"></i></button>
-	</form>
-	</div> --> 
- 
+	
 <button class="button2"> Logout </button>
 
 <center>
@@ -129,7 +141,7 @@ display: inline-block;
 </center>
 
 
-<!-- User -->
+
                 <span class="photo">
                   <img alt="Image placeholder" src="/static/jpg/mm.jpg" width="250" height="250">
                 </span>
@@ -147,7 +159,6 @@ display: inline-block;
                 </div>
 
 
-<!--Buttons -->
 
 <table class="but">
 	<tr>
@@ -157,4 +168,4 @@ display: inline-block;
 </table>
 
 </body>
-</html>
+</html> -->

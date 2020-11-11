@@ -1,22 +1,26 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %} Home Page {% endblock %}
+{% block content %}
+<div class="searchbar">
+	<img src="/static/png/amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
+	<form class="search" action="action_page.php">
+  	<input type="text" placeholder="Search for an item" name="search">
+  	<button type="submit"><i class="fa fa-search"></i></button>
+	</form>
+</div>
+{% endblock %}
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
-
-
-<head>
-	<link rel="stylesheet" href="{{ url_for('static',filename='css/homepage.css')}}">
-	<link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
-	<!-- Load icon library -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-	<title>Mini Amazon Homepage</title>
-</head>
 
 
 
 <body>
 	<div class="searchbar">
 	<img src="/static/png/amazonLogo.png" alt="Logo" style="width:100px;height:40px;">
-	<!-- The form -->
 	<form class="search" action="action_page.php">
   	<input type="text" placeholder="Search for an item" name="search">
   	<button type="submit"><i class="fa fa-search"></i></button>
@@ -39,4 +43,4 @@
 
 
 </body>
-</html>
+</html> -->
