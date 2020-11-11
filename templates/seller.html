@@ -1,9 +1,61 @@
-<h1>Seller Page</h1>
+{% extends "base.html" %}
+{% block title %} Seller Page {% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+<h2>Welcome to the organization page {{user}}</h2>
+<h3>Trade History</h3>
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Date Sold</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Buyer First Name</th>
+        <th scope="col">Buyer Last Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Number Purchased</th>
+        <th scope="col">Seller Rating</th>
+        <th scope="col">Comment on Seller</th>
+        <th scope="col">Item Rating</th>
+        <th scope="col">Comment on Item</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+    </tbody>
+  </table>
 
-<a href="{{ url_for('home')}}">Return to HomePage</a>	
-<br>
-<a href="{{ url_for('user')}}">Return to Account Page</a>	
-<br>
-<a href="{{ url_for('tradehistory')}}">View Trade History</a>	
-<br>
-<a href="{{ url_for('sellinglist')}}">View Selling list</a>	
+<h3>Selling List</h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Item Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Count</th>
+        <th scope="col">Image</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in items%}
+      <tr>
+        {% for d in row %}
+        <td>{{d}}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+
+
+{% endblock %}
