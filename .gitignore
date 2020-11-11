@@ -3,5 +3,7 @@
 /bin
 /env
 /lib
+/venv
+/virtual
 ignoretest1.txt
 ignoretestp.txt
