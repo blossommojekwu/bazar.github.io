@@ -22,7 +22,7 @@
       <input class="user" type="text" align="center" name ="nm" placeholder="Email">
       <input class="pass" type="password" align="center" name ="pw" placeholder="Password">
       <p align="center"><input type="submit" value="submit"/> </p>
-      <p class="forgot" align="center"><a href="#">Forgot Password?</p>
+      <p class="forgot" align="center"><a href="{{ url_for('forgotpw')}}">Forgot Password?</p>
       <p align="center"><a href="{{ url_for('registration')}}">Create an account</a>	</p>
       <p align="center"><a href="{{ url_for('home')}}">Home</a>	</p>
       
