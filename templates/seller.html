@@ -43,15 +43,22 @@
         <th scope="col">Price</th>
         <th scope="col">Count</th>
         <th scope="col">Image</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
     {% for row in items%}
       <tr>
-        {% for d in row %}
+        {% for d in row[1:5] %}
         <td>{{d}}</td>
         {% endfor %}
-      </tr>
+        <td>
+        <form action="#" method="POST">
+          <input name="item_id" type="hidden" value="{{row[0]}}">
+          <button type="submit"> Delete Item </button>
+        </form>
+        </td>
+        </tr>
     {% endfor %}
     </tbody>
   </table>

@@ -139,8 +139,15 @@ def seller():
         sellerID = session["userID"]
         seller = session["seller"]
         cursor = mysql.connection.cursor()
-        cursor.execute('SELECT name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
+        cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
         items = cursor.fetchall()
+        print(sellerID)
+        if request.method == "POST":
+            item_id = request.form["item_id"]
+            print(item_id)
+            cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
+            mysql.connection.commit()
+            return redirect(url_for("seller"))
         return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items)
     else:
         flash("You are not logged in/a seller")
@@ -153,6 +160,7 @@ def addbalance():
 @app.route("/purchasehistory")
 def purchasehistory():
     return render_template("purchasehistory.html")
+
 
 # @app.route("/account/seller", methods =['GET', 'POST'])
 # def seller():
@@ -178,6 +186,6 @@ def purchasehistory():
 #     if resultValue > 0:
 #         marketDetails = cur.fetchall()
 #         return render_template('market.html',marketDetails = marketDetails)
-    
+
 if __name__ == "__main__":
     app.run(debug=True)
