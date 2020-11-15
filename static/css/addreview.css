@@ -31,7 +31,7 @@ h3 {
       box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
   }
 
-  .title {
+.title {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -49,9 +49,9 @@ h3 {
     text-align: center;
     margin-bottom: 27px;
     font-family: 'Arial', sans-serif;
-    }
+}
 
-    .body {
+.body {
         width: 76%;
         height: 55%;
         color: rgb(38, 50, 56);
@@ -70,4 +70,4 @@ h3 {
         text-align: center;
         margin-bottom: 27px;
         font-family: 'Arial', sans-serif;
-        }
+}
