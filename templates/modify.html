@@ -8,37 +8,67 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
-
-  <h3>Items Available to Modify</h3>
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Item ID</th>
-        <th scope="col">Item Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Count</th>
-        <th scope="col">Image</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for row in items%}
-      <tr>
-        {% for d in row[0:5] %}
-        <td>{{d}}</td>
-        {% endfor %}
-        <td>
-          <form action="{{url_for('modform', {{row[0]}})}}" method="POST">
-            <input name="item_id" type="hidden" value="{{row[0]}}">
-            <button type="submit"> Modify Item </button>
+  <center>
+    <h3>New Values</h3>
+    
+    <div class ="row">
+      <div class ="col-md-4 offset-md-4">
+        <div class = "card card-body">
+          <form action= "/modify/{{item.itemID}}" method = "POST">
+            <div class="form-group">
+              <input type="text" name="fullname" value="{{item.name}}" class="form-control">
+            </div>
+            <div class ="form-group">
+              <input type = "text" class ="form-control" name = "newprice" placeholder ="Price" >
+            </div>
+            <div class ="form-group">
+              <input type = "text" class ="form-control" name = "newcount" placeholder ="Count" >
+            </div>
+            <div class ="form-group">
+              <input type = "text" class ="form-control" name = "newdesc" placeholder ="Description" >
+            </div>
+            <div class ="form-group">
+              <input type = "text" class ="form-control" name = "newimage" placeholder ="Image" >
+            </div>
+            <div class ="form-group">
+              <button type ="submit" class ="btn btn-primary btn-block">
+                Update
+              </button>
+            </div>
+    
+            
           </form>
-        </td>
-        
-        </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-<center>
+    
+        </div>
+      </div>
+    </div>
+    </center> 
 
-</center>
+<h3>Modifying item </h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Item ID</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Count</th>
+      <th scope="col">Description</th>
+      <th scope="col">Image</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{item.itemID}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.price}}</td>
+      <td>{{item.num}}</td>
+      <td>{{item.description}}</td>
+      <td>{{item.image}}</td>  
+    </tr>
+  </tbody>
+</table>
+
 {% endblock %}
+
+

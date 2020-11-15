@@ -53,21 +53,22 @@
         <td>{{d}}</td>
         {% endfor %}
         <td>
-          <a href = "{{url_for('moditems')}}" class = "btn btn-secondary btn-sm" > edit</a>
-          <a href = "{{url_for('delitems')}}" class = "btn btn-danger btn-delete btn-sm" > delete</a>
-        <!-- <form action="#" method="POST">
-          <input name="item_id" type="hidden" value="{{row[0]}}">
-          <button type="submit"> Delete Item </button>
-        </form> -->
+        <a href = "/update/{{row[0]}}" class = "btn btn-secondary btn-sm">edit</a>
+        <a href="/delete/{{row[0]}}" class="btn btn-danger btn-delete btn-sm">delete</a>
         </td>
         </tr>
     {% endfor %}
     </tbody>
   </table>
 
-  <center>
-    <a href="{{ url_for('moditems')}}">Modify an Item</a>
-  </center>
 
 
 {% endblock %}
+ <!-- <form action="#" method="POST">
+          <input name="item_id" type="hidden" value="{{row[0]}}">
+          <button type="submit"> Delete Item </button>
+        </form> -->
+        <!-- <form action="{{url_for('moditem')}}" method="POST">
+          <input name="item_id" type="hidden" value="{{row[0]}}">
+          <button type="submit"> Modify Item </button>
+        </form> -->
