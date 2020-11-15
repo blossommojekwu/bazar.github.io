@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Seller Page {% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <h3>Items Available to Modify</h3>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Item ID</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Count</th>
+        <th scope="col">Image</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in items%}
+      <tr>
+        {% for d in row[0:5] %}
+        <td>{{d}}</td>
+        {% endfor %}
+        <td>
+          <form action="{{url_for('modform', {{row[0]}})}}" method="POST">
+            <input name="item_id" type="hidden" value="{{row[0]}}">
+            <button type="submit"> Modify Item </button>
+          </form>
+        </td>
+        
+        </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+<center>
+
+</center>
+{% endblock %}

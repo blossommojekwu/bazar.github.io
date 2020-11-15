@@ -15,6 +15,11 @@ app.secret_key = "yeet"
 
 # Configure dbs
 # CHECK DB.YAML FILE TO SEE IF ALL OF THE PARAMETERS MATCH ON YOUR LOCAL MACHINE
+# FOR LOCAL MACHINE: USER: 'ROOT' PASSWORD: 'password'
+# This is just for Rj's local machine^^ you probably have your own password
+# CURRENTLY THE VM PASSWORD IS WHAT'S UPLAODED
+# FOR VM USER: 'user' PASSWORD: 'HEJDIhsdf83-Q'
+#
 db = yaml.load(open('./templates/db.yaml'))
 app.config['MYSQL_HOST'] = db['mysql_host']
 app.config['MYSQL_USER'] = db['mysql_user']
@@ -63,8 +68,9 @@ def login():
             session["user"] = user
             session["password"] = password
             # Check seller table to see if buyer/user is also a seller
+            userID = session["userID"]
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM sellers WHERE email = %s', [user])
+            cursor.execute('SELECT * FROM sellers WHERE userID = %s', [userID])
             seller = cursor.fetchone()
             # Set session seller status to corresponding boolean 
             if seller:
@@ -105,7 +111,7 @@ def user():
     if "user" in session:
         logvar = True
         first_name = session["first_name"]
-        seller = session["seller"] # Only works with Apu for current database
+        seller = session["seller"] 
         return render_template("user.html", logvar = logvar, first_name = first_name, seller = seller)
     else:
         flash("You are not logged in!")
@@ -133,23 +139,25 @@ def addreview():
 
 @app.route("/seller", methods = ["POST","GET"])
 def seller():
-    if "user" in session and session["seller"] == True:
-        logvar = True
-        first_name = session["first_name"]
+    if "user" in session and session["seller"] == True: # Check if user is logged in
+        logvar = True # Update logvar boolean if so
+        # Retrieve session data
+        first_name = session["first_name"] 
         sellerID = session["userID"]
         seller = session["seller"]
+        # Open a cursor and get all items sold for a seller
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
         items = cursor.fetchall()
-        print(sellerID)
+        # This is where the delete function is implemented
         if request.method == "POST":
             item_id = request.form["item_id"]
-            print(item_id)
+            session["clicked_item"] = item_id
             cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
-            mysql.connection.commit()
+            mysql.connection.commit() # This commits the change to the actual mysql database
             return redirect(url_for("seller"))
         return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items)
-    else:
+    else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
 
@@ -160,6 +168,29 @@ def addbalance():
 @app.route("/purchasehistory")
 def purchasehistory():
     return render_template("purchasehistory.html")
+
+@app.route('/moditems', methods = ["POST","GET"])
+def moditems():
+    logvar = True
+    first_name = session["first_name"]
+    sellerID = session["userID"]
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
+    items = cursor.fetchall()
+    if request.method == "POST":
+            item_id = request.form["item_id"]
+            session["clicked_item"] = item_id
+            
+    return render_template("modify.html", logvar = logvar, first_name = first_name, items=items )
+
+@app.route('/delitems')
+def delitems():
+    return render_template("delitems.html")
+
+
+@app.route('/additems')
+def additems():
+    return render_template("additems.html")
 
 
 # @app.route("/account/seller", methods =['GET', 'POST'])

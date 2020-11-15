@@ -53,16 +53,21 @@
         <td>{{d}}</td>
         {% endfor %}
         <td>
-        <form action="#" method="POST">
+          <a href = "{{url_for('moditems')}}" class = "btn btn-secondary btn-sm" > edit</a>
+          <a href = "{{url_for('delitems')}}" class = "btn btn-danger btn-delete btn-sm" > delete</a>
+        <!-- <form action="#" method="POST">
           <input name="item_id" type="hidden" value="{{row[0]}}">
           <button type="submit"> Delete Item </button>
-        </form>
+        </form> -->
         </td>
         </tr>
     {% endfor %}
     </tbody>
   </table>
 
+  <center>
+    <a href="{{ url_for('moditems')}}">Modify an Item</a>
+  </center>
 
 
 {% endblock %}
