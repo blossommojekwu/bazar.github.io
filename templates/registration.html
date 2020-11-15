@@ -1,5 +1,46 @@
-<h1>Creat Account page</h1>
+{% extends "base.html" %}
+{% block title%}User Page{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  
+  <h1>Create Account</h1>
+  
+  <a href="{{ url_for('home')}}">Return to HomePage</a>	
+  <br>
+  <a href="{{ url_for('login')}}">Return to login</a>	
 
-<a href="{{ url_for('home')}}">Return to HomePage</a>	
-<br>
-<a href="{{ url_for('login')}}">Return to login</a>	
+  <!-- Still need to figure out how to create new userID (increment largest existing one)-->
+  <!-- Initialize:
+        email (required),
+        password (required), 
+        first_name (required),
+        last_name (required),
+        image? -> Working on this part still
+
+        To be initialized in flask instead:
+        userID (generated in flask as +1 from largest current userID),
+        currentBalance=0.00
+    -->
+
+  <!-- This might all be broken; its not done yet-->
+  <form method="POST">
+    <label for="first_name">First Name</label>
+    <input name="first_name" id="first_name" required>
+    <label for="last_name">Last Name</label>
+    <input name="last_name" id="last_name" required>
+    <label for="email">Email Address</label>
+    <input type="email" name="email" id="email" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <label for="image">Profile Picture</label>
+    <input type="image" name="image" id="image">
+    <input type="submit" value="Register">
+  </form>
+
+  {% endblock %}

@@ -9,6 +9,14 @@
     {% endif %}
   {% endwith %}
 
+  <!--Display: Welcome to your user page, *First Name of User*-->
+  <h2>Welcome to your user page, {{user}}</h2>
+  <h3>Your User Profile</h3>
+  
+  <!--Figure out how to display info passed in; initially can't update it;
+    then we can figure out how to update it
+  -->
+
   {% if seller == true %}
   <center>
     <a href="{{ url_for('seller')}}">Access Seller Page</a>

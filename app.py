@@ -93,7 +93,7 @@ def login():
 
 @app.route("/forgotpw")
 def forgotpw():
-    return "<h1>Sorry dude tough luck</h1>"
+    return "<h1>Sorry dude; tough luck</h1>"
 
 # Logout page, clears session
 @app.route("/logout")
@@ -105,20 +105,37 @@ def logout():
     session.pop("email", None)
     return redirect(url_for("home"))
 
-
+# UNFINISHED; GET & DISPLAY ALL USER DATA
 @app.route("/user", methods = ["POST", "GET"])
 def user():
     if "user" in session:
         logvar = True
         first_name = session["first_name"]
-        seller = session["seller"] 
-        return render_template("user.html", logvar = logvar, first_name = first_name, seller = seller)
+        userID = session["userID"]
+        seller = session["seller"]
+        # Open cursor to get all details about user
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM Buyers WHERE userID = %s', [userID])
+        # All user data stored in Buyers: (userID, email, password, 
+        #   currentBalance, first_name, last_name, image)
+        info = cursor.fetchall()
+        return render_template("user.html", logvar = logvar, first_name = first_name, seller = seller, info = info)
     else:
         flash("You are not logged in!")
         return redirect(url_for("login"))
 
-@app.route("/registration")
+# UNFINISHED; REGISTER NEW USER
+@app.route("/registration", methods = ["POST", "GET"])
 def registration():
+    if "user" in session:
+        flash("You are already logged in! Logout to register as different user.")
+        return redirect(url_for("user"))
+    elif request.method == "POST":
+        # INSERT FUNCTIONAL CODE HERE
+        # Once you register as a user, you have to log in as 
+        # the new user to access site, so redirect to login
+        flash("Thank you for registering as a new user!")
+        return redirect(url_for("login"))
     return render_template("registration.html")
 
 @app.route("/cart")
@@ -158,7 +175,7 @@ def seller():
             return redirect(url_for("seller"))
         return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items)
     else: # If you somehow accessed this page and weren't logged in
-        flash("You are not logged in/a seller")
+        flash("You are not logged in as a seller")
         return redirect(url_for("home"))
 
 @app.route("/addbalance")
@@ -169,58 +186,28 @@ def addbalance():
 def purchasehistory():
     return render_template("purchasehistory.html")
 
-@app.route('/update/<id>', methods =["POST","GET"])
-def update(id):
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM items WHERE itemID = %s',[id])
-    item = cursor.fetchall()
-    cursor.close()
-    print(item)
-    return render_template("modify.html", item = item)
-
-
-@app.route('/modify/<id>', methods = ["POST","GET"])
-def moditem(id):
-    if "user" in session and session["seller"] == True:
-        if request.method == 'POST':
-            logvar = True
-            sellerID = session["userID"]
-            first_name = session["first_name"]
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM items WHERE itemID = %s',[itemID])
-            items = cursor.fetchone()
-            #cursor.execute("INSERT INTO items VALUES (%s,%s,%s,%s,%s,%s,%s,NULL)", [item_id, sellerID, name, price, avg_rating, count, ]
-            print(itemID)
-            print(items)
-            print("test")
-
-            return redirect(url_for("seller"))
-    else: # If you somehow accessed this page and weren't logged in
-        flash("You are not logged in/a seller")
-        return redirect(url_for("home"))
-       
+@app.route('/moditems', methods = ["POST","GET"])
+def moditems():
+    logvar = True
+    first_name = session["first_name"]
+    sellerID = session["userID"]
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
+    items = cursor.fetchall()
+    if request.method == "POST":
+            item_id = request.form["item_id"]
+            session["clicked_item"] = item_id
             
-    
+    return render_template("modify.html", logvar = logvar, first_name = first_name, items=items )
+
 @app.route('/delitems')
 def delitems():
     return render_template("delitems.html")
 
 
-# @app.route('/additems', methods= ["POST","GET"])
-# def additems():
-#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-#     if request.method = "POST":
-#         sellerID = session["userID"]
-#         name = request.form['name']
-#         price = request.form ['price']
-#         count = request.form['count']
-#         image = request.form['image'] # Need to implement this
-#         avg_rating = 0.00
-#         item_id = 46982 #Need to implement this
-#         cur.execute("INSERT INTO items VALUES (%s,%s,%s,%s,%s,%s,%s,NULL)", [item_id, sellerID, name, price, avg_rating, count, ]
-
-    
-#     return render_template("additems.html")
+@app.route('/additems')
+def additems():
+    return render_template("additems.html")
 
 
 # @app.route("/account/seller", methods =['GET', 'POST'])
