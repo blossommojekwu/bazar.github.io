@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/addbalance.css')}}">
+        <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
+        <!-- Load icon library -->
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title>HomePage</title>
+    </head>
+   
+    <body style="background-color: #2C3B4E;">
+        <h1 style="color: white;">Add Review Page</h1>
+        <a href="{{ url_for('home')}}">Return to HomePage</a>	
+        <br>
+        <a href="{{ url_for('user')}}">Return to Account Page</a>	
+
+        <h3 style="border: 2px solid orange; border-radius: 5px; height: 80%; width: 75%;">
+        </h3>
 {% extends "base.html" %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
@@ -16,3 +35,5 @@
 	</form>
 </div>
 {% endblock %}
+</body>
+</html>
