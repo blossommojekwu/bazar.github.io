@@ -21,14 +21,17 @@
         <thead>
           <tr>
             <th scope="col">Item ID</th>
-            <th scope="col">Time of Purchase</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Price</th>
             <th scope="col">Quantity</th>
+            <th scope="col">Time of Purchase</th>
+            <th scope="col">Sold By</th>
           </tr>
         </thead>
         <tbody>
             {% for row in itemsPurchased%}
             <tr>
-                {% for d in row[0:3] %}
+                {% for d in row[1:7] %}
                 <td>{{d}}</td>
                 {% endfor %}
                 </tr>

@@ -73,6 +73,13 @@ dayTime TIMESTAMP NOT NULL, -- Field set by website (current time of submission)
 PRIMARY KEY(buyerID, sellerID)
 );
 
+-- Combine purchase and items
+CREATE VIEW itemPurchase AS
+SELECT purchase.buyerID, purchase.itemID, items.name, items.price, items.num, purchase.dayTime, items.sellerID
+FROM purchase
+INNER JOIN items
+ON purchase.itemID = items.itemID;
+
 -- Combine seller and items
 CREATE VIEW itemstoseller AS
 SELECT sellers.userID, items.itemID, items.name, items.price

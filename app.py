@@ -232,7 +232,7 @@ def addreview():
        # currentBalance = cursor.fetchone()
        return render_template("addreview.html")
        # return render_template("addreview.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, currentBalance = currentBalance)
-   else: # If you somehow accessed this page and weren't logged in
+    else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add a product review")
        return redirect(url_for("home"))
 
@@ -289,7 +289,7 @@ def purchasehistory():
        buyerID = session["userID"]
        # Open a cursor and get items purchased from user in purchases
        cursor = mysql.connection.cursor()
-       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
+       cursor.execute('SELECT * FROM itemPurchase WHERE buyerID = %s', [buyerID])
        itemsPurchased = cursor.fetchall()
        return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
    else: # If you somehow accessed this page and weren't logged in
