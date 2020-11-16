@@ -220,7 +220,21 @@ def item():
 
 @app.route("/addreview")
 def addreview():
-    return render_template("addreview.html")
+    if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       first_name = session["first_name"]
+       last_name = session["last_name"]
+       userID = session["userID"]
+       # Open a cursor and get current balance for user
+       # cursor = mysql.connection.cursor()
+       # cursor.execute('INSERT INTO Review VALUES (%s,  ', [userID])
+       # currentBalance = cursor.fetchone()
+       return render_template("addreview.html")
+       # return render_template("addreview.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, currentBalance = currentBalance)
+   else: # If you somehow accessed this page and weren't logged in
+       flash("You are not logged in to add a product review")
+       return redirect(url_for("home"))
 
 @app.route("/seller", methods = ["POST","GET"])
 def seller():
@@ -417,9 +431,6 @@ def tradehistory():
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
     
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
