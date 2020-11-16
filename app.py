@@ -224,7 +224,19 @@ def seller():
 
 @app.route("/addbalance")
 def addbalance():
-    return render_template("addbalance.html")
+   if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       first_name = session["first_name"]
+       userID = session["userID"]
+       # Open a cursor and get current balance for user
+       cursor = mysql.connection.cursor()
+       cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [userID])
+       currentBalance = cursor.fetchone()
+       return render_template("addbalance.html", logvar = logvar, first_name = first_name, currentBalance = currentBalance)
+   else: # If you somehow accessed this page and weren't logged in
+       flash("You are not logged in to add balance")
+       return redirect(url_for("home"))
 
 @app.route("/purchasehistory")
 def purchasehistory():
