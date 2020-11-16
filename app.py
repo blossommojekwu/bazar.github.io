@@ -44,21 +44,9 @@ def search():
         # Store Values from the form into searchinput variable
         searchinput = request.form["search"]
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-        cursor.execute('SELECT * FROM items WHERE name = %s',(searchinput)) # Selects all items where searchinput matches
+        cursor.execute('SELECT name, price, avg_rating, description, image FROM items WHERE name = %s',(searchinput)) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
-        if searchr:
-            cursor = mysql.connection.cursor() #Opens another Cursor
-            cursor.execute('SELECT * FROM items WHERE name = %s',(searchinput))
-            item_name = cursor.fetchall()
-            #cursor.execute('SELECT * FROM sellers WHERE name = %s',(searchinput))
-            #seller_name = cursor.fetchall()
-            cursor.execute('SELECT * FROM category WHERE name = %s',(searchinput))
-            category_name = cursor.fetchall()
-            #Give email (user), password, first_name, userID variables to the session 
-            session["item_name"] = item_name[0]
-            #session["seller_name"] = seller_name[0]
-            session["category_name"] = category_name[0]
-            session["searchinput"] = searchinput
+        return render_template("searchresults.html", logvar = logvar, name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchr)
 
 # Login page, renders login.html and gets session values for
 # firstname
