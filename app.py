@@ -34,21 +34,11 @@ def home():
     if "user" in session:
         logvar = True 
         first_name = session["first_name"]
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM Category')
-        # toprecs = cursor.fetchall()
-        # print(toprecs)
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM Category')
-        # toprecs = cursor.fetchall()
-        # print(toprecs)
         return render_template("homepage.html", logvar = logvar)
-
-# UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results page
-@app.route('/search', methods = ["POST","GET"])
+#UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
 def search():
     if request.method == "POST": # If the method that is called in homepage.html is a post method
         # Store Values from the form into searchinput variable
@@ -56,8 +46,13 @@ def search():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
         cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s in Items.name OR %s in  Category.name OR %s in Sellers.organization',(searchinput)) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
-        return redirect("search_results.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
+        return redirect("searchresults.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
 
+def display_recs():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Category')
+    toprecs = cursor.fetchall()
+    return render_template('homepage.html', data = toprecs)
 
 # Login page, renders login.html and gets session values for
 # firstname
@@ -220,21 +215,7 @@ def item():
 
 @app.route("/addreview")
 def addreview():
-    if "user" in session: # Check if user is logged in
-       logvar = True # Update logvar boolean if so
-       # Retrieve session data
-       first_name = session["first_name"]
-       last_name = session["last_name"]
-       userID = session["userID"]
-       # Open a cursor and get current balance for user
-       # cursor = mysql.connection.cursor()
-       # cursor.execute('INSERT INTO Review VALUES (%s,  ', [userID])
-       # currentBalance = cursor.fetchone()
-       return render_template("addreview.html")
-       # return render_template("addreview.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, currentBalance = currentBalance)
-    else: # If you somehow accessed this page and weren't logged in
-       flash("You are not logged in to add a product review")
-       return redirect(url_for("home"))
+    return render_template("addreview.html")
 
 @app.route("/seller", methods = ["POST","GET"])
 def seller():
@@ -289,7 +270,7 @@ def purchasehistory():
        buyerID = session["userID"]
        # Open a cursor and get items purchased from user in purchases
        cursor = mysql.connection.cursor()
-       cursor.execute('SELECT * FROM itemPurchase WHERE buyerID = %s', [buyerID])
+       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
        itemsPurchased = cursor.fetchall()
        return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
    else: # If you somehow accessed this page and weren't logged in
@@ -431,6 +412,9 @@ def tradehistory():
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
     
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
