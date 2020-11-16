@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta 
 from flask_mysqldb import MySQL
+from decimal import Decimal
 import MySQLdb.cursors
 import re
 import yaml
@@ -234,12 +235,13 @@ def addbalance():
        logvar = True # Update logvar boolean if so
        # Retrieve session data
        first_name = session["first_name"]
+       last_name = session["last_name"]
        userID = session["userID"]
        # Open a cursor and get current balance for user
        cursor = mysql.connection.cursor()
        cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [userID])
        currentBalance = cursor.fetchone()
-       return render_template("addbalance.html", logvar = logvar, first_name = first_name, currentBalance = currentBalance)
+       return render_template("addbalance.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, currentBalance = currentBalance)
    else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add balance")
        return redirect(url_for("home"))
@@ -257,6 +259,45 @@ def update(id):
     cursor.close()
     print(item)
     return render_template("modify.html", item = item)
+
+#UPDATE BALANCE
+@app.route('/addbalance/<id>', methods = ["POST", "GET"])
+def modBalance(id):
+    if "user" in session:
+        if request.method == 'POST':
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            logvar = True
+            userID = id
+            cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [userID])
+            currentBalance = cursor.fetchone()
+            currentValue = currentBalance['currentBalance']
+            #get variables from form
+            first_name = session["first_name"]
+            last_name = session["last_name"]
+            input_fname = request.form["firstname"]
+            input_lname = request.form["lastname"]
+            card_number = request.form["cardnumber"]
+            card_code = request.form["securitycode"]
+            addValue = Decimal(request.form['addValue'])
+            newValue = currentValue + addValue
+            print(newValue)
+            #ensure valid info
+            if validCreditCard(card_number) == True and len(card_code) == 3:
+                cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newValue, userID])
+                flash('Success! Your wallet has been topped up')
+                mysql.connection.commit()
+                return redirect(url_for("addbalance"))
+            else:
+                flash("Unsuccessful transaction. Please Try Again!")
+                return redirect(url_for("addbalance"))
+    else: # If you somehow accessed this page and weren't logged in
+        flash("Incorrect Payment Information")
+        return redirect(url_for("home"))
+
+
+def validCreditCard(str):
+    nums = str.replace(" ", "").replace("-", "")
+    return (len(nums) == 16) and nums.isdecimal()
 
 # UPDATE EMPLOYEE
 @app.route('/modify/<id>', methods = ["POST","GET"])
