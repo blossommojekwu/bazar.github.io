@@ -295,23 +295,29 @@ def additemspage():
 
 
 
-@app.route('/additems')
+@app.route('/additems', methods = ['POST','GET'])
 def additems():
     if "user" in session and session["seller"] == True:
         logvar = True
         first_name = session["first_name"]
         if request.method == "POST":
+            sellerID = session["userID"]
             itemname = request.form['name']
             price = request.form['price']
-            count = request.form['count']
+            count = request.form['num']
             description = request.form['desc']
             image = request.form['image']
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('INSERT INTO Sellers VALUES(%s, %s, %s, %s, %s)',[userID, org_name, None, descr, 0.00])
+            cursor.execute('SELECT max(itemID) as A FROM items')
+            maxID = cursor.fetchone()
+            if(maxID == None): maxID = 0
+            print(maxID)
+            itemID = maxID["A"] + 1
+            avg_rating = 0.00
+            cursor.execute('INSERT INTO items VALUES(%s, %s, %s, %s, %s, %s, %s, NULL)',[itemID, sellerID, itemname, price, avg_rating, count, description])
             mysql.connection.commit()
-
-            
-        return render_template("additems.html", logvar = logvar, first_name = first_name)
+            flash("Item successfully added")
+            return redirect(url_for("additemspage"))
     else:
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
