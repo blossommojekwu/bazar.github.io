@@ -204,21 +204,46 @@ def registration():
 
 @app.route("/cart")
 def cart():
-    if "user" in session: # Check if user is logged in
-       logvar = True # Update logvar boolean if so
-       # Retrieve session data
-       first_name = session["first_name"]
-       buyerID = session["userID"]
-       # Open a cursor and get items purchased from user in purchases
-       cursor = mysql.connection.cursor()
-       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
-       itemsPurchased = cursor.fetchall()
-       return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
-    else: # If you somehow accessed this page and weren't logged in
-      flash("You are not logged in to add balance")
-      return redirect(url_for("home"))
-
-    return render_template("cart.html")
+   if "user" in session: # Check if user is logged in
+      logvar = True # Update logvar boolean if so
+      # Retrieve session data
+      first_name = session["first_name"]
+      buyerID = session["userID"]
+      # Open a cursor and get items purchased from user in purchases
+      cursor = mysql.connection.cursor()
+      cursor.execute('SELECT itemID, name, sellerID, num, price FROM itemPurchase WHERE buyerID = %s', [buyerID])
+      cartItems = cursor.fetchall()
+      totalPrice = 0
+      for row in cartItems:
+          totalPrice = totalPrice + (row[3] * row[4])
+      return render_template("cart.html", logvar = logvar, buyerID = buyerID, first_name = first_name, cartItems = cartItems, totalPrice = totalPrice)
+   else: # If you somehow accessed this page and weren't logged in
+     flash("You are not logged in to add balance")
+     return redirect(url_for("home"))
+ 
+#UPDATE CART QUANTITY
+@app.route('/cart/<id>', methods = ["POST", "GET"])
+def modQuantity(id):
+   if "user" in session:
+       if request.method == 'POST':
+           cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+           logvar = True
+           itemID = id
+           cursor.execute('SELECT num FROM items WHERE itemID = %s', [itemID])
+           currQuantity = cursor.fetchone()
+           quantity = currQuantity['num']
+           print(quantity)
+           #retrieve values from form
+           addValue = Decimal(request.form['addQuantity'])
+           newQuantity = quantity + addValue
+           print(newQuantity)
+           cursor.execute('UPDATE items SET num = %s WHERE itemID = %s', [newQuantity, itemID])
+           mysql.connection.commit()
+           return redirect(url_for("cart"))
+   else: # If you somehow accessed this page and weren't logged in
+       flash("Incorrect Payment Information")
+       return redirect(url_for("home"))
+       
 
 @app.route("/searchresults")
 def searchresults():

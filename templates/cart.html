@@ -11,20 +11,41 @@
  <body>
     <h1>Cart</h1>
     <a href="{{ url_for('home')}}">Return to HomePage</a>	
-    <div class="col-50" style="margin-top: 5%">
-        <div class="container">
-        {% for row in itemsPurchased%}
-          <p>
-              <a href="#">{% row[2] %}</a>
-              <span class="price">{% row[3] %}</span>
-            </p>
-        {% endfor %}
-          <!-- <p><a href="#">Product 2</a> <span class="price">$5</span></p>
-          <p><a href="#">Product 3</a> <span class="price">$8</span></p>
-          <p><a href="#">Product 4</a> <span class="price">$2</span></p> -->
-          <!-- <hr> -->
-          <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
-        </div>
-      </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Item ID</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Sold By</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for row in cartItems%}
+            <tr>
+                <td name= "itemID">{{row[0]}}</td>
+                <form action= "/cart/{{row[0]}}" method = "POST">
+                {% for d in row[1:5] %}
+                <td>{{d}}</td>
+                {% endfor %}
+                <td>
+                    <!-- Add Quantity -->
+                    <div class ="form-group" style="width: fit-content; float: left;">
+                        <label for="addQuantity" style="margin-right: 1%;">Update Quantity</label>
+                        <div class="form-group" style="display: flex;">
+                        <input type ="number" class ="form-control" name="addQuantity" placeholder ="0" style="margin-right: 1%;">
+                        <button id= "addbtn" type ="submit" class ="btn btn-secondary" style="display: inline-block; text-align: center;">
+                            +
+                        </button>
+                        </div>
+                    </div>
+                </td>
+                </form>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <h2>Total Price: ${{totalPrice}}</h2>
  </body>
 {% endblock %}
