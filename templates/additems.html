@@ -14,16 +14,22 @@
   <div class="card card-body">
     <form action="{{url_for('additems')}}" method="POST">
       <div class="form-group">
-        <input type="text" class="form-control" name="fullname" placeholder="FullName">
+        <input type="text" class="form-control" name="name" placeholder="Item Name">
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" name="email" placeholder="Email">
+        <input type="text" class="form-control" name="price" placeholder="Price">
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" name="phone" placeholder="Phone">
+        <input type="text" class="form-control" name="num" placeholder="Count">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="desc" placeholder="Description">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="image" placeholder="Image">
       </div>
       <button class="btn btn-primary btn-block">
-        Save 
+        Add Item
       </button>
     </form>
   </div>

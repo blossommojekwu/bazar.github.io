@@ -290,7 +290,24 @@ def additemspage():
 
 @app.route('/additems')
 def additems():
-    return 
+    if "user" in session and session["seller"] == True:
+        logvar = True
+        first_name = session["first_name"]
+        if request.method == "POST":
+            itemname = request.form['name']
+            price = request.form['price']
+            count = request.form['count']
+            description = request.form['desc']
+            image = request.form['image']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('INSERT INTO Sellers VALUES(%s, %s, %s, %s, %s)',[userID, org_name, None, descr, 0.00])
+            mysql.connection.commit()
+
+            
+        return render_template("additems.html", logvar = logvar, first_name = first_name)
+    else:
+        flash("You are not logged in/a seller")
+        return redirect(url_for("home"))
     
 
 
