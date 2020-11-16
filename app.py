@@ -67,8 +67,6 @@ def login():
             cursor.execute('SELECT userID FROM buyers WHERE email = %s AND password = %s',(user,password))
             userID = cursor.fetchone()
             #Give email (user), password, first_name, userID variables to the session 
-            print(balance)
-            print(last_name)
             session["first_name"] = first_name[0]
             session["last_name"] = last_name[0]
             session["userID"] = userID[0]
@@ -118,6 +116,7 @@ def user():
    if "user" in session:
        logvar = True
        first_name = session["first_name"]
+       last_name = session["last_name"]
        userID = session["userID"]
        seller = session["seller"]
        # Open cursor to get all details about user
