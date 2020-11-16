@@ -29,7 +29,7 @@ app.config['MYSQL_DB'] = db['mysql_db']
 mysql = MySQL(app)
 
 # Home page, renders homepage.html
-@app.route("/searchbar", methods = ["POST"])
+@app.route("/", methods = ["POST","GET"])
 def home():
     if "user" in session:
         logvar = True 
