@@ -1,2 +1,30 @@
-<h1>Cart page</h1>
-<a href="{{ url_for('home')}}">Return to HomePage</a>	
+{% extends "base.html" %}
+{% block title %} Purchase History {% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+     {% for msg in messages %}
+       <p>{{msg}}</p>
+     {% endfor %}
+   {% endif %}
+ {% endwith %}
+ <body>
+    <h1>Cart</h1>
+    <a href="{{ url_for('home')}}">Return to HomePage</a>	
+    <div class="col-50" style="margin-top: 5%">
+        <div class="container">
+        {% for row in itemsPurchased%}
+          <p>
+              <a href="#">{% row[2] %}</a>
+              <span class="price">{% row[3] %}</span>
+            </p>
+        {% endfor %}
+          <!-- <p><a href="#">Product 2</a> <span class="price">$5</span></p>
+          <p><a href="#">Product 3</a> <span class="price">$8</span></p>
+          <p><a href="#">Product 4</a> <span class="price">$2</span></p> -->
+          <!-- <hr> -->
+          <p>Total <span class="price" style="color:black"><b>$30</b></span></p>
+        </div>
+      </div>
+ </body>
+{% endblock %}

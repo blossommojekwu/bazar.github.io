@@ -203,6 +203,20 @@ def registration():
 
 @app.route("/cart")
 def cart():
+    if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       first_name = session["first_name"]
+       buyerID = session["userID"]
+       # Open a cursor and get items purchased from user in purchases
+       cursor = mysql.connection.cursor()
+       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
+       itemsPurchased = cursor.fetchall()
+       return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
+    else: # If you somehow accessed this page and weren't logged in
+      flash("You are not logged in to add balance")
+      return redirect(url_for("home"))
+
     return render_template("cart.html")
 
 @app.route("/searchresults")
@@ -270,7 +284,7 @@ def purchasehistory():
        buyerID = session["userID"]
        # Open a cursor and get items purchased from user in purchases
        cursor = mysql.connection.cursor()
-       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
+       cursor.execute('SELECT * FROM itemPurchase WHERE buyerID = %s', [buyerID])
        itemsPurchased = cursor.fetchall()
        return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
    else: # If you somehow accessed this page and weren't logged in
