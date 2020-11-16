@@ -28,7 +28,6 @@
         currentBalance=0.00
     -->
 
-  <!-- This might all be broken; its not done yet-->
   <form method="POST">
     <label for="first_name">First Name</label>
     <input name="first_name" id="first_name" required>
@@ -36,10 +35,22 @@
     <input name="last_name" id="last_name" required>
     <label for="email">Email Address</label>
     <input type="email" name="email" id="email" required>
+    <label for="seller">I would like to be a Seller, in addition to being a Buyer.</label>
+    <input type="checkbox" name="seller" id="seller">
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
-    <label for="image">Profile Picture</label>
-    <input type="image" name="image" id="image">
+    <input type="checkbox" onclick="myFunction()">Show Password
+    <script>
+    function myFunction() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {x.type = "text";}
+      else {x.type = "password";}
+    }
+    </script>
+
+    <label for="confirmedpw">Confirm Password</label>
+    <input type="password" name="confirmedpw" id="confirmedpw" required>
+
     <input type="submit" value="Register">
   </form>
 
