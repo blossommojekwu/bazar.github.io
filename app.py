@@ -125,8 +125,7 @@ def user():
        # All user data stored in Buyers: (userID, email, password,
        #   currentBalance, first_name, last_name, image)
        info = cursor.fetchone()
-       # CHECK IF THIS WORKS FOR BALANCE
-       return render_template("user.html", logvar = logvar, first_name = first_name, last_name = last_name, balance = info.currentBalance, user = user, seller = seller, info = info)
+       return render_template("user.html", logvar = logvar, first_name = first_name, last_name = last_name, balance = info[3], user = info[1], seller = seller, info = info)
    else:
        flash("You are not logged in!")
        return redirect(url_for("login"))
