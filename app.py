@@ -38,14 +38,27 @@ def home():
     else:
         logvar = False
     return render_template("homepage.html", logvar = logvar)
-#UNFINISHED
-def searchbar():
-    if request.method == "POST":
+#UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results page
+def search():
+    if request.method == "POST": # If the method that is called in homepage.html is a post method
         # Store Values from the form into searchinput variable
         searchinput = request.form["search"]
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
         cursor.execute('SELECT * FROM items WHERE name = %s',(searchinput)) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
+        if searchr:
+            cursor = mysql.connection.cursor() #Opens another Cursor
+            cursor.execute('SELECT * FROM items WHERE name = %s',(searchinput))
+            item_name = cursor.fetchall()
+            #cursor.execute('SELECT * FROM sellers WHERE name = %s',(searchinput))
+            #seller_name = cursor.fetchall()
+            cursor.execute('SELECT * FROM category WHERE name = %s',(searchinput))
+            category_name = cursor.fetchall()
+            #Give email (user), password, first_name, userID variables to the session 
+            session["item_name"] = item_name[0]
+            #session["seller_name"] = seller_name[0]
+            session["category_name"] = category_name[0]
+            session["searchinput"] = searchinput
 
 # Login page, renders login.html and gets session values for
 # firstname
