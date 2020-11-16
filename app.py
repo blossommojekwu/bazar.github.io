@@ -169,7 +169,6 @@ def seller():
         # This is where the delete function is implemented
         if request.method == "POST":
             item_id = request.form["item_id"]
-            session["clicked_item"] = item_id
             cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
             mysql.connection.commit() # This commits the change to the actual mysql database
             return redirect(url_for("seller"))
