@@ -29,7 +29,7 @@ app.config['MYSQL_DB'] = db['mysql_db']
 mysql = MySQL(app)
 
 # Home page, renders homepage.html
-@app.route("/")
+@app.route("/searchbar", methods = ["POST"])
 def home():
     if "user" in session:
         logvar = True 
@@ -38,10 +38,14 @@ def home():
     else:
         logvar = False
     return render_template("homepage.html", logvar = logvar)
-
-
-
-
+#UNFINISHED
+def searchbar():
+    if request.method == "POST":
+        # Store Values from the form into searchinput variable
+        searchinput = request.form["search"]
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+        cursor.execute('SELECT * FROM items WHERE name = %s',(searchinput)) # Selects all items where searchinput matches
+        searchr = cursor.fetchall() # takes all of these instances into account
 
 # Login page, renders login.html and gets session values for
 # firstname
