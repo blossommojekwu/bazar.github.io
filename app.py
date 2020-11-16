@@ -186,19 +186,39 @@ def addbalance():
 def purchasehistory():
     return render_template("purchasehistory.html")
 
-@app.route('/moditems', methods = ["POST","GET"])
-def moditems():
-    logvar = True
-    first_name = session["first_name"]
-    sellerID = session["userID"]
-    cursor = mysql.connection.cursor()
-    cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
-    items = cursor.fetchall()
-    if request.method == "POST":
-            item_id = request.form["item_id"]
-            session["clicked_item"] = item_id
-            
-    return render_template("modify.html", logvar = logvar, first_name = first_name, items=items )
+# GET EMPLOYEE
+@app.route('/update/<id>', methods =["POST","GET"])
+def update(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM items WHERE itemID = %s',[id])
+    item = cursor.fetchall()
+    cursor.close()
+    print(item)
+    return render_template("modify.html", item = item)
+
+# UPDATE EMPLOYEE
+@app.route('/modify/<id>', methods = ["POST","GET"])
+def moditem(id):
+    if "user" in session and session["seller"] == True:
+        if request.method == 'POST':
+            logvar = True
+            sellerID = session["userID"]
+            first_name = session["first_name"]
+            # Get variables from previous form
+            newname = request.form['newname']
+            newprice = request.form['newprice']
+            newcount = request.form['newcount']
+            newdesc = request.form['newdesc']
+            #newimage= request.form['newimage']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, id])
+            flash('Item Updated Successfully')
+            mysql.connection.commit()
+            return redirect(url_for("seller"))
+    else: # If you somehow accessed this page and weren't logged in
+        flash("You are not logged in/a seller")
+        return redirect(url_for("home"))
+
 
 @app.route('/delitems')
 def delitems():
@@ -210,30 +230,7 @@ def additems():
     return render_template("additems.html")
 
 
-# @app.route("/account/seller", methods =['GET', 'POST'])
-# def seller():
-#     if request.method == 'POST':
-#         #Fetch form data
-#         marketDetails = request.form
-#         item = marketDetails['item']
-#         price = marketDetails['price']
-#         quantity = marketDetails['quantity']
-#         seller = marketDetails['seller']
-#         cur = mysql.connection.cursor()
-#         cur.execute("INSERT INTO market(item, price, quantity, seller) VALUES(%s, %s, %s, %s)", (item, price, quantity, seller))
-#         mysql.connection.commit()
-#         cur.close()
-#         #return redirect('/display')
-#     return render_template("seller_items.html")
 
-
-# @app.route('/display')
-# def display():
-#     cur = mysql.connection.cursor()
-#     resultValue = cur.execute("SELECT * FROM market")
-#     if resultValue > 0:
-#         marketDetails = cur.fetchall()
-#         return render_template('market.html',marketDetails = marketDetails)
 
 if __name__ == "__main__":
     app.run(debug=True)
