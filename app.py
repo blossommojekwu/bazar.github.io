@@ -230,7 +230,25 @@ def item():
 
 @app.route("/addreview")
 def addreview():
-    return render_template("addreview.html")
+    if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       userID = session["userID"]
+       # Open a cursor and get current balance for user
+       cursor = mysql.connection.cursor()
+       input_stars = request.form["stars"]
+       input_comments = request.form["body"]
+       cursor.execute('INSERT INTO ItemReview VALUES(userID, itemID, input_stars, input_comments')
+       myReview = cursor.fetchone()
+       return render_template("addreview.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, myReview = myReview)
+   else: # If you somehow accessed this page and weren't logged in
+       flash("You are not logged in to add a revoew")
+       return redirect(url_for("home"))
+
+    (buyerID INTEGER NOT NULL REFERENCES Buyers(userID), -- Field set by website
+itemID INTEGER NOT NULL REFERENCES Items(itemID), -- Field set by website
+numStars INTEGER NOT NULL, -- Field for User to input
+comments VARCHAR(1250), -- Optional, field for User to input
 
 @app.route("/seller", methods = ["POST","GET"])
 def seller():
