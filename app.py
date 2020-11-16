@@ -60,10 +60,17 @@ def login():
             cursor =  mysql.connection.cursor() #Opens another Cursor
             cursor.execute('SELECT first_name FROM buyers WHERE email = %s AND password = %s',(user,password))
             first_name = cursor.fetchone()
+            cursor.execute('SELECT last_name FROM buyers WHERE email = %s AND password = %s',(user,password))
+            last_name = cursor.fetchone()
+            cursor.execute('SELECT currentBalance FROM buyers WHERE email = %s AND password = %s',(user,password))
+            balance = cursor.fetchone()
             cursor.execute('SELECT userID FROM buyers WHERE email = %s AND password = %s',(user,password))
             userID = cursor.fetchone()
             #Give email (user), password, first_name, userID variables to the session 
+            print(balance)
+            print(last_name)
             session["first_name"] = first_name[0]
+            session["last_name"] = last_name[0]
             session["userID"] = userID[0]
             session["user"] = user
             session["password"] = password
