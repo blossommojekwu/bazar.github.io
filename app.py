@@ -46,6 +46,8 @@ def search():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
         cursor.execute('SELECT name, price, avg_rating, description, image FROM items WHERE name = %s',(searchinput)) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
+        cursor.close()
+        print(searchr)
         return render_template("searchresults.html", logvar = logvar, name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchr)
 
 # Login page, renders login.html and gets session values for
