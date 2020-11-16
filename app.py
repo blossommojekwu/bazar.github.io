@@ -38,14 +38,14 @@ def home():
         # cursor.execute('SELECT * FROM Category')
         # toprecs = cursor.fetchall()
         # print(toprecs)
-        return render_template("homepage.html", logvar = logvar, first_name = first_name, data = toprecs)
+        return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
         # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         # cursor.execute('SELECT * FROM Category')
         # toprecs = cursor.fetchall()
         # print(toprecs)
-        return render_template("homepage.html", logvar = logvar, data = toprecs)
+        return render_template("homepage.html", logvar = logvar)
 
 # UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results page
 @app.route('/search', methods = ["POST","GET"])

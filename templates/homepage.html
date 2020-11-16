@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <!-- <head>
         <link rel="stylesheet" href="{{ url_for('static',filename='css/homepage.css')}}">
-        <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet"> -->
         <!-- Load icon library -->
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <title>Homepage</title>
-    </head>
-   
+    </head> --> 
 {% extends "base.html" %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
@@ -25,28 +24,8 @@
   	<input class= "searchinput" type="text" placeholder="Search for an item" name="search">
   	<button type="submit"><i class="fa fa-search"></i></button>
   </form>
-  
-<!-- </div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Image</th>
-      <th scope="col">Price</th>
-      <th scope="col">Seller</th>
-      <th scope="col">Name</th>
-      <th scope="col">Rating</th>
-    </tr>
-  </thead>
-  <tbody>
-      {% for row in data%}
-      <tr>
-          
-          <td>row.</td>
-    
-          </tr>
-      {% endfor %}
-  </tbody>
-  </table>
+
 {% endblock %}
-</body> -->
+  
+
 </html>
