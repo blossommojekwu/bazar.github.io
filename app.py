@@ -108,35 +108,80 @@ def logout():
 # UNFINISHED; GET & DISPLAY ALL USER DATA
 @app.route("/user", methods = ["POST", "GET"])
 def user():
-    if "user" in session:
-        logvar = True
-        first_name = session["first_name"]
-        userID = session["userID"]
-        seller = session["seller"]
-        # Open cursor to get all details about user
-        cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM Buyers WHERE userID = %s', [userID])
-        # All user data stored in Buyers: (userID, email, password, 
-        #   currentBalance, first_name, last_name, image)
-        info = cursor.fetchall()
-        return render_template("user.html", logvar = logvar, first_name = first_name, seller = seller, info = info)
-    else:
-        flash("You are not logged in!")
-        return redirect(url_for("login"))
+   if "user" in session:
+       logvar = True
+       first_name = session["first_name"]
+       userID = session["userID"]
+       seller = session["seller"]
+       # Open cursor to get all details about user
+       cursor = mysql.connection.cursor()
+       cursor.execute('SELECT * FROM buyers WHERE userID = %s', [userID])
+       # All user data stored in Buyers: (userID, email, password,
+       #   currentBalance, first_name, last_name, image)
+       info = cursor.fetchone()
+       return render_template("user.html", logvar = logvar, first_name = first_name, seller = seller, info = info)
+   else:
+       flash("You are not logged in!")
+       return redirect(url_for("login"))
+
 
 # UNFINISHED; REGISTER NEW USER
 @app.route("/registration", methods = ["POST", "GET"])
 def registration():
-    if "user" in session:
-        flash("You are already logged in! Logout to register as different user.")
-        return redirect(url_for("user"))
-    elif request.method == "POST":
-        # INSERT FUNCTIONAL CODE HERE
-        # Once you register as a user, you have to log in as 
-        # the new user to access site, so redirect to login
-        flash("Thank you for registering as a new user!")
-        return redirect(url_for("login"))
-    return render_template("registration.html")
+   if "user" in session:
+       flash("You are already logged in! Logout to register as different user.")
+       return redirect(url_for("user"))
+   elif request.method == "POST":
+       # INSERT FUNCTIONAL CODE HERE
+       # Once you register as a user, you have to log in as
+       # the new user to access site, so redirect to login
+       cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+ 
+       password = request.form["password"]
+       confirmation = request.form["confirmedpw"]
+       if(password != confirmation):
+           flash("Whoops! Your password and confirmed password don't match!")
+           return redirect(url_for("registration"))
+ 
+       email = request.form["email"]
+       cursor.execute('SELECT email FROM buyers WHERE email = %s',[email])
+       if_email_exists = cursor.fetchone()
+       if(if_email_exists == email):
+           flash("Whoops! A user with this email already exists. Please login with this address or register with a different one.")
+           return redirect(url_for("registration"))
+ 
+       first = request.form["first_name"]
+       last = request.form["last_name"]
+       org_name = request.form["org_name"]
+       descr = request.form["description"]
+       ifSeller = request.form.get("sellercheck")
+ 
+       # Determine New Unique UserID
+       cursor.execute('SELECT max(userID) as A FROM Buyers')
+       maxID = cursor.fetchone()
+       if(maxID == None): maxID = 0
+       print(maxID)
+       userID = maxID["A"] + 1
+ 
+       # Create User in Buyers
+       # Buyers(userID, email, password, currentBalance, firstname, lastname, image)
+           # TODO: FIGURE OUT IMAGE SITUATION
+       cursor.execute('INSERT INTO Buyers VALUES(%s, %s, %s, %s, %s, %s, %s)',[userID, email, password, 0.00, first, last, None])
+       mysql.connection.commit()
+ 
+       # INSERT INTO table(column1, column2,...) VALUES (value1, value2,...);
+ 
+       # Create a seller with the same UserID if seller is checked
+       # Sellers(userID, organization, image, description, avg_rating)
+       if(ifSeller == "true"):
+           cursor.execute('INSERT INTO Sellers VALUES(%s, %s, %s, %s, %s)',[userID, org_name, None, descr, 0.00])
+           mysql.connection.commit()
+ 
+       # If exists in database -> email already in use
+       flash("Thank you for registering as a new user!")
+       return redirect(url_for("login"))
+   return render_template("registration.html")
+
 
 @app.route("/cart")
 def cart():
@@ -218,15 +263,23 @@ def moditem(id):
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
 
+@app.route('/additemspage')
+def additemspage():
+    if "user" in session and session["seller"] == True:
+        logvar = True
+        first_name = session["first_name"]
+        return render_template("additems.html", logvar = logvar, first_name = first_name)
+    else:
+        flash("You are not logged in/a seller")
+        return redirect(url_for("home"))
 
-@app.route('/delitems')
-def delitems():
-    return render_template("delitems.html")
+
 
 
 @app.route('/additems')
 def additems():
-    return render_template("additems.html")
+    return 
+    
 
 
 

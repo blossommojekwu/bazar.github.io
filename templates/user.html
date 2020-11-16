@@ -1,50 +1,63 @@
+<html>
+ 
+ <head>
+   <link rel="stylesheet" href="{{ url_for('static',filename='css/profilepage.css')}}">
+   <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+   <title>Your User Profile</title>
+ </head>
+ 
+ <body>
 {% extends "base.html" %}
 {% block title%}User Page{% endblock %}
 {% block content %}
 {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for msg in messages %}
-        <p>{{msg}}</p>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-
-  <!--Display: Welcome to your user page, *First Name of User*-->
-  <h2>Welcome to your user page, {{info.first_name}}</h2>
-  <h3>Your User Profile</h3>
-  
+   {% if messages %}
+     {% for msg in messages %}
+       <p>{{msg}}</p>
+     {% endfor %}
+   {% endif %}
+ {% endwith %}
+ 
+ <!--Display: Welcome to your user page, *First Name of User*-->
+ <h2>Welcome to your user page, {{first_name}}</h2>
+ <h3>Your Current Information</h3>
   <!--Figure out how to display info passed in; initially can't update it;
-    then we can figure out how to update it
-
-    All user data stored in Buyers: (userID, email, password, 
-    currentBalance, first_name, last_name, image)
-  -->
-  
+   then we can figure out how to update it
+ 
+   All user data stored in Buyers: (userID, email, password,
+   currentBalance, first_name, last_name, image)
+ -->
   <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Email Address</th>
-        <th scope="col">Current Balance</th>
-        <th scope="col">Image</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{info.first_name}}</td>
-        <td>{{info.last_name}}</td>
-        <td>{{info.email}}</td>
-        <td>{{info.currentBalance}}</td>
-        <td>{{info.image}}</td>  
-      </tr>
-    </tbody>
-  </table>
-
-  {% if seller == true %}
-  <center>
-    <a href="{{ url_for('seller')}}">Access Seller Page</a>
-  </center>
-  {% endif %}
+   <thead>
+     <tr>
+       <th scope="col">First Name</th>
+       <th scope="col">Last Name</th>
+       <th scope="col">Email Address</th>
+       <th scope="col">Current Balance</th>
+       <th scope="col">Image</th>
+       <th scope="col"></th>
+     </tr>
+   </thead>
+   <tbody>
+     <tr>
+       <td>{{info.first_name}}</td>
+       <td>{{info.last_name}}</td>
+       <td>{{info.email}}</td>
+       <td>{{info.currentBalance}}</td>
+       <td>{{info.image}}</td> 
+     </tr>
+   </tbody>
+ </table>
+ 
+ {% if seller == true %}
+ <center>
+   <a href="{{ url_for('seller')}}">Access Seller Page</a>
+ </center>
+ {% endif %}
 {% endblock %}
+ 
+</body>
+ 
+</html>
