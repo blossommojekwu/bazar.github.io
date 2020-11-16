@@ -23,8 +23,9 @@
        <br>
        <a href="{{ url_for('user')}}">Return to Account Page</a>  
  
-       <h3> Zeros
-       </h3>
+       <h3>Hi {{first_name}}, your current balance is:</h3>
+       <br>
+       <h2>{{currentBalance[0]}}</h2>
    </body>
 </form>
 {% endblock %}

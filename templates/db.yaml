@@ -1,4 +1,4 @@
 mysql_host: 'localhost'
 mysql_user: 'root'
-mysql_password: 'password'
+mysql_password: '316project'
 mysql_db: 'miniamazon'
