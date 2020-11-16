@@ -9,14 +9,6 @@
         <title>Homepage</title>
     </head>
    
-    <body style="background-color: #2C3B4E;">
-        <h1 style="color: white;">HomePage</h1>
-        <a href="{{ url_for('home')}}">Return to HomePage</a>	
-        <br>
-        <a href="{{ url_for('user')}}">Return to Account Page</a>	
-
-        <h3 style="border: 2px solid orange; border-radius: 5px; height: 80%; width: 75%;">
-        </h3>
 {% extends "base.html" %}
 {% block title %} Home Page {% endblock %}
 {% block content %}
@@ -32,8 +24,9 @@
 	<form class="search" action="#" method = "POST">
   	<input class= "searchinput" type="text" placeholder="Search for an item" name="search">
   	<button type="submit"><i class="fa fa-search"></i></button>
-	</form>
-</div>
+  </form>
+  
+<!-- </div>
 <table class="table">
   <thead>
     <tr>
@@ -47,13 +40,13 @@
   <tbody>
       {% for row in data%}
       <tr>
-          {% for d in row[0:3] %}
-          <td>{{d}}</td>
-          {% endfor %}
+          
+          <td>row.</td>
+    
           </tr>
       {% endfor %}
   </tbody>
   </table>
 {% endblock %}
-</body>
+</body> -->
 </html>
