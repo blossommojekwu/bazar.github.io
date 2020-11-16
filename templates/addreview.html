@@ -10,8 +10,8 @@
     </head>
    
     <body style="background-color: #2C3B4E;">
-        <h1 style="color: white;">Add Review Page</h1>
-        <a href="{{ url_for('home')}}">Return to HomePage</a>	
+        <h1 style="color: white;">Add A Review</h1>
+        <a href="{{ url_for('home')}}">Return to Homepage</a>	
         <br>
         <a href="{{ url_for('user')}}">Return to Account Page</a>	
 
@@ -25,8 +25,12 @@
               {% endif %}
             {% endwith %}
             <div class="main">
-                <input class="title" type="text" align="center" name ="tit" placeholder="Title">
+                <label for="title">Title</label>
+                <input class="title" type="text" align="center" name ="tit">
+                <label for="body">Body</label>
                 <input class="body" type="text" align="center" name ="body" placeholder="Type your review...">
-                <p align="center"><input type="submit" value="submit"/> </p>
+                <label for="title">Star Rating</label>
+                <input class="title" type="text" align="center" name ="body" placeholder="Stars">
+                <input type="submit" value="Submit"/> </p>
     </body>
 </html>
