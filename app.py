@@ -218,16 +218,20 @@ def seller():
         cursor = mysql.connection.cursor()
         cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
         items = cursor.fetchall()
+        cursor.execute('SELECT * FROM buyers WHERE userID = %s', [sellerID])
+        user = cursor.fetchall()
+        org = session['org']
         # This is where the delete function is implemented
         if request.method == "POST":
             item_id = request.form["item_id"]
             cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
             mysql.connection.commit() # This commits the change to the actual mysql database
             return redirect(url_for("seller"))
-        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items)
+        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items, user=user[0], org=org)
     else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in as a seller")
         return redirect(url_for("home"))
+
 
 @app.route("/addbalance")
 def addbalance():
@@ -358,6 +362,21 @@ def additems():
             mysql.connection.commit()
             flash("Item successfully added")
             return redirect(url_for("additemspage"))
+    else:
+        flash("You are not logged in/a seller")
+        return redirect(url_for("home"))
+
+@app.route('/tradehistory', methods = ['POST','GET'])
+def tradehistory():
+    if "user" in session and session["seller"] == True:
+        logvar = True
+        first_name = session["first_name"]
+        sellerID = session["userID"]
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM final WHERE userID = %s', [sellerID])
+        history = cursor.fetchall()
+        print(history)
+        return render_template('tradehistory.html',logvar = logvar, first_name = first_name, history = history)
     else:
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))

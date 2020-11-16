@@ -73,6 +73,40 @@ dayTime TIMESTAMP NOT NULL, -- Field set by website (current time of submission)
 PRIMARY KEY(buyerID, sellerID)
 );
 
+-- Combine seller and items
+CREATE VIEW itemstoseller AS
+SELECT sellers.userID, items.itemID, items.name, items.price
+FROM sellers
+INNER JOIN items
+ON sellers.userID = items.sellerID;
+
+-- combine with purchase
+CREATE VIEW itemsellerpurchase AS
+SELECT itemstoseller.userID, itemstoseller.itemID, itemstoseller.name, itemstoseller.price, purchase.buyerID, purchase.num, purchase.daytime
+FROM itemstoseller
+INNER JOIN purchase
+ON itemstoseller.itemID = purchase.itemID;
+
+-- combine with item review
+CREATE VIEW viewitemreviews AS
+SELECT itemsellerpurchase.userID, itemsellerpurchase.itemID, itemsellerpurchase.name, itemsellerpurchase.price, itemsellerpurchase.buyerID, itemsellerpurchase.num, itemsellerpurchase.daytime, itemreview.numstars, itemreview.comments
+FROM itemsellerpurchase
+INNER JOIN itemreview
+ON itemsellerpurchase.itemID = itemreview.itemID AND itemsellerpurchase.buyerID = itemreview.buyerID;
+
+-- combine with seller review
+CREATE VIEW transactionhistory AS
+SELECT viewitemreviews.userID, viewitemreviews.itemID, viewitemreviews.name, viewitemreviews.price, viewitemreviews.buyerID, viewitemreviews.num, viewitemreviews.numstars, viewitemreviews.comments, viewitemreviews.daytime, sellerreview.numstars AS seller_rating, sellerreview.comments AS seller_comments
+FROM viewitemreviews
+INNER JOIN sellerreview
+ON viewitemreviews.userID = sellerreview.sellerID AND viewitemreviews.buyerID = sellerreview.buyerID;
+
+-- combine with buyers
+CREATE VIEW final AS
+SELECT  transactionhistory.userID,  transactionhistory.itemID, transactionhistory.name,  transactionhistory.price,  transactionhistory.buyerID,  transactionhistory.num,  transactionhistory.numstars,  transactionhistory.comments,  transactionhistory.daytime,  transactionhistory.seller_rating,  transactionhistory.seller_comments, buyers.first_name, buyers.last_name
+FROM transactionhistory
+INNER JOIN buyers
+ON transactionhistory.buyerID = buyers.userID;
 
 delimiter //
 CREATE TRIGGER no_itempurchase_no_review BEFORE INSERT OR UPDATE ON ItemReview
