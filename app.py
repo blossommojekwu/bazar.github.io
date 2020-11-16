@@ -252,8 +252,28 @@ def addbalance():
 
 @app.route("/purchasehistory")
 def purchasehistory():
-    return render_template("purchasehistory.html")
-
+   if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       first_name = session["first_name"]
+       buyerID = session["userID"]
+       # Open a cursor and get items purchased from user in purchases
+       cursor = mysql.connection.cursor()
+       cursor.execute('SELECT itemID, dayTime, num FROM purchase WHERE buyerID = %s', [buyerID])
+       itemsPurchased = cursor.fetchall()
+       return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
+   else: # If you somehow accessed this page and weren't logged in
+      flash("You are not logged in to add balance")
+      return redirect(url_for("home"))
+ 
+# Get Item Details
+@app.route('/itempage/<id>', methods = ["POST", "GET"])
+def getDetails(id):
+   cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   cursor.execute('SELECT itemID, sellerID, price, num FROM items WHERE itemID = %s',[id])
+   itemDetails = cursor.fetchall()
+   return render_template("item.html", itemDetails = itemDetails)
+ 
 # GET EMPLOYEE
 @app.route('/update/<id>', methods =["POST","GET"])
 def update(id):
