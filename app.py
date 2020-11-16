@@ -39,20 +39,21 @@ def home():
         logvar = False
         return render_template("homepage.html", logvar = logvar)
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
+@app.route("/", methods = ["POST","GET"])
 def search():
     if request.method == "POST": # If the method that is called in homepage.html is a post method
         # Store Values from the form into searchinput variable
         searchinput = request.form["search"]
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s in Items.name OR %s in  Category.name OR %s in Sellers.organization',(searchinput)) # Selects all items where searchinput matches
+        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s like Items.name OR %s like  Category.name OR %s like Sellers.organization',(searchinput)) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
-        return redirect("searchresults.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
+        return redirect(url_for(searchresults), name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
 
-def display_recs():
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM Category')
-    toprecs = cursor.fetchall()
-    return render_template('homepage.html', data = toprecs)
+# def display_recs():
+#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+#     cursor.execute('SELECT * FROM Category')
+#     toprecs = cursor.fetchall()
+#     return render_template('homepage.html', data = toprecs)
 
 # Login page, renders login.html and gets session values for
 # firstname
