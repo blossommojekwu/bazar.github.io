@@ -48,6 +48,12 @@ def search():
         searchr = cursor.fetchall() # takes all of these instances into account
         return redirect("searchresults.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
 
+def display_recs():
+    cur = connection.cursor()
+    cur.execute("SELECT topItemOne, topItemTwo, topItemThree FROM Category")
+    data = cur.fetchall()
+    return render_template('homepage.html', data = data)
+
 # Login page, renders login.html and gets session values for
 # firstname
 # user (email)

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Purchase History {% endblock %}
+{% block title %} Search Results {% endblock %}
 {% block content %}
 {% with messages = get_flashed_messages() %}
    {% if messages %}
@@ -9,11 +9,11 @@
    {% endif %}
  {% endwith %}
 
-<h1>Search Result page</h1>
+<h1>Search Results</h1>
 
-<a href="{{ url_for('home')}}">Return to HomePage</a>	
+<a href="{{ url_for('home')}}">Return to Homepage</a>	
 <br>
-<a href="{{ url_for('cart')}}">cart</a>	
+<a href="{{ url_for('cart')}}">Cart</a>	
 <br>
 <a href="{{ url_for('item')}}">Temp link to item page</a>	
 
