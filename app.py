@@ -37,7 +37,7 @@ def home():
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
-    return render_template("homepage.html", logvar = logvar)
+        return render_template("homepage.html", logvar = logvar)
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results page
 def search():
     if request.method == "POST": # If the method that is called in homepage.html is a post method
@@ -49,10 +49,10 @@ def search():
         return redirect("searchresults.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
 
 def display_recs():
-    cur = connection.cursor()
-    cur.execute("SELECT topItemOne, topItemTwo, topItemThree FROM Category")
-    data = cur.fetchall()
-    return render_template('homepage.html', data = data)
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Category')
+    toprecs = cursor.fetchall()
+    return render_template('homepage.html', data = toprecs)
 
 # Login page, renders login.html and gets session values for
 # firstname
