@@ -30,6 +30,22 @@ app.config['MYSQL_PASSWORD'] = db['mysql_password'] #THIS WILL BE DIFFERENT, CHE
 app.config['MYSQL_DB'] = db['mysql_db']
 mysql = MySQL(app)
 
+
+# Set up for Emailing Forgotten Password
+# Our account information:
+#   EMAIL: BazarCustomerService@gmail.com;
+#   PASSWORD: BazarCS316;
+#   FIRST NAME: Bazar;
+#   LAST NAME: Customer Service;
+#   BIRTH DATE: Dec 20, 2000
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'BazarCustomerService@gmail.com'
+app.config['MAIL_PASSWORD'] = 'BazarCS316'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
 # Home page, renders homepage.html
 @app.route("/", methods = ["POST","GET"])
 def home():
@@ -80,8 +96,6 @@ def login():
             first_name = cursor.fetchone()
             cursor.execute('SELECT last_name FROM buyers WHERE email = %s AND password = %s',(user,password))
             last_name = cursor.fetchone()
-            cursor.execute('SELECT currentBalance FROM buyers WHERE email = %s AND password = %s',(user,password))
-            balance = cursor.fetchone()
             cursor.execute('SELECT userID FROM buyers WHERE email = %s AND password = %s',(user,password))
             userID = cursor.fetchone()
             #Give email (user), password, first_name, userID variables to the session 
@@ -114,9 +128,18 @@ def login():
             return redirect(url_for("user"))
         return render_template("login.html")
 
+# DOUBLE CHECK THAT THIS WORKS
 @app.route("/forgotpw")
 def forgotpw():
-    return "<h1>Sorry dude; tough luck</h1>"
+    if request.method == "POST":
+        recovery_email = request.form["email"]
+        msg = Message('Bazar Password Recovery', sender = 'BazarCustomerService@gmail.com', recipients = [recovery_email])
+        msg.body = "Hello %s!\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: %s .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.", [first_name, password]
+        mail.send(msg)
+        flash("Password recovery successful. Check your email!")
+        return redirect(url_for("login"))
+    else:
+        return render_template("forgotpw.html")
 
 # Logout page, clears session
 @app.route("/logout")
