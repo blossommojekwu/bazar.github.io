@@ -39,15 +39,18 @@ def home():
         logvar = False
         return render_template("homepage.html", logvar = logvar)
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
+
 @app.route("/", methods = ["POST","GET"])
 def search():
     if request.method == "POST": # If the method that is called in homepage.html is a post method
         # Store Values from the form into searchinput variable
         searchinput = request.form["search"]
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s like Items.name OR %s like Category.name OR %s like Sellers.organization',(searchinput)) # Selects all items where searchinput matches
+        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput]) # Selects all items where searchinput matches
         searchr = cursor.fetchall() # takes all of these instances into account
-        return render_template("search_results.html", name = name, price = price, avg_rating = avg_rating, image = img, description = description, searchr = searchresults)
+        return render_template("searchresults.html", name = searchr[0], price = searchr[1], avg_rating = searchr[2], image = searchr[4], description = searchr[3], searchr = searchr)
+    else:
+        return render_template("login.html")
 
 # def display_recs():
 #     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -294,10 +297,34 @@ def modQuantity(id):
 
 @app.route("/searchresults")
 def searchresults():
-    return render_template("search_results.html")
+    search()
+    return render_template("searchresults.html")
 
 @app.route("/item")
 def item():
+    if "user" in session: # Check if user is logged in
+        logvar = True # Update logvar boolean if so
+        # Retrieve session data
+        first_name = session["first_name"] 
+        sellerID = session["userID"]
+        seller = session["seller"]
+        # Open a cursor and get all items sold for a seller
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
+        items = cursor.fetchall()
+        cursor.execute('SELECT * FROM buyers WHERE userID = %s', [sellerID])
+        user = cursor.fetchall()
+        org = session['org']
+        # This is where the delete function is implemented
+        if request.method == "POST":
+            item_id = request.form["item_id"]
+            cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
+            mysql.connection.commit() # This commits the change to the actual mysql database
+            return redirect(url_for("seller"))
+        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items, user=user[0], org=org)
+    else: # If you somehow accessed this page and weren't logged in
+        flash("You are not logged in as a seller")
+        return redirect(url_for("home"))
     return render_template("item.html")
 
 @app.route("/addreview")
@@ -306,14 +333,13 @@ def addreview():
        logvar = True # Update logvar boolean if so
        # Retrieve session data
        userID = session["userID"]
-       # Open a cursor and get current balance for user
        cursor = mysql.connection.cursor()
        input_itemID = request.form["itemid"]
        input_stars = request.form["stars"]
        input_comments = request.form["body"]
-       cursor.execute('INSERT INTO ItemReview VALUES(userID, input_itemID, input_stars, input_comments')
+       cursor.execute('INSERT INTO ItemReview VALUES(userID, input_itemID, input_stars, input_comments)')
        myReview = cursor.fetchone()
-       return render_template("addreview.html", logvar = logvar, userID = userID, first_name = first_name, last_name = last_name, myReview = myReview)
+       return render_template("addreview.html", logvar = logvar, userID = myReview[0], itemID = myReview[1], input_stars = myReview[2], input_comments = myReview[3], myReview = myReview)
     else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add a review!")
        return redirect(url_for("home"))
