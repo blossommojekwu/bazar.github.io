@@ -193,7 +193,7 @@ delimiter;
 
 
 delimiter //
-CREATE TRIGGER updAveSellerRatings AFTER INSERT OR UPDATE ON ItemReview
+CREATE TRIGGER updAveItemRatings AFTER INSERT OR UPDATE ON ItemReview
        FOR EACH ROW
        BEGIN
 	WITH X AS (SELECT itemID, AVG(numStars) AS avgR
@@ -264,4 +264,3 @@ delimiter;
 
 
 -- TODO: Troubleshoot triggers (especially for updating top in category); there are definitely some errors in here
--- TODO: Fix load.sql to fit new schemas
