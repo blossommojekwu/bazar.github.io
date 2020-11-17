@@ -44,6 +44,7 @@ PRIMARY KEY(itemID, category)
 CREATE TABLE Cart
 (buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
 itemID INTEGER NOT NULL REFERENCES Items(itemID),
+num INTEGER NOT NULL, -- Quantity in cart
 PRIMARY KEY(buyerID, itemID)
 );
 
@@ -74,11 +75,31 @@ PRIMARY KEY(buyerID, sellerID)
 );
 
 -- Combine purchase and items
-CREATE VIEW itemPurchase AS
+CREATE VIEW itemhistory AS
 SELECT purchase.buyerID, purchase.itemID, items.name, items.price, items.num, purchase.dayTime, items.sellerID
 FROM purchase
 INNER JOIN items
 ON purchase.itemID = items.itemID;
+
+CREATE VIEW itemPurchase AS
+SELECT itemhistory.buyerID, itemhistory.itemID, itemhistory.name, itemhistory.price, itemhistory.num, itemhistory.dayTime, sellers.organization, itemhistory.sellerID
+FROM itemhistory
+INNER JOIN sellers
+ON itemhistory.sellerID = sellers.userID;
+
+-- Combine cart and items
+CREATE VIEW cartitem AS
+SELECT cart.buyerID, items.itemID, items.name, items.sellerID, items.price, cart.num
+FROM cart
+INNER JOIN items
+ON cart.itemID = items.itemID;
+
+-- Combine cart, items, seller
+CREATE VIEW cartitemtoseller AS
+SELECT cartitem.buyerID, cartitem.itemID, cartitem.name, sellers.organization, cartitem.price, cartitem.num, cartitem.sellerID
+FROM cartitem
+INNER JOIN sellers
+ON cartitem.sellerID = sellers.userID;
 
 -- Combine seller and items
 CREATE VIEW itemstoseller AS

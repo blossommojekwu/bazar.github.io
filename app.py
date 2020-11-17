@@ -211,7 +211,7 @@ def cart():
       buyerID = session["userID"]
       # Open a cursor and get items purchased from user in purchases
       cursor = mysql.connection.cursor()
-      cursor.execute('SELECT itemID, name, sellerID, num, price FROM itemPurchase WHERE buyerID = %s', [buyerID])
+      cursor.execute('SELECT itemID, name, sellerID, price FROM itemPurchase WHERE buyerID = %s', [buyerID])
       cartItems = cursor.fetchall()
       totalPrice = 0
       for row in cartItems:
@@ -222,6 +222,7 @@ def cart():
      return redirect(url_for("home"))
  
 #UPDATE CART QUANTITY
+# check if sufficient seller supply
 @app.route('/cart/<id>', methods = ["POST", "GET"])
 def modQuantity(id):
    if "user" in session:
@@ -230,9 +231,11 @@ def modQuantity(id):
            logvar = True
            itemID = id
            cursor.execute('SELECT num FROM items WHERE itemID = %s', [itemID])
-           currQuantity = cursor.fetchone()
-           quantity = currQuantity['num']
-           print(quantity)
+           #find quantity available of item on seller side
+           #currQuantity = cursor.fetchone()
+           #quantity = 0#currQuantity['num']
+           #print(quantity)
+           quantity = Decimal(request.form['currQuantity'])
            #retrieve values from form
            addValue = Decimal(request.form['addQuantity'])
            newQuantity = quantity + addValue
@@ -243,7 +246,51 @@ def modQuantity(id):
    else: # If you somehow accessed this page and weren't logged in
        flash("Incorrect Payment Information")
        return redirect(url_for("home"))
-       
+
+# Checkout Ability successful:
+# - reduce buyer balance
+# - increase seller balance
+# - all items in cart will be added to purchase history
+# - seller history will be updated with history of seller
+# - quantity of item available on seller side decreased by quantity checked OUT
+
+# Checkout Ability unsuccesful:
+# - if insufficient funds --> Flash "Insufficient Funds"
+# - if seller no longer has enough supply, “Insufficient number of copies of item: 
+# (current quantity of that item) items remaining. 
+# Please remove item from cart or reduce item quantity”
+# @app.route('/cart/checkout/<id>', methods = ["POST", "GET"])
+# def checkSuccess(id):
+#     if "user" in session:
+#         if request.method == 'POST':
+#             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+#             logvar = True
+#             buyerID = id
+#             totalPrice = request.form["totalPrice"]
+#             cursor.execute('SELECT currentBalance FROM buyers WHERE buyerID = %s',[buyerID])
+#             funds = cursor.fetchone()
+#             #check sufficient funds
+#             if funds >= totalPrice:
+#                #reduce buyer balance
+#                remainder = funds 
+#             else: #if insufficient funds 
+#                flash("Insufficient Funds")
+
+
+#             cursor.execute('SELECT num FROM items WHERE itemID = %s', [itemID])
+#             currQuantity = cursor.fetchone()
+#             quantity = currQuantity['num']
+#             print(quantity)
+#             #retrieve values from form
+#             addValue = Decimal(request.form['addQuantity'])
+#             newQuantity = quantity + addValue
+#             print(newQuantity)
+#             cursor.execute('UPDATE items SET num = %s WHERE itemID = %s', [newQuantity, itemID])
+#             mysql.connection.commit()
+#             return redirect(url_for("cart"))
+#     else: # If you somehow accessed this page and weren't logged in
+#         flash("Incorrect Payment Information")
+#         return redirect(url_for("home"))
 
 @app.route("/searchresults")
 def searchresults():
