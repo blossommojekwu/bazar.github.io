@@ -88,18 +88,18 @@ INNER JOIN sellers
 ON itemhistory.sellerID = sellers.userID;
 
 -- Combine cart and items
-CREATE VIEW cartitem AS
+CREATE VIEW cartitems AS
 SELECT cart.buyerID, items.itemID, items.name, items.sellerID, items.price, cart.num
 FROM cart
 INNER JOIN items
 ON cart.itemID = items.itemID;
 
 -- Combine cart, items, seller
-CREATE VIEW cartitemtoseller AS
-SELECT cartitem.buyerID, cartitem.itemID, cartitem.name, sellers.organization, cartitem.price, cartitem.num, cartitem.sellerID
-FROM cartitem
+CREATE VIEW cartitem_seller AS
+SELECT cartitems.buyerID, cartitems.itemID, cartitems.name, sellers.organization, cartitems.price, cartitems.num, cartitems.sellerID
+FROM cartitems
 INNER JOIN sellers
-ON cartitem.sellerID = sellers.userID;
+ON cartitems.sellerID = sellers.userID;
 
 -- Combine seller and items
 CREATE VIEW itemstoseller AS

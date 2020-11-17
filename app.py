@@ -214,7 +214,7 @@ def cart():
       buyerID = session["userID"]
       # Open a cursor and get items purchased from user in purchases
       cursor = mysql.connection.cursor()
-      cursor.execute('SELECT itemID, name, sellerID, price FROM itemPurchase WHERE buyerID = %s', [buyerID])
+      cursor.execute('SELECT itemID, name, organization, price, num FROM cartitem_seller, sellers WHERE buyerID = %s', [buyerID])
       cartItems = cursor.fetchall()
       totalPrice = 0
       for row in cartItems:
