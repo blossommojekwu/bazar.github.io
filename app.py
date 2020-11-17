@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, Mail, Message
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask_mail import Mail, Message
 from datetime import timedelta 
 from flask_mysqldb import MySQL
 from decimal import Decimal
