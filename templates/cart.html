@@ -26,7 +26,7 @@
             <tr>
                 <td name= "itemID">{{row[0]}}</td>
                 <form action= "/cart/{{row[0]}}" method = "POST">
-                {% for d in row[1:4] %}
+                {% for d in row[1:5] %}
                 <td>{{d}}</td>
                 {% endfor %}
                 <td>
@@ -46,7 +46,7 @@
             {% endfor %}
         </tbody>
         </table>
-        <form action= "/cart/checkout/{{buyerID}}" method = "POST">
+        <form action= "/cart/checkout/{{buyerID}}/{{totalPrice}}" method = "POST">
           <div class="form-group" style="display: inline-flex; margin-right: 10%; float: right;">
             <h2 style="margin-right: 20px;" name="totalPrice">Total Price: ${{totalPrice}}</h2>
             <button id= "checkoutBtn" type ="submit" class ="btn btn-primary btn-block" style="width: fit-content; text-align: center;">
