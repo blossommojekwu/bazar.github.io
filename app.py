@@ -138,7 +138,7 @@ def forgotpw():
         msg.body = "Hello %s!\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: %s .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.", [first_name, password]
         mail.send(msg)
         flash("Password recovery successful. Check your email!")
-        return redirect(url_for("login"))
+        return "Sent"
     else:
         return render_template("forgotpw.html")
 
