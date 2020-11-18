@@ -463,13 +463,14 @@ def seller():
         cursor.execute('SELECT * FROM buyers WHERE userID = %s', [sellerID])
         user = cursor.fetchall()
         org = session["org"]
+        descr = session["descr"]
         # This is where the delete function is implemented
         if request.method == "POST":
             item_id = request.form["item_id"]
             cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
             mysql.connection.commit() # This commits the change to the actual mysql database
             return redirect(url_for("seller"))
-        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items, user=user[0], org=org)
+        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items, user=user[0], org=org, descr = descr)
     else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in as a seller")
         return redirect(url_for("home"))

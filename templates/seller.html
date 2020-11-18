@@ -12,6 +12,7 @@
 
 <center>
   <h1>{{org}}</h1>
+  <h3>{{descr}}</h3>
 </center>
 <table class="table">
   <thead>
@@ -72,6 +73,7 @@
   </table>
   <center>
   <a href="{{ url_for('additemspage')}}">List a New Item</a>
+  <center><a href="{{ url_for('updateorg')}}">Update my Organization Information</a></center>
   </center>
 </center>
 {% endblock %}
