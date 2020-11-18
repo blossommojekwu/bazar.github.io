@@ -1,26 +1,33 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %} Add Balance {% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+     {% for msg in messages %}
+       <p>{{msg}}</p>
+     {% endfor %}
+   {% endif %}
+ {% endwith %}
+
+<form action= "#" method = "POST">
     <head>
         <link rel="stylesheet" href="{{ url_for('static',filename='css/addreview.css')}}">
         <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
         <!-- Load icon library -->
 	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <title>Add Review Page</title>
     </head>
    
     <body>
-            {% with messages = get_flashed_messages() %}
-              {% if messages %}
-                {% for msg in messages %}
-                  <p>{{msg}}</p>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
+      <h1>Add a Review</h1>
+       <a href="{{ url_for('home')}}">Return to HomePage</a>  
+       <br>
+       <a href="{{ url_for('user')}}">Return to Account Page</a> 
             <div class="main">
               <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
-                <label for="itemID">ItemID</label>
-                <input type="text" id="itemID" name="itemID" placeholder = "(found in order confirmation)" size = "25" required>
+                <label for="item_id">ItemID</label>
+                <form action="#" method="POST">
+                <input type="text" id="item_id" name="item_id" placeholder = "(found in order confirmation)" size = "25" required>
+              </form>
               </div>
               <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
                 <label for="title">Subject</label>
@@ -43,4 +50,5 @@
             </div>
     
 </body>
-</html>
+</form>
+{% endblock %}

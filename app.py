@@ -432,24 +432,35 @@ def item(id):
 @app.route("/addreview")
 def addreview():
     if "user" in session: # Check if user is logged in
-       logvar = True # Update logvar boolean if so
-       # Retrieve session data
-       userID = session["userID"]
-       cursor = mysql.connection.cursor()
-       input_itemID = request.form["itemID"]
-       input_stars = request.form["stars"]
-       input_comments = request.form["body"]
-       timeFormat = '%Y-%m-%d %H:%M:%S'
-       currTime = datetime.datetime.now().strftime(timeFormat)
-       cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
-       mysql.connection.commit()
-       flash('Review successfully added!')
-       return redirect(url_for("item", id = input_itemID))
-    
+        logvar = True # Update logvar boolean if so
+        # Retrieve session data
+        userID = session["userID"]
+        return render_template("addreview.html", logvar = logvar)
     else: # If you somehow accessed this page and weren't logged in
-       flash("You are not logged in to add a review!")
-       return redirect(url_for("home"))
+        flash("You are not logged in to add a review!")
+        return redirect(url_for("home"))
+            
 
+@app.route('/addreview/<id>', methods = ["POST", "GET"])
+def updatereview(id):
+    if "user" in session:
+        if request.method == 'POST':
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            logvar = True
+            input_itemID = request.form["item_id"]
+            input_stars = request.form["stars"]
+            input_comments = request.form["body"]
+            timeFormat = '%Y-%m-%d %H:%M:%S'
+            currTime = datetime.datetime.now().strftime(timeFormat)
+            #ensure valid info
+            cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
+            mysql.connection.commit()
+            flash('Review successfully added!')
+            return redirect(url_for("addreview", id = input_itemID))
+    else: # If you somehow accessed this page and weren't logged in
+        flash("Incorrect Payment Information")
+        return redirect(url_for("home"))
+    
 @app.route("/seller", methods = ["POST","GET"])
 def seller():
     if "user" in session and session["seller"] == True: # Check if user is logged in
@@ -477,6 +488,7 @@ def seller():
         flash("You are not logged in as a seller")
         return redirect(url_for("home"))
 
+#UPDATE REVIEW
 
 @app.route("/addbalance")
 def addbalance():
@@ -494,6 +506,9 @@ def addbalance():
    else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add balance")
        return redirect(url_for("home"))
+
+
+
 
 @app.route("/purchasehistory")
 def purchasehistory():
