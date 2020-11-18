@@ -31,8 +31,10 @@
     <tbody>
         {% for row in searchr %}
         <tr>
-            {% for d in row %}
-            <td>{{d}}</td>
+          <td name= "itemID">{{row[0]}}</td>
+          <form action= "/item/{{row[0]}}" method = "POST">
+            {% for d in row[1:]%}
+              <td>{{d}}</td>
             {% endfor %}
         </tr>
         {% endfor %}

@@ -87,7 +87,7 @@ INNER JOIN items
 ON purchase.itemID = items.itemID;
 
 CREATE VIEW iteminformation AS
-SELECT Items.name, Items.price, Items.avg_rating, Items.description, Items.image, ItemInCategory.category, Sellers.organization
+SELECT Items.itemID, Items.name, Items.price, Items.avg_rating, Items.description, Items.image, ItemInCategory.category, Sellers.organization
 FROM Items, ItemInCategory, Sellers
 WHERE Items.itemID = ItemInCategory.itemID AND Items.sellerID = Sellers.userID;
 
