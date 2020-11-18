@@ -167,7 +167,7 @@ def forgotpw():
         cursor =  mysql.connection.cursor()
         cursor.execute('SELECT email FROM buyers WHERE email = %s',[recovery_email])
         if_email_exists = cursor.fetchone()
-        if(if_email_exists != recovery_email):
+        if(if_email_exists[0] != recovery_email):
             flash("Whoops! No account matches this email address.")
             return redirect(url_for("registration"))
         
