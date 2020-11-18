@@ -248,7 +248,7 @@ def registration():
            uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
            avatar_path = "{}/{}".format(UPLOAD_FOLDER, avatarID)
        else:
-           avatar_path = "{}/{}".format(UPLOAD_FOLDER, random.choice(DEFAULT_USER_AVATARS))
+           avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
 
        # Create User in Buyers
        # Buyers(userID, email, password, currentBalance, firstname, lastname, image)
