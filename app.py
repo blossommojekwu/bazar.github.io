@@ -67,14 +67,13 @@ def home():
     if "user" in session:
         logvar = True 
         first_name = session["first_name"]
-        if request.method == "POST": # If the method that is called in homepage.html is a post method
-            # Store Values from the form into searchinput variable
-            searchinput = request.form["search"]
-            # print(searchinput)
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-            cursor.execute('SELECT name, price, avg_rating, description, image FROM iteminformation WHERE %s LIKE name OR %s LIKE category OR %s LIKE organization', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
-            searchr = cursor.fetchall() # takes all of these instances into account
-            return render_template("searchresults.html", logvar = logvar, searchr = searchr)
+        # if request.method == "POST": # If the method that is called in homepage.html is a post method
+        #     # Store Values from the form into searchinput variable
+        #     searchinput = request.form["search"]
+        #     # print(searchinput)
+        #     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+        #     cursor.execute('SELECT name, price, avg_rating, description, image FROM iteminformation WHERE %s LIKE name OR %s LIKE category OR %s LIKE organization', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
+        #     searchr = cursor.fetchall() # takes all of these instances into account
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
@@ -435,7 +434,7 @@ def addreview():
         logvar = True # Update logvar boolean if so
         # Retrieve session data
         userID = session["userID"]
-        return render_template("addreview.html", logvar = logvar)
+        return render_template("addreview.html", logvar = logvar, userID = userID)
     else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in to add a review!")
         return redirect(url_for("home"))
@@ -447,6 +446,7 @@ def updatereview(id):
         if request.method == 'POST':
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             logvar = True
+            userID = id
             input_itemID = request.form["item_id"]
             input_stars = request.form["stars"]
             input_comments = request.form["body"]
@@ -456,9 +456,9 @@ def updatereview(id):
             cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
             mysql.connection.commit()
             flash('Review successfully added!')
-            return redirect(url_for("addreview", id = input_itemID))
+            return redirect(url_for("addreview"))
     else: # If you somehow accessed this page and weren't logged in
-        flash("Incorrect Payment Information")
+        flash("You are not logged in to add a review!")
         return redirect(url_for("home"))
     
 @app.route("/seller", methods = ["POST","GET"])
@@ -506,9 +506,6 @@ def addbalance():
    else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add balance")
        return redirect(url_for("home"))
-
-
-
 
 @app.route("/purchasehistory")
 def purchasehistory():

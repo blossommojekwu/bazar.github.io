@@ -9,12 +9,11 @@
    {% endif %}
  {% endwith %}
 
-<form action= "#" method = "POST">
+
     <head>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/addreview.css')}}">
         <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
         <!-- Load icon library -->
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
    
     <body>
@@ -22,13 +21,12 @@
        <a href="{{ url_for('home')}}">Return to HomePage</a>  
        <br>
        <a href="{{ url_for('user')}}">Return to Account Page</a> 
+       <form action="/addreview/{{userID}}" method="POST">
             <div class="main">
               <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
                 <label for="item_id">ItemID</label>
-                <form action="#" method="POST">
-                <input type="text" id="item_id" name="item_id" placeholder = "(found in order confirmation)" size = "25" required>
-              </form>
-              </div>
+                <input type="text" id="item_id" name="item_id" placeholder = "(found in order confirmation)" size = "30" required>
+
               <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
                 <label for="title">Subject</label>
                 <input type="text" id="title" name="title" placeholder = "Title" required>
@@ -43,12 +41,12 @@
               </div>
 
               <div class ="form-group" style="margin: 2%;">
-                <button type ="submit" class ="btn btn-primary btn-block">
-                  Submit Review
-                </button>
+                <input type ="submit" class ="btn btn-primary btn-block">
+                
               </div>
             </div>
+            </form>
     
 </body>
-</form>
+
 {% endblock %}
