@@ -574,18 +574,38 @@ def moditem(id):
             newprice = request.form['newprice']
             newcount = request.form['newcount']
             newdesc = request.form['newdesc']
-            #newimage= request.form['newimage']
+            
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
             # Handle avatar upload
             uploaded_file = request.files['newimage']
             filename = secure_filename(uploaded_file.filename)
-            if filename != '' and allowed_file(filename):
-                imageID = "{}.jpg".format(id)
-                item_image_path = "static/jpg/item_images/{}".format(imageID)
-                uploaded_file.save(os.path.join(item_image_path))
-            else:
-                item_image_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s, image = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, item_image_path, id])
+
+            if (len(filename) != 0) and allowed_file(filename):
+                # Handle avatar upload
+                cursor.execute('SELECT image FROM items WHERE itemID = %s',[id])
+                old_image = cursor.fetchone()
+                if(old_image):
+                    old_image = old_image[0]
+                    if old_image == "static/jpg/item_images/{}a.jpg".format(id):
+                        avatar_path = "static/jpg/item_images/{}b.jpg".format(id)
+                    else:
+                        avatar_path = "static/jpg/item_images/{}a.jpg".format(id)
+                    os.remove(os.path.join(old_image))
+                else:
+                    avatar_path = "static/jpg/item_images/{}.jpg".format(id)
+                uploaded_file.save(os.path.join(avatar_path))
+                cursor.execute('UPDATE items SET image = %s WHERE userID = %s',[avatar_path, id])
+                mysql.connection.commit()
+            elif (len(filename) != 0) and not allowed_file(filename):
+                flash('Only .jpg image formats are currently supported. Please upload a .jpg, instead.')
+                return redirect(url_for("/seller"))
+            elif (len(filename) == 0):
+                avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
+                cursor.execute('UPDATE items SET image = %s WHERE userID = %s',[avatar_path, id])
+                mysql.connection.commit()
+            
+            cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, id])
             flash('Item Updated Successfully')
             mysql.connection.commit()
             return redirect(url_for("seller"))
