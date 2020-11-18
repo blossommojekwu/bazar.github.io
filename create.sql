@@ -1,3 +1,5 @@
+
+-- Define Schemas for Database
 CREATE TABLE Buyers
 (userID INTEGER NOT NULL PRIMARY KEY,
 email VARCHAR(256) NOT NULL,
@@ -5,11 +7,13 @@ password VARCHAR(256) NOT NULL,
 currentBalance DECIMAL(10,2) NOT NULL,
 first_name VARCHAR(256) NOT NULL,
 last_name VARCHAR(256) NOT NULL,
-image VARCHAR(256)); -- Store reference to image or file name here; file names must be unique
+image VARCHAR(256)); -- Store file path here; file names are unique and are dependent on the userID
+		     -- Set to random default avatar if none input in registration
 
 CREATE TABLE Sellers
 (userID INTEGER NOT NULL PRIMARY KEY REFERENCES Buyers(userID),
-organization VARCHAR(256) NOT NULL, -- Organization/Store name displayed; 
+organization VARCHAR(256) NOT NULL, -- Organization/Store name displayed;
+				    -- Default set to user's name if none input;
 				    -- the user can set it to their own name, 
 				    -- but this is the name displayed on the seller page
 image VARCHAR(256), -- Optional, image for organization not for personal user profile
@@ -25,7 +29,7 @@ price DECIMAL(10,2) NOT NULL,
 avg_rating DECIMAL(10,2) NOT NULL,
 num INTEGER NOT NULL, -- Number of items available
 description VARCHAR(1250), -- Optional
-image VARCHAR(256)
+image VARCHAR(256) -- Optional
 CHECK (num>=0 AND avg_rating>=0 AND price>=0));
 
 CREATE TABLE Category
@@ -79,6 +83,8 @@ PRIMARY KEY(buyerID, sellerID),
 CHECK (numStars>=0)
 );
 
+
+-- SQL VIEWs for more complex database accesses
 -- Combine purchase and items
 CREATE VIEW itemhistory AS
 SELECT purchase.buyerID, purchase.itemID, items.name, items.price, purchase.num, purchase.dayTime, items.sellerID
@@ -147,6 +153,7 @@ INNER JOIN buyers
 ON transactionhistory.buyerID = buyers.userID;
 
 
+-- Triggers to Ensure Data Clarity
 
 delimiter //
 CREATE TRIGGER no_itempurchase_no_review BEFORE INSERT OR UPDATE ON ItemReview
@@ -275,4 +282,3 @@ delimiter;
 
 
 
--- TODO: Troubleshoot triggers (especially for updating top in category); there are definitely some errors in here
