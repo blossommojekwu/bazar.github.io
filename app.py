@@ -147,7 +147,7 @@ def login():
         return render_template("login.html")
 
 # DEBUG
-@app.route("/forgotpw")
+@app.route("/forgotpw", methods = ["POST","GET"])
 def forgotpw():
     if request.method == "POST":
         recovery_email = request.form["email"]
