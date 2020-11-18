@@ -234,18 +234,13 @@ def registration():
        print(maxID)
        userID = maxID["A"] + 1
 
-       # TODO: Handle avatar upload
+       # Handle avatar upload
        uploaded_file = request.files['avatar']
        filename = secure_filename(uploaded_file.filename)
        if filename != '' and allowed_file(filename):
-           # file_ext = os.path.splitext(filename)[1]
-           # if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-           #    abort(400)
-           # Save file name as user id
            avatarID = "{}.jpg".format(userID)
            avatar_path = "static/jpg/avatars/{}".format(avatarID)
            uploaded_file.save(os.path.join(avatar_path))
-           # uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
        else:
            avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
 
@@ -596,7 +591,7 @@ def updateuser():
     cursor.execute('SELECT * FROM buyers WHERE userID = %s',[userID])
     userdata = cursor.fetchone()
     cursor.close()
-    return render_template("modifyuser.html", first_name = userdata[4], last_name = userdata[5], email = userdata[1])
+    return render_template("modifyuser.html", first_name = userdata[4], last_name = userdata[5], email = userdata[1], image_path = userdata[6])
 
 @app.route('/modifymydata', methods = ["POST","GET"])
 def moduser():
@@ -610,8 +605,9 @@ def moduser():
             newlast = request.form['newlast']
             newemail = request.form['newemail']
             newpass = request.form['newpass']
-            newimage = request.files['newimage']
-            filename = secure_filename(newimage.filename)
+            uploaded_file = request.files['newimage']
+            filename = secure_filename(uploaded_file.filename)
+            
             if (len(newfirst) == 0) and (len(newlast) == 0) and (len(newemail) == 0) and (len(newpass)==0) and (len(filename)==0):
                 flash('You did not change any of your user information.')
                 return redirect(url_for("user"))
@@ -631,8 +627,12 @@ def moduser():
                 cursor.execute('UPDATE buyers SET password = %s WHERE userID = %s',[newpass, userID])
                 session["password"] = newpass
                 mysql.connection.commit()
-            if len(filename) != 0:
-                cursor.execute('UPDATE buyers SET image = %s WHERE userID = %s',[newimage, userID])
+            if (len(filename) != 0) and allowed_file(filename):
+                # Handle avatar upload
+                avatarID = "{}.jpg".format(userID)
+                avatar_path = "static/jpg/avatars/{}".format(avatarID)
+                uploaded_file.save(os.path.join(avatar_path))
+                cursor.execute('UPDATE buyers SET image = %s WHERE userID = %s',[avatar_path, userID])
                 mysql.connection.commit()
             flash('You have successfully updated your user information!')
             return redirect(url_for("user"))
