@@ -179,7 +179,7 @@ def logout():
     return redirect(url_for("home"))
 
 
-# UNFINISHED; GET & DISPLAY ALL USER DATA
+# DEBUG PROFILE PICTURE DISPLAY; MODIFY DATA
 @app.route("/user", methods = ["POST", "GET"])
 def user():
    if "user" in session:
@@ -238,7 +238,7 @@ def registration():
        userID = maxID["A"] + 1
 
        # Handle avatar upload
-       uploaded_file = request.files['avatar']
+       uploaded_file = request.files['file']
        filename = secure_filename(uploaded_file.filename)
        if filename != '':
            file_ext = os.path.splitext(filename)[1]
