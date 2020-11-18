@@ -244,7 +244,7 @@ def registration():
            # Save file name as user id
            avatarID = "{}.jpg".format(userID)
            avatar_path = "static/jpg/avatars/{}".format(avatarID)
-           uploaded_file.save(avatar_path)
+           uploaded_file.save(os.path.join(avatar_path))
            # uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
        else:
            avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
