@@ -387,11 +387,11 @@ def checkSuccess(id, price):
                     cursor.execute('UPDATE items SET num = %s WHERE itemID = %s', [newCount, itemID])
                     mysql.connection.commit()
                     #increase individual seller balance
-                    #cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [sellerID])
-                    #sellerBalance = cursor.fetchone()['currentBalance']
-                    #newSellerBalance = sellerBalance + (num*price)
-                    #cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newSellerBalance, sellerID])
-                    #mysql.connection.commit()
+                    cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [sellerID])
+                    sellerBalance = cursor.fetchone()['currentBalance']
+                    newSellerBalance = sellerBalance + (num*price)
+                    cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newSellerBalance, sellerID])
+                    mysql.connection.commit()
                 flash("Thank you for shopping at BAZAR!")
                 return redirect(url_for("cart"))
             else: #if insufficient funds
@@ -486,7 +486,7 @@ def purchasehistory():
        buyerID = session["userID"]
        # Open a cursor and get items purchased from user in purchases
        cursor = mysql.connection.cursor()
-       cursor.execute('SELECT * FROM itemPurchase WHERE buyerID = %s', [buyerID])
+       cursor.execute('SELECT * FROM itemhistory WHERE buyerID = %s', [buyerID])
        itemsPurchased = cursor.fetchall()
        return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
    else: # If you somehow accessed this page and weren't logged in
@@ -582,8 +582,6 @@ def additemspage():
     else:
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
-
-
 
 
 @app.route('/additems', methods = ['POST','GET'])

@@ -82,7 +82,7 @@ INNER JOIN items
 ON purchase.itemID = items.itemID;
 
 
-CREATE VIEW itemPurchase AS
+CREATE VIEW itemPurchases AS
 SELECT itemhistory.buyerID, itemhistory.itemID, itemhistory.name, itemhistory.price, itemhistory.num, itemhistory.dayTime, sellers.organization, itemhistory.sellerID
 FROM itemhistory
 INNER JOIN sellers
