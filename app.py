@@ -639,6 +639,11 @@ def moduser():
                 mysql.connection.commit()
             if (len(filename) != 0) and allowed_file(filename):
                 # Handle avatar upload
+                cursor.execute('SELECT image FROM buyers WHERE userID = %s',[userID])
+                old_image = cursor.fetchone()
+                if(old_image):
+                    old_image = old_image[0]
+                    os.remove(os.path.join(old_image))
                 avatarID = "{}.jpg".format(userID)
                 avatar_path = "static/jpg/avatars/{}".format(avatarID)
                 uploaded_file.save(os.path.join(avatar_path))
