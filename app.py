@@ -154,7 +154,6 @@ def forgotpw():
 
         # Access User's Info in DB
         cursor =  mysql.connection.cursor()
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM buyers WHERE email = %s', [recovery_email])
         user_info = cursor.fetchone()
 
