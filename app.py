@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
 from flask_mail import Mail, Message # NOTE: YOU HAVE TO INSTALL FLASK-MAIL: pip install flask-mail
+from werkzeug.utils import secure_filename
 from datetime import timedelta 
 from flask_mysqldb import MySQL
 from decimal import Decimal
@@ -8,6 +9,8 @@ import re
 import yaml
 import time
 import datetime
+import os
+import random
 #from flask_sqlalchemy import sqlalchemy
 
 # Substantiate flaskapp
@@ -49,6 +52,13 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_MAX_EMAILS'] = 1
 app.config['MAIL_DEFAULT_SENDER'] = 'BazarCustomerService@gmail.com'
 mail = Mail(app)
+
+# Set-up for image uploads
+UPLOAD_FOLDER = 'static/jpg/avatars'
+ALLOWED_EXTENSIONS = {'jpg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+def allowed_file(filename): return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+DEFAULT_USER_AVATARS = ["apple.jpg", "cat.jpg", "chicken.jpg", "dog.jpg", "duck.jpg", "primrose.jpg"]
 
 # Home page, renders homepage.html
 @app.route("/", methods = ["POST","GET"])
@@ -189,7 +199,7 @@ def user():
        return redirect(url_for("login"))
 
 
-# UNFINISHED; REGISTER NEW USER
+# UNFINISHED; ALLOW IMAGE UPLOAD -> UNTESTED SO MIGHT BREAK THIS PAGE
 @app.route("/registration", methods = ["POST", "GET"])
 def registration():
    if "user" in session:
@@ -225,11 +235,25 @@ def registration():
        if(maxID == None): maxID = 0
        print(maxID)
        userID = maxID["A"] + 1
- 
+
+       # Handle avatar upload
+       uploaded_file = request.files['avatar']
+       filename = secure_filename(uploaded_file.filename)
+       if filename != '':
+           file_ext = os.path.splitext(filename)[1]
+           if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+               abort(400)
+           # Save file name as user id
+           avatarID = "{}{}".format(session[userID], ".jpg")
+           uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
+           avatar_path = "{}/{}".format(UPLOAD_FOLDER, avatarID)
+       else:
+           avatar_path = "{}/{}".format(UPLOAD_FOLDER, random.choice(DEFAULT_USER_AVATARS))
+
        # Create User in Buyers
        # Buyers(userID, email, password, currentBalance, firstname, lastname, image)
-           # TODO: FIGURE OUT IMAGE SITUATION
-       cursor.execute('INSERT INTO Buyers VALUES(%s, %s, %s, %s, %s, %s, %s)',[userID, email, password, 0.00, first, last, None])
+       # TODO: FIGURE OUT IMAGE SITUATION
+       cursor.execute('INSERT INTO Buyers VALUES(%s, %s, %s, %s, %s, %s, %s)',[userID, email, password, 0.00, first, last, avatar_path])
        mysql.connection.commit()
  
        # INSERT INTO table(column1, column2,...) VALUES (value1, value2,...);
