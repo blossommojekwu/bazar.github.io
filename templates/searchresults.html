@@ -31,13 +31,12 @@
     </thead>
     <tbody>
 
-      name, price, avg_rating, description, image
         {% for row in searchr %}
         <tr>
             {% for d in row %}
             <td>{{d}}</td>
             {% endfor %}
-            </tr>
+        </tr>
         {% endfor %}
     </tbody>
     </table>
