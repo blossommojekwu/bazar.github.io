@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
-# from flask_mail import Mail, Message # YOU HAVE TO INSTALL FLASK-MAIL: pip install flask-mail
+from flask_mail import Mail, Message # YOU HAVE TO INSTALL FLASK-MAIL: pip install flask-mail
 from werkzeug.utils import secure_filename
 from datetime import timedelta 
 from flask_mysqldb import MySQL
@@ -72,7 +72,7 @@ def home():
             searchinput = request.form["search"]
             # print(searchinput)
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-            cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Seller WHERE Items.name LIKE %s OR Category.name like %s OR Sellers.organization like %s', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
+            cursor.execute('SELECT name, price, avg_rating, description, image FROM itemInformation WHERE name LIKE %s OR category LIKE %s OR organization LIKE %s', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
             searchr = cursor.fetchall() # takes all of these instances into account
             print(searchr)
             # return render_template("searchresults.html", logvar = logvar, name = searchr[0], price = searchr[1], avg_rating = searchr[2], image = searchr[3], description = searchr[4], searchr = searchr)

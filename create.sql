@@ -87,6 +87,12 @@ FROM purchase
 INNER JOIN items
 ON purchase.itemID = items.itemID;
 
+CREATE VIEW itemInformation AS
+SELECT items.name, items.price, items.avg_rating, items.description, items.image, itemInCategory.category, Sellers.organization
+FROM ItemInCategory, Items
+INNER JOIN Sellers
+ON ItemInCategory.itemID = Items.itemID AND Items.sellerID = Sellers.userID;
+
 
 CREATE VIEW itemPurchases AS
 SELECT itemhistory.buyerID, itemhistory.itemID, itemhistory.name, itemhistory.price, itemhistory.num, itemhistory.dayTime, sellers.organization, itemhistory.sellerID
