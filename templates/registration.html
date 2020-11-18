@@ -1,83 +1,65 @@
 <html>
- <!-- NEED TO MAKE CSS FOR THIS PAGE
- <head>
-   <link rel="stylesheet" href="{{ url_for('static',filename='css/login.css')}}">
-   <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
-   <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-   <title>Sign in</title>
- </head>
- -->
- 
- <body>
-{% extends "base.html" %}
-{% block title%}User Page{% endblock %}
-{% block content %}
-{% with messages = get_flashed_messages() %}
-   {% if messages %}
-     {% for msg in messages %}
-       <p>{{msg}}</p>
-     {% endfor %}
-   {% endif %}
- {% endwith %}
-  <h1>Create Account</h1>
-  <a href="{{ url_for('home')}}">Return to HomePage</a>
- <br>
- <a href="{{ url_for('login')}}">Return to login</a>
- 
- <!-- Still need to figure out how to create new userID (increment largest existing one)-->
- <!-- Initialize:
-       email (required),
-       password (required),
-       first_name (required),
-       last_name (required),
-       image? -> Working on this part still
- 
-       To be initialized in flask instead:
-       userID (generated in flask as +1 from largest current userID),
-       currentBalance=0.00
-   -->
- 
- <form method="POST">
-   <label for="first_name">First Name</label>
-   <input type="text" name="first_name" id="first_name" required>
-   <label for="last_name">Last Name</label>
-   <input type="text" name="last_name" id="last_name" required>
-   <label for="email">Email Address</label>
-   <input type="email" name="email" id="email" required>
-   <br>
-   <input type="checkbox" name="sellercheck" id="sellercheck" value="true">
-   <label for="sellercheck">I would like to be a Seller, in addition to being a Buyer.</label>
-   <br>
- 
-   <label for="org_name">Organization Name (for Sellers)</label>
-   <input type="text" name="org_name" id="org_name">
-   <label for="description">Description (for Sellers)</label>
-   <input type="text" name="description" id="description">
- 
-   <label for="password">Password</label>
-   <input type="password" name="password" id="password" required>
-   <label for="confirmedpw">Confirm Password</label>
-   <input type="password" name="confirmedpw" id="confirmedpw" required>
-   <br>
-   <input type="checkbox" onclick="ShowPW()">Show Password
-   <br>
- 
-   <script>
-   function ShowPW() {
-     var x = document.getElementById("password");
-     if (x.type === "password") {x.type = "text";}
-     else {x.type = "password";}
-     var y = document.getElementById("confirmedpw");
-     if (y.type === "password") {y.type = "text";}
-     else {y.type = "password";}
-   }
-   </script>
- 
-   <input type="submit" value="Register">
- </form>
- 
- {% endblock %}
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/login.css')}}">
+  <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <title>Register as a New User</title>
+</head>
+
+<body>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <div class="main">
+    <p class="sign" align="left">Create an Account</p>
+    <form class="form1" action='#' method="post">
+      <label for="first_name">First Name</label>
+      <input class="user" type="text" align="center" name ="first_name" placeholder="First Name" required>
+      <label for="last_name">Last Name</label>
+      <input class="user" type="text" align="center" name ="last_name" placeholder="Last Name" required>
+      <label for="email">Email Address</label>
+      <input class="user" type="email" align="center" name ="email" placeholder="Email Address" required>
+
+      <input class="user" type="checkbox" align="center" name ="sellercheck" id="sellercheck" value="true">
+      <label for="sellercheck">I would like to be a Seller, in addition to being a Buyer.</label>
+
+      <p class="sign" align="left">For sellers only, optional</p>
+      <label for="org_name">Organization Name</label>
+      <input class="user" type="text" align="center" name ="org_name" id="org_name" placeholder="Organization Name">
+      <label for="description">Organization Description</label>
+      <input class="user" type="text" align="center" name="description" id="description" placeholder="Organization Description">
+
+      <p class="sign" align="left">Please choose a password</p>
+      <label for="password">Password</label>
+      <input class="pass" type="password" align="center" name ="password" placeholder="Password" required>
+      <label for="confirmedpw">Confirm Password</label>
+      <input class="pass" type="password" align="center" name ="confirmedpw" placeholder="Confirm Password" required>
+      <input class="pass" type="checkbox" align="center" onclick="ShowPW()">Show Password
+      
+      <script>
+        function ShowPW() {
+          var x = document.getElementById("password");
+          if (x.type === "password") {x.type = "text";}
+          else {x.type = "password";}
+          var y = document.getElementById("confirmedpw");
+          if (y.type === "password") {y.type = "text";}
+          else {y.type = "password";}
+        }
+        </script>
+
+      <p align="center"><input type="submit" value="Register!"/> </p>
+      
+      <p align="center"><a href="{{ url_for('login')}}">Log in</a>	</p>
+      <p align="center"><a href="{{ url_for('home')}}">Return Home</a>	</p>
+      
+    </form>     
+    </div>
+    <br>
 </body>
- 
 </html>
