@@ -407,7 +407,7 @@ def checkSuccess(id, price):
         return redirect(url_for("home"))
 
 
-@app.route("/item/<id>")
+@app.route("/item/<id>", methods = ["POST","GET"])
 def item(id):
     if "user" in session: # Check if user is logged in
         logvar = True # Update logvar boolean if so
@@ -415,6 +415,13 @@ def item(id):
         first_name = session["first_name"] 
         sellerID = session["userID"]
         seller = session["seller"]
+        if request.method == "POST":
+            num = request.form['num']
+            userID = session["userID"]
+            cursor = mysql.connection.cursor()
+            cursor.execute("INSERT INTO cart VALUES (%s,%s,%s)",[userID,id,num])
+            print(num)
+
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM items WHERE itemID = %s",[id])
     items = cursor.fetchall()
