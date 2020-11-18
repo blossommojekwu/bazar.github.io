@@ -444,9 +444,25 @@ def addreview():
        currTime = datetime.datetime.now().strftime(timeFormat)
        cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
        mysql.connection.commit()
-       return render_template("addreview.html", logvar = logvar, userID = myReview[0], itemID = myReview[1], input_stars = myReview[2], input_comments = myReview[3], myReview = myReview)
+       flash('Review successfully added!')
+       return redirect(url_for("homepage"))
     else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add a review!")
+       return redirect(url_for("home"))
+
+@app.route("/viewreviews")
+def viewreviews():
+    if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
+       userID = session["userID"]
+       cursor = mysql.connection.cursor()
+       input_itemID = request.form["itemID"]
+       cursor.execute('SELECT * FROM ItemReview WHERE itemID = %s', [input_itemID])
+       reviews = cursor.fetchall()
+       return render_template("viewreviews.html", logvar = logvar, reviews = reviews)
+    else: # If you somehow accessed this page and weren't logged in
+       flash("You are not logged in to view reviews!")
        return redirect(url_for("home"))
 
 @app.route("/seller", methods = ["POST","GET"])
@@ -507,7 +523,7 @@ def purchasehistory():
        itemsPurchased = cursor.fetchall()
        return render_template("purchasehistory.html", logvar = logvar, buyerID = buyerID, first_name = first_name, itemsPurchased = itemsPurchased)
    else: # If you somehow accessed this page and weren't logged in
-      flash("You are not logged in to add balance")
+      flash("You are not logged in to view purchase history")
       return redirect(url_for("home"))
  
 # Get Item Details

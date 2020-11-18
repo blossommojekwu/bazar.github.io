@@ -9,14 +9,7 @@
         <title>Add Review Page</title>
     </head>
    
-    <body style="background-color: #2C3B4E;">
-        <h1 style="color: white;">Add A Review</h1>
-        <a href="{{ url_for('home')}}">Return to Homepage</a>	
-        <br>
-        <a href="{{ url_for('user')}}">Return to Account Page</a>	
-
-        <h3 style="border: 2px solid orange; border-radius: 5px; height: 80%; width: 75%;">
-        </h3>
+    <body>
             {% with messages = get_flashed_messages() %}
               {% if messages %}
                 {% for msg in messages %}
@@ -32,7 +25,11 @@
                 <input class="body" type="text" align="center" name ="body" placeholder="Type your review...">
                 <label for="title">Star Rating</label>
                 <input class="title" type="number" align="center" name ="stars" placeholder="Stars" min="0" max="5">
-                <input type="submit" value="Submit"> 
+                <form class="search" action="#" method = "POST">
+                  <input class= "searchinput" type="text" placeholder="Search via ItemID (from order confirmation email)" name="search">
+                  <button type="submit"><i class="fa fa-search"></i></button>
+                </form> 
             </div>
-    </body>
+    
+</body>
 </html>
