@@ -82,20 +82,6 @@ INNER JOIN items
 ON purchase.itemID = items.itemID;
 
 
-CREATE VIEW itemInformation AS
-SELECT items.name, items.rating, items.name, items.price, items.num, purchase.dayTime, items.sellerID
-FROM ItemInCategory, Items
-INNER JOIN Sellers
-ON ItemInCategory.itemID = items.itemID AND Items.sellerID = Sellers.userID ;
-
-name VARCHAR(256) NOT NULL,
-price DECIMAL(10,2) NOT NULL,
-avg_rating DECIMAL(10,2) NOT NULL,
-num INTEGER NOT NULL, -- Number of items available
-description VARCHAR(1250), -- Optional
-image VARCHAR(256));
-
-
 CREATE VIEW itemPurchase AS
 SELECT itemhistory.buyerID, itemhistory.itemID, itemhistory.name, itemhistory.price, itemhistory.num, itemhistory.dayTime, sellers.organization, itemhistory.sellerID
 FROM itemhistory
