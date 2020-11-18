@@ -345,9 +345,9 @@ def modQuantity(id):
 
 # Checkout Ability unsuccesful:
 # - if insufficient funds --> Flash "Insufficient Funds"
-# - if seller no longer has enough supply, “Insufficient number of copies of item: 
+# - if seller no longer has enough supply, "Insufficient number of copies of item: 
 # (current quantity of that item) items remaining. 
-# Please remove item from cart or reduce item quantity”
+# Please remove item from cart or reduce item quantity"
 @app.route('/cart/checkout/<id>/<price>', methods = ["POST", "GET"])
 def checkSuccess(id, price):
     if "user" in session:
