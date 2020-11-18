@@ -1,56 +1,47 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static',filename='css/item.css')}}">
-        <link href="https://fonts.googleapis.com/css?family=Arial" rel="stylesheet">
-        <!-- Load icon library -->
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <title>Item Page</title>
-    </head>
-    {% extends "base.html" %}
-    <body style="background-color: #2C3B4E;">
-        <h1 style="color: white;">Item Page</h1>
-        <h3 style="border: 2px solid orange; border-radius: 5px; height: 80%; width: 75%;">
-        </h3>
-            {% with messages = get_flashed_messages() %}
-              {% if messages %}
-                {% for msg in messages %}
-                  <p>{{msg}}</p>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
-<h1>Item page</h1>
-
-<center>
-  <h1>{{item}}</h1>
-</center>
+{% extends "base.html" %}
+{% block title %} Items Page {% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for msg in messages %}
+        <p>{{msg}}</p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+            
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Item</th>
-      <th scope="col">Category</th>
-      <th scope="col">Item Description</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Item Price</th>
+      <th scope="col">Average Rating</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Description</th>
       <th scope="col">Image</th>
-      <th scope="col">Average Star Rating</th>
-      <th scope="col">Seller Information</th>
-      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>{{user[4]}}</td>
-      <td>{{user[5]}}</td>
-      <td>{{user[1]}}</td>
-      <td>{{user[3]}}</td>
-      <td>{{user[6]}}</td> 
+      <td>{{item.itemID}}</td>
+      <td>{{item.price}}</td>
+      <td>{{item.avg_rating}}</td>
+      <td>{{item.num}}</td>
+      <td>{{item.description}}</td> 
+      <td>{{item.image}}</td>
     </tr>
   </tbody>
 </table>
 
-<a href="{{ url_for('home')}}">Return to HomePage</a>	
-<br>
-<a href="{{ url_for('cart')}}">cart</a>	
-<br>
-<a href="{{ url_for('addreview')}}">Add review for this item</a>
-</html>	
+<center>
+{% if logvar == True %}
+
+<form action="#">
+<button type="submit"  value="Submit">Add to Cart</button>
+</form>
+
+{% endif %}
+
+
+</center>
+
+{% endblock %}

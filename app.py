@@ -143,7 +143,7 @@ def login():
                 session["org"] = seller['organization']
             else:
                 session["seller"] = False
-            flash("Login Succesful!") # Flash a message that says login succesful 
+            flash("Login Successful!") # Flash a message that says login succesful 
             return redirect(url_for("home")) # Redirects to home page
         else: # If login is unsuccesful
             # Redirects to login page and flashes a message that login was incorrect
@@ -402,32 +402,19 @@ def checkSuccess(id, price):
         return redirect(url_for("home"))
 
 
-@app.route("/item")
-def item():
+@app.route("/item/<id>")
+def item(id):
     if "user" in session: # Check if user is logged in
         logvar = True # Update logvar boolean if so
         # Retrieve session data
         first_name = session["first_name"] 
         sellerID = session["userID"]
         seller = session["seller"]
-        # Open a cursor and get all items sold for a seller
-        cursor = mysql.connection.cursor()
-        cursor.execute('SELECT itemID, name, price, num, image FROM items WHERE sellerID = %s', [sellerID])
-        items = cursor.fetchall()
-        cursor.execute('SELECT * FROM buyers WHERE userID = %s', [sellerID])
-        user = cursor.fetchall()
-        org = session['org']
-        # This is where the delete function is implemented
-        if request.method == "POST":
-            item_id = request.form["item_id"]
-            cursor.execute('DELETE FROM items WHERE itemID = %s',(item_id,))
-            mysql.connection.commit() # This commits the change to the actual mysql database
-            return redirect(url_for("seller"))
-        return render_template("seller.html", logvar = logvar, first_name = first_name, seller = seller, items = items, user=user[0], org=org)
-    else: # If you somehow accessed this page and weren't logged in
-        flash("You are not logged in as a seller")
-        return redirect(url_for("home"))
-    return render_template("item.html")
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM items WHERE itemID = %s",[id])
+    items = cursor.fetchall()
+    item = items[0]
+    return render_template("item.html",logvar = logvar, first_name = first_name,item = item)
 
 @app.route("/addreview")
 def addreview():

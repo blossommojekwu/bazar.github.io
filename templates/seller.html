@@ -55,7 +55,8 @@
     <tbody>
     {% for row in items%}
       <tr>
-        {% for d in row[1:5] %}
+        <td><a href="item/{{row[0]}}">{{row[1]}}</a></td>
+        {% for d in row[2:5] %}
         <td>{{d}}</td>
         {% endfor %}
         <td>
