@@ -584,9 +584,10 @@ def moditem(id):
             if (len(filename) != 0) and allowed_file(filename):
                 # Handle avatar upload
                 cursor.execute('SELECT image FROM items WHERE itemID = %s',[id])
-                old_image = cursor.fetchone()
-                if(old_image):
-                    old_image = old_image[0]
+                dict_image = cursor.fetchone()
+                
+                if(dict_image):
+                    old_image = dict_image["image"]
                     if old_image == "static/jpg/item_images/{}a.jpg".format(id):
                         avatar_path = "static/jpg/item_images/{}b.jpg".format(id)
                     else:
@@ -595,14 +596,14 @@ def moditem(id):
                 else:
                     avatar_path = "static/jpg/item_images/{}.jpg".format(id)
                 uploaded_file.save(os.path.join(avatar_path))
-                cursor.execute('UPDATE items SET image = %s WHERE userID = %s',[avatar_path, id])
+                cursor.execute('UPDATE items SET image = %s WHERE itemID = %s',[avatar_path, id])
                 mysql.connection.commit()
             elif (len(filename) != 0) and not allowed_file(filename):
                 flash('Only .jpg image formats are currently supported. Please upload a .jpg, instead.')
                 return redirect(url_for("/seller"))
             elif (len(filename) == 0):
                 avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
-                cursor.execute('UPDATE items SET image = %s WHERE userID = %s',[avatar_path, id])
+                cursor.execute('UPDATE items SET image = %s WHERE itemID = %s',[avatar_path, id])
                 mysql.connection.commit()
             
             cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, id])
