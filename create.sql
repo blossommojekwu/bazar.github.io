@@ -30,7 +30,8 @@ avg_rating DECIMAL(10,2) NOT NULL,
 num INTEGER NOT NULL, -- Number of items available
 description VARCHAR(1250), -- Optional
 image VARCHAR(256) -- Optional
-CHECK (num>=0 AND avg_rating>=0 AND price>=0));
+);
+-- CHECK (items.num>=0 AND items.avg_rating>=0 AND items.price>=0));
 
 CREATE TABLE Category
 (name VARCHAR(256) NOT NULL PRIMARY KEY,
