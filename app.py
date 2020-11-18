@@ -239,7 +239,7 @@ def registration():
        userID = maxID["A"] + 1
 
        # Handle avatar upload
-       uploaded_file = request.files["avatar"]
+       uploaded_file = request.files['avatar']
        filename = secure_filename(uploaded_file.filename)
        if filename != '':
            file_ext = os.path.splitext(filename)[1]
