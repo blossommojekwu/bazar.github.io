@@ -18,17 +18,28 @@
               {% endif %}
             {% endwith %}
             <div class="main">
-                <input class="title" type="number" align="center" name ="itemID" placeholder="Item ID">
-                <label for="title">Title</label>
-                <input class="title" type="text" align="center" name ="tit">
+              <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
+                <label for="itemID">ItemID</label>
+                <input type="text" id="itemID" name="itemID" placeholder = "(found in order confirmation)" size = "25" required>
+              </div>
+              <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
+                <label for="title">Subject</label>
+                <input type="text" id="title" name="title" placeholder = "Title" required>
+                <label for="stars">Star Rating</label>
+                <input type="number" id="stars" name = "stars" min="0" max="5" required>
+              </div>
+
+              <div class="col-50" style="margin-bottom: 1%; margin-top: 1%;">
                 <label for="body">Body</label>
-                <input class="body" type="text" align="center" name ="body" placeholder="Type your review...">
-                <label for="title">Star Rating</label>
-                <input class="title" type="number" align="center" name ="stars" placeholder="Stars" min="0" max="5">
-                <form class="search" action="#" method = "POST">
-                  <input class= "searchinput" type="text" placeholder="Search via ItemID (from order confirmation email)" name="search">
-                  <button type="submit"><i class="fa fa-search"></i></button>
-                </form> 
+                <br>
+                <input type="text" id="body" name="body" placeholder = "Type your review..." style="height:300px;width:400px" required>
+              </div>
+
+              <div class ="form-group" style="margin: 2%;">
+                <button type ="submit" class ="btn btn-primary btn-block">
+                  Submit Review
+                </button>
+              </div>
             </div>
     
 </body>
