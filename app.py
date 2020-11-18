@@ -615,15 +615,19 @@ def moduser():
                 return redirect(url_for("user"))
             if len(newfirst) != 0:
                 cursor.execute('UPDATE buyers SET first_name = %s WHERE userID = %s',[newfirst, userID])
+                session["first_name"] = newfirst
                 mysql.connection.commit()
             if len(newlast) != 0:
                 cursor.execute('UPDATE buyers SET last_name = %s WHERE userID = %s',[newlast, userID])
+                session["last_name"] = newlast
                 mysql.connection.commit()
             if len(newemail) != 0:
                 cursor.execute('UPDATE buyers SET email = %s WHERE userID = %s',[newemail, userID])
+                session["user"] = newemail
                 mysql.connection.commit()
             if len(newpass) != 0:
                 cursor.execute('UPDATE buyers SET password = %s WHERE userID = %s',[newpass, userID])
+                session["password"] = newpass
                 mysql.connection.commit()
             if len(filename) != 0:
                 cursor.execute('UPDATE buyers SET image = %s WHERE userID = %s',[newimage, userID])
