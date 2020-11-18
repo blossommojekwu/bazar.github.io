@@ -67,17 +67,19 @@ def home():
     if "user" in session:
         logvar = True 
         first_name = session["first_name"]
-        # if request.method == "POST": # If the method that is called in homepage.html is a post method
-        #     # Store Values from the form into searchinput variable
-        #     searchinput = request.form["search"]
-        #     # print(searchinput)
-        #     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-        #     cursor.execute('SELECT name, price, avg_rating, description, image FROM iteminformation WHERE %s LIKE name OR %s LIKE category OR %s LIKE organization', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
-        #     searchr = cursor.fetchall() # takes all of these instances into account
-        return render_template("homepage.html", logvar = logvar, first_name = first_name)
+        if request.method == "POST": # If the method that is called in homepage.html is a post method
+            # Store Values from the form into searchinput variable
+            searchinput = request.form["searchinput"]
+            print(searchinput)
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+            cursor.execute('SELECT itemID, name, price, avg_rating, description, image FROM iteminformation WHERE %s LIKE name OR %s LIKE category OR %s LIKE organization', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
+            searchr = cursor.fetchall() # takes all of these instances into account
+            print(searchr)
+        return render_template("homepage.html", logvar = logvar, first_name = first_name, searchr = searchr)
     else:
         logvar = False
         return render_template("homepage.html", logvar = logvar)
+
 
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
 
