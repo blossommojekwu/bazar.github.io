@@ -633,9 +633,13 @@ def moduser():
                 old_image = cursor.fetchone()
                 if(old_image):
                     old_image = old_image[0]
+                    if old_image == "static/jpg/avatars/{}a.jpg".format(userID):
+                        avatar_path = "static/jpg/avatars/{}b.jpg".format(userID)
+                    else:
+                        avatar_path = "static/jpg/avatars/{}a.jpg".format(userID)
                     os.remove(os.path.join(old_image))
-                avatarID = "{}.jpg".format(userID)
-                avatar_path = "static/jpg/avatars/{}".format(avatarID)
+                else:
+                    avatar_path = "static/jpg/avatars/{}.jpg".format(userID)
                 uploaded_file.save(os.path.join(avatar_path))
                 cursor.execute('UPDATE buyers SET image = %s WHERE userID = %s',[avatar_path, userID])
                 mysql.connection.commit()
