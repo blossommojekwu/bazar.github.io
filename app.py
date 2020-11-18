@@ -54,7 +54,7 @@ app.config['MAIL_DEFAULT_SENDER'] = 'BazarCustomerService@gmail.com'
 mail = Mail(app)
 
 # Set-up for image uploads
-UPLOAD_FOLDER = 'static/jpg/avatars'
+UPLOAD_FOLDER = 'static/jpg/avatars/'
 ALLOWED_EXTENSIONS = {'jpg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_EXTENSIONS'] = ALLOWED_EXTENSIONS
@@ -255,14 +255,15 @@ def registration():
        # TODO: Handle avatar upload
        uploaded_file = request.files['avatar']
        filename = secure_filename(uploaded_file.filename)
-       if filename != '':
-           file_ext = os.path.splitext(filename)[1]
-           if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-               abort(400)
+       if filename != '' and allowed_file(filename):
+           # file_ext = os.path.splitext(filename)[1]
+           # if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+           #    abort(400)
            # Save file name as user id
-           avatarID = "{}{}".format(session[userID], ".jpg")
-           uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
-           avatar_path = "{}/{}".format(UPLOAD_FOLDER, avatarID)
+           avatarID = "{}.jpg".format(session[userID])
+           avatar_path = "static/jpg/avatars/{}".format(avatarID)
+           uploaded_file.save(avatar_path)
+           # uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], avatarID))
        else:
            avatar_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
 
