@@ -120,6 +120,7 @@ def login():
             session["userID"] = userID[0]
             session["user"] = user
             session["password"] = password
+        
 
             # Check seller table to see if buyer/user is also a seller
             userID = session["userID"]
@@ -130,6 +131,7 @@ def login():
             # Set session seller status to corresponding boolean 
             if seller:
                 session["seller"] = True
+                session["org"] = seller['organization']
             else:
                 session["seller"] = False
             flash("Login Succesful!") # Flash a message that says login succesful 
@@ -451,7 +453,7 @@ def seller():
         items = cursor.fetchall()
         cursor.execute('SELECT * FROM buyers WHERE userID = %s', [sellerID])
         user = cursor.fetchall()
-        org = session['org']
+        org = session["org"]
         # This is where the delete function is implemented
         if request.method == "POST":
             item_id = request.form["item_id"]
