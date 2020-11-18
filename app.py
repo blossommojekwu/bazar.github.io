@@ -157,7 +157,7 @@ def forgotpw():
         cursor.execute('SELECT * FROM buyers WHERE email = %s', [recovery_email])
         user_info = cursor.fetchone()
 
-        name = user_info[1]
+        name = user_info[4]
         pw = user_info[2]
 
         msg = Message('Bazar Password Recovery', recipients = [recovery_email])
