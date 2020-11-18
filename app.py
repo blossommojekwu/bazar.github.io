@@ -562,7 +562,6 @@ def validCreditCard(str):
     nums = str.replace(" ", "").replace("-", "")
     return (len(nums) == 16) and nums.isdecimal()
 
-# UPDATE EMPLOYEE
 @app.route('/modify/<id>', methods = ["POST","GET"])
 def moditem(id):
     if "user" in session and session["seller"] == True:
