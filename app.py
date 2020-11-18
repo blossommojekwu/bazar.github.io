@@ -141,6 +141,7 @@ def login():
             if seller:
                 session["seller"] = True
                 session["org"] = seller['organization']
+                session["descr"] = seller['description']
             else:
                 session["seller"] = False
             flash("Login Successful!") # Flash a message that says login succesful 
@@ -664,9 +665,11 @@ def modorg():
                 return redirect(url_for("seller"))
             if len(newname) != 0:
                 cursor.execute('UPDATE sellers SET organization = %s WHERE userID = %s',[newname, userID])
+                session["org"] = newname
                 mysql.connection.commit()
             if len(newdescr) != 0:
                 cursor.execute('UPDATE sellers SET description = %s WHERE userID = %s',[newdescr, userID])
+                session["descr"] = newdescr
                 mysql.connection.commit()
             if len(filename) != 0:
                 cursor.execute('UPDATE sellers SET image = %s WHERE userID = %s',[newimage, userID])
