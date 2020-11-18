@@ -589,7 +589,7 @@ def moditem(id):
 def updateuser():
     cursor = mysql.connection.cursor()
     userID = session["userID"]
-    cursor.execute('SELECT * FROM buyers WHERE userID = %s',userID)
+    cursor.execute('SELECT * FROM buyers WHERE userID = %s',[userID])
     userdata = cursor.fetchone()
     cursor.close()
     return render_template("modifyuser.html", first_name = userdata[4], last_name = userdata[5], email = userdata[1])
@@ -636,7 +636,7 @@ def moduser():
 def updateorg():
     cursor = mysql.connection.cursor()
     userID = session["userID"]
-    cursor.execute('SELECT * FROM sellers WHERE userID = %s',userID)
+    cursor.execute('SELECT * FROM sellers WHERE userID = %s',[userID])
     orgdata = cursor.fetchone()
     cursor.close()
     return render_template("modifyorg.html", name = orgdata[1], descr = orgdata[3], image = orgdata[2])
