@@ -216,7 +216,7 @@ def registration():
        email = request.form["email"]
        cursor.execute('SELECT email FROM buyers WHERE email = %s',[email])
        if_email_exists = cursor.fetchone()
-       if(if_email_exists == email):
+       if(if_email_exists):
            flash("Whoops! A user with this email already exists. Please login with this address or register with a different one.")
            return redirect(url_for("registration"))
  
@@ -607,7 +607,7 @@ def moduser():
             newpass = request.form['newpass']
             uploaded_file = request.files['newimage']
             filename = secure_filename(uploaded_file.filename)
-            
+
             if (len(newfirst) == 0) and (len(newlast) == 0) and (len(newemail) == 0) and (len(newpass)==0) and (len(filename)==0):
                 flash('You did not change any of your user information.')
                 return redirect(url_for("user"))
