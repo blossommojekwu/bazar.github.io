@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message # NOTE: YOU HAVE TO INSTALL FLASK-MAIL: pip install flask-mail
 from datetime import timedelta 
 from flask_mysqldb import MySQL
 from decimal import Decimal
@@ -9,7 +9,6 @@ import yaml
 import time
 import datetime
 #from flask_sqlalchemy import sqlalchemy
-
 
 # Substantiate flaskapp
 app = Flask(__name__)
@@ -99,17 +98,20 @@ def login():
             last_name = cursor.fetchone()
             cursor.execute('SELECT userID FROM buyers WHERE email = %s AND password = %s',(user,password))
             userID = cursor.fetchone()
+
             #Give email (user), password, first_name, userID variables to the session 
             session["first_name"] = first_name[0]
             session["last_name"] = last_name[0]
             session["userID"] = userID[0]
             session["user"] = user
             session["password"] = password
+
             # Check seller table to see if buyer/user is also a seller
             userID = session["userID"]
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM sellers WHERE userID = %s', [userID])
             seller = cursor.fetchone()
+
             # Set session seller status to corresponding boolean 
             if seller:
                 session["seller"] = True
@@ -129,7 +131,7 @@ def login():
             return redirect(url_for("user"))
         return render_template("login.html")
 
-# DOUBLE CHECK THAT THIS WORKS
+# DEBUG
 @app.route("/forgotpw")
 def forgotpw():
     if request.method == "POST":
