@@ -23,8 +23,7 @@
       <input class="user" type="text" align="center" name ="last_name" id="last_name" placeholder="Last Name" required>
       <input class="user" type="email" align="center" name ="email" id="email" placeholder="Email Address" required>
 
-      <input class="user" type="checkbox" align="center" name ="sellercheck" id="sellercheck" value="true">
-      <label for="sellercheck">I would like to be a Seller.</label>
+      <input class="user" type="checkbox" align="center" name ="sellercheck" id="sellercheck" value="true">I would like to be a Seller.
 
       <p class="sign" align="left">For sellers only, optional</p>
       <input class="user" type="text" align="center" name ="org_name" id="org_name" placeholder="Organization Name">
@@ -32,7 +31,7 @@
 
       <p class="sign" align="left">Please choose a password</p>
       <input class="pass" type="password" align="center" name ="password" id="password" placeholder="Password" required>
-      <input class="pass" type="password" align="center" name ="confirmedpw" id="confirmedpw" placeholder="Confirm Password" required>
+      <input class="pass" type="password" align="center" name ="confirmedpw" id="confirmedpw" placeholder="Confirm Password" required><br>
       <input class="pass" type="checkbox" align="center" onclick="ShowPW()">Show Password
       
       <script>
@@ -45,7 +44,7 @@
           else {y.type = "password";}
         }
         </script>
-
+      <br>
       <label for="avatar">Upload a Profile Image (Optional)</label><br>
       <input class="user" type="file" align="center" name ="avatar" id="avatar" accept=".jpg">
 

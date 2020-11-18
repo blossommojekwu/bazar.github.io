@@ -15,7 +15,8 @@ organization VARCHAR(256) NOT NULL, -- Organization/Store name displayed;
 				    -- but this is the name displayed on the seller page
 image VARCHAR(256), -- Optional, image for organization not for personal user profile
 description VARCHAR(1250), -- Optional
-avg_rating DECIMAL(10,2) NOT NULL);
+avg_rating DECIMAL(10,2) NOT NULL,
+CHECK (avg_rating>=0));
 
 CREATE TABLE Items
 (itemID INTEGER NOT NULL PRIMARY KEY,
@@ -25,7 +26,8 @@ price DECIMAL(10,2) NOT NULL,
 avg_rating DECIMAL(10,2) NOT NULL,
 num INTEGER NOT NULL, -- Number of items available
 description VARCHAR(1250), -- Optional
-image VARCHAR(256));
+image VARCHAR(256)
+CHECK (num>=0 AND avg_rating>=0 AND price>=0));
 
 CREATE TABLE Category
 (name VARCHAR(256) NOT NULL PRIMARY KEY,
@@ -45,7 +47,8 @@ CREATE TABLE Cart
 (buyerID INTEGER NOT NULL REFERENCES Buyers(userID),
 itemID INTEGER NOT NULL REFERENCES Items(itemID),
 num INTEGER NOT NULL, -- Quantity in cart
-PRIMARY KEY(buyerID, itemID)
+PRIMARY KEY(buyerID, itemID),
+CHECK (num>=0)
 );
 
 CREATE TABLE Purchase
@@ -53,7 +56,8 @@ CREATE TABLE Purchase
 itemID INTEGER NOT NULL REFERENCES Items(itemID),
 dayTime TIMESTAMP NOT NULL, -- Date, Time, Timezone data
 num INTEGER NOT NULL, -- Quantity purchased
-PRIMARY KEY(buyerID, itemID, dayTime)
+PRIMARY KEY(buyerID, itemID, dayTime),
+CHECK (num >=0)
 );
 
 CREATE TABLE ItemReview
@@ -62,7 +66,8 @@ itemID INTEGER NOT NULL REFERENCES Items(itemID), -- Field set by website
 numStars INTEGER NOT NULL, -- Field for User to input
 comments VARCHAR(1250), -- Optional, field for User to input
 dayTime TIMESTAMP NOT NULL, -- Field set by website (current time of submission)
-PRIMARY KEY(buyerID, itemID)
+PRIMARY KEY(buyerID, itemID),
+CHECK (numStars>=0)
 );
 
 CREATE TABLE SellerReview
@@ -71,7 +76,8 @@ sellerID INTEGER NOT NULL REFERENCES Sellers(userID), -- Field set by website
 numStars INTEGER NOT NULL, -- Field for User to input
 comments VARCHAR(1250), -- Optional, field for User to input
 dayTime TIMESTAMP NOT NULL, -- Field set by website (current time of submission)
-PRIMARY KEY(buyerID, sellerID)
+PRIMARY KEY(buyerID, sellerID),
+CHECK (numStars>=0)
 );
 
 -- Combine purchase and items
