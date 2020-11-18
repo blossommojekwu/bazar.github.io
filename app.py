@@ -57,7 +57,7 @@ mail = Mail(app)
 UPLOAD_FOLDER = 'static/jpg/avatars'
 ALLOWED_EXTENSIONS = {'jpg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+app.config['UPLOAD_EXTENSIONS'] = ALLOWED_EXTENSIONS
 def allowed_file(filename): return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 DEFAULT_USER_AVATARS = ["apple.jpg", "cat.jpg", "chicken.jpg", "dog.jpg", "duck.jpg", "primrose.jpg"]
 
