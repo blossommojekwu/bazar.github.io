@@ -72,7 +72,7 @@ def home():
             searchinput = request.form["search"]
             # print(searchinput)
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-            cursor.execute('SELECT name, price, avg_rating, description, image FROM Items WHERE name LIKE %s', [searchinput]) # Selects all items where searchinput matches
+            cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
             searchr = cursor.fetchall() # takes all of these instances into account
             return render_template("searchresults.html", logvar = logvar, searchr = searchr)
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
@@ -81,14 +81,12 @@ def home():
         return render_template("homepage.html", logvar = logvar)
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
 
-# @app.route("/searchresults", methods = ["POST","GET"])
+# @app.route("/", methods = ["POST","GET"])
 # def search():
-#     if request.method == "POST": # If the method that is called in homepage.html is a post method
-#         # Store Values from the form into searchinput variable
-#         searchinput = request.form["search"]
-#         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-#         cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput]) # Selects all items where searchinput matches
-#         searchr = cursor.fetchall() # takes all of these instances into account
+#    if request.method == "POST": # If the method that is called in homepage.html is a post method
+#        searchinput = request.form["search"]
+#        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+#        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput]) # Selects all items where searchinput matches         searchr = cursor.fetchall() # takes all of these instances into account
 #         searchresults()
 #     else:
 #         return render_template("login.html")
@@ -453,6 +451,8 @@ def addreview():
 @app.route("/viewreviews")
 def viewreviews():
     if "user" in session: # Check if user is logged in
+       logvar = True # Update logvar boolean if so
+       # Retrieve session data
        logvar = True # Update logvar boolean if so
        # Retrieve session data
        userID = session["userID"]
