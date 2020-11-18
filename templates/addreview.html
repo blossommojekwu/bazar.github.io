@@ -25,13 +25,13 @@
               {% endif %}
             {% endwith %}
             <div class="main">
-                <input class="title" type="number" align="center" name ="itemid" placeholder="Item ID">
+                <input class="title" type="number" align="center" name ="itemID" placeholder="Item ID">
                 <label for="title">Title</label>
                 <input class="title" type="text" align="center" name ="tit">
                 <label for="body">Body</label>
                 <input class="body" type="text" align="center" name ="body" placeholder="Type your review...">
                 <label for="title">Star Rating</label>
-                <input class="title" type="text" align="center" name ="stars" placeholder="Stars">
+                <input class="title" type="number" align="center" name ="stars" placeholder="Stars" min="0" max="5">
                 <input type="submit" value="Submit"/> </p>
     </body>
 </html>

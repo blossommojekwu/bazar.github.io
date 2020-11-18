@@ -72,10 +72,9 @@ def home():
             searchinput = request.form["search"]
             # print(searchinput)
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-            cursor.execute('SELECT name, price, avg_rating, description, image FROM itemInformation WHERE name LIKE %s OR category LIKE %s OR organization LIKE %s', [searchinput, searchinput, searchinput]) # Selects all items where searchinput matches
+            cursor.execute('SELECT name, price, avg_rating, description, image FROM Items WHERE name LIKE %s', [searchinput]) # Selects all items where searchinput matches
             searchr = cursor.fetchall() # takes all of these instances into account
-            print(searchr)
-            # return render_template("searchresults.html", logvar = logvar, name = searchr[0], price = searchr[1], avg_rating = searchr[2], image = searchr[3], description = searchr[4], searchr = searchr)
+            return render_template("searchresults.html", logvar = logvar, searchr = searchr)
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
@@ -438,10 +437,12 @@ def addreview():
        # Retrieve session data
        userID = session["userID"]
        cursor = mysql.connection.cursor()
-       input_itemID = request.form["itemid"]
+       input_itemID = request.form["itemID"]
        input_stars = request.form["stars"]
        input_comments = request.form["body"]
-       cursor.execute('INSERT INTO ItemReview VALUES(userID, input_itemID, input_stars, input_comments)')
+       timeFormat = '%Y-%m-%d %H:%M:%S'
+       currTime = datetime.datetime.now().strftime(timeFormat)
+       cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
        myReview = cursor.fetchone()
        return render_template("addreview.html", logvar = logvar, userID = myReview[0], itemID = myReview[1], input_stars = myReview[2], input_comments = myReview[3], myReview = myReview)
     else: # If you somehow accessed this page and weren't logged in
