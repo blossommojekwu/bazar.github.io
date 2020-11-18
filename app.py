@@ -395,8 +395,11 @@ def checkSuccess(id, price):
                     newSellerBalance = sellerBalance + (num*price)
                     cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newSellerBalance, sellerID])
                     mysql.connection.commit()
+                    #remove items from cart database to clear cart after successful checkout
+                    cursor.execute('DELETE FROM cart WHERE buyerID = %s AND itemID = %s', [buyerID, itemID])
+                    mysql.connection.commit()
                 flash("Thank you for shopping at BAZAR!")
-                return redirect(url_for("cart"))
+                return redirect(url_for("purchasehistory"))
             else: #if insufficient funds
                 flash("Insufficient Funds")
                 return redirect(url_for("cart"))
