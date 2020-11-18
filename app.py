@@ -443,7 +443,7 @@ def addreview():
        timeFormat = '%Y-%m-%d %H:%M:%S'
        currTime = datetime.datetime.now().strftime(timeFormat)
        cursor.execute('INSERT INTO ItemReview VALUES(%s, %s, %s, %s, %s)', [userID, input_itemID, input_stars, input_comments, currTime])
-       myReview = cursor.fetchone()
+       mysql.connection.commit()
        return render_template("addreview.html", logvar = logvar, userID = myReview[0], itemID = myReview[1], input_stars = myReview[2], input_comments = myReview[3], myReview = myReview)
     else: # If you somehow accessed this page and weren't logged in
        flash("You are not logged in to add a review!")
