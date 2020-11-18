@@ -178,6 +178,7 @@ def logout():
     session.pop("email", None)
     return redirect(url_for("home"))
 
+
 # UNFINISHED; GET & DISPLAY ALL USER DATA
 @app.route("/user", methods = ["POST", "GET"])
 def user():
@@ -193,13 +194,12 @@ def user():
        # All user data stored in Buyers: (userID, email, password,
        #   currentBalance, first_name, last_name, image)
        info = cursor.fetchone()
-       return render_template("user.html", logvar = logvar, first_name = first_name, last_name = last_name, balance = info[3], user = info[1], seller = seller, info = info)
+       return render_template("user.html", logvar = logvar, first_name = first_name, last_name = last_name, balance = info[3], user = info[1], seller = seller, info = info, image_path = info[6])
    else:
        flash("You are not logged in!")
        return redirect(url_for("login"))
 
-
-# UNFINISHED; ALLOW IMAGE UPLOAD -> UNTESTED SO MIGHT BREAK THIS PAGE
+# DEBUG
 @app.route("/registration", methods = ["POST", "GET"])
 def registration():
    if "user" in session:
@@ -226,6 +226,7 @@ def registration():
        first = request.form["first_name"]
        last = request.form["last_name"]
        org_name = request.form["org_name"]
+       if len(org_name) == 0: org_name = "{} {}".format(first, last)
        descr = request.form["description"]
        ifSeller = request.form.get("sellercheck")
  
@@ -255,8 +256,6 @@ def registration():
        # TODO: FIGURE OUT IMAGE SITUATION
        cursor.execute('INSERT INTO Buyers VALUES(%s, %s, %s, %s, %s, %s, %s)',[userID, email, password, 0.00, first, last, avatar_path])
        mysql.connection.commit()
- 
-       # INSERT INTO table(column1, column2,...) VALUES (value1, value2,...);
  
        # Create a seller with the same UserID if seller is checked
        # Sellers(userID, organization, image, description, avg_rating)
