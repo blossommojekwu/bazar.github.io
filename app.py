@@ -420,6 +420,8 @@ def item(id):
             userID = session["userID"]
             cursor = mysql.connection.cursor()
             cursor.execute("INSERT INTO cart VALUES (%s,%s,%s)",[userID,id,num])
+            mysql.connection.commit()
+
             print(num)
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
