@@ -55,6 +55,7 @@ mail = Mail(app)
 
 # Set-up for image uploads
 UPLOAD_FOLDER = 'static/jpg/avatars/'
+IMG_UPLOAD  = 'static/jpg/item_images'
 ALLOWED_EXTENSIONS = {'jpg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['UPLOAD_EXTENSIONS'] = ALLOWED_EXTENSIONS
@@ -575,8 +576,17 @@ def moditem(id):
             newcount = request.form['newcount']
             newdesc = request.form['newdesc']
             #newimage= request.form['newimage']
+            # Handle avatar upload
+            uploaded_file = request.files['newimage']
+            filename = secure_filename(uploaded_file.filename)
+            if filename != '' and allowed_file(filename):
+                imageID = "{}.jpg".format(id)
+                item_image_path = "static/jpg/item_images/{}".format(imageID)
+                uploaded_file.save(os.path.join(item_image_path))
+            else:
+                item_image_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, id])
+            cursor.execute('UPDATE items SET name = %s, price = %s, num = %s, description = %s, image = %s WHERE itemID = %s',[newname, newprice, newcount, newdesc, item_image_path, id])
             flash('Item Updated Successfully')
             mysql.connection.commit()
             return redirect(url_for("seller"))
@@ -704,15 +714,25 @@ def additems():
             price = request.form['price']
             count = request.form['num']
             description = request.form['desc']
-            image = request.form['image']
+           
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT max(itemID) as A FROM items')
             maxID = cursor.fetchone()
             if(maxID == None): maxID = 0
             print(maxID)
             itemID = maxID["A"] + 1
+             # Handle avatar upload
+            uploaded_file = request.files["image"]
+            filename = secure_filename(uploaded_file.filename)
+            if filename != '' and allowed_file(filename):
+                imageID = "{}.jpg".format(itemID)
+                item_image_path = "static/jpg/item_images/{}".format(imageID)
+                uploaded_file.save(os.path.join(item_image_path))
+            else:
+                item_image_path = "static/jpg/default_avatars/{}".format(random.choice(DEFAULT_USER_AVATARS))
+            
             avg_rating = 0.00
-            cursor.execute('INSERT INTO items VALUES(%s, %s, %s, %s, %s, %s, %s, NULL)',[itemID, sellerID, itemname, price, avg_rating, count, description])
+            cursor.execute('INSERT INTO items VALUES(%s, %s, %s, %s, %s, %s, %s, %s)',[itemID, sellerID, itemname, price, avg_rating, count, description, item_image_path])
             mysql.connection.commit()
             flash("Item successfully added")
             return redirect(url_for("additemspage"))

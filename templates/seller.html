@@ -8,6 +8,14 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
+  <style>
+    .avatar {
+      vertical-align: middle;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    </style>
 <h2>Welcome to the organization page</h2>
 
 <center>
@@ -57,9 +65,10 @@
     {% for row in items%}
       <tr>
         <td><a href="item/{{row[0]}}">{{row[1]}}</a></td>
-        {% for d in row[2:5] %}
+        {% for d in row[2:4] %}
         <td>{{d}}</td>
         {% endfor %}
+        <td><img src="{{row[5]}}" alt="Avatar" class="avatar"></td> 
         <td>
         <a href = "/update/{{row[0]}}" class = "btn btn-secondary btn-sm">edit</a>
         <form action="#" method="POST">

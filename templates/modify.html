@@ -14,7 +14,7 @@
     <div class ="row">
       <div class ="col-md-4 offset-md-4">
         <div class = "card card-body">
-          <form action= "/modify/{{item[0].itemID}}" method = "POST">
+          <form action= "/modify/{{item[0].itemID}}" method = "POST" enctype="multipart/form-data">
             <div class="form-group">
               <input type = "text" class ="form-control" name = "newname" placeholder ="Name" required>
             </div>
@@ -28,7 +28,7 @@
               <input type = "text" class ="form-control" name = "newdesc" placeholder ="Description" required>
             </div>
             <div class ="form-group">
-              <input type = "text" class ="form-control" name = "newimage" placeholder ="Image" >
+              <input type = "file" class ="form-control" name = "newimage" placeholder ="Image" accept=".jpg">
             </div>
             <div class ="form-group">
               <button type ="submit" class ="btn btn-primary btn-block">
