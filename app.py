@@ -38,12 +38,16 @@ mysql = MySQL(app)
 #   FIRST NAME: Bazar;
 #   LAST NAME: Customer Service;
 #   BIRTH DATE: Dec 20, 2000
+
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'BazarCustomerService@gmail.com'
 app.config['MAIL_PASSWORD'] = 'BazarCS316'
+app.config['MAIL_DEBUG'] = True
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_MAX_EMAILS'] = 1
+app.config['MAIL_DEFAULT_SENDER'] = 'BazarCustomerService@gmail.com'
 mail = Mail(app)
 
 # Home page, renders homepage.html
@@ -136,11 +140,21 @@ def login():
 def forgotpw():
     if request.method == "POST":
         recovery_email = request.form["email"]
-        msg = Message('Bazar Password Recovery', sender = 'BazarCustomerService@gmail.com', recipients = [recovery_email])
-        msg.body = "Hello %s!\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: %s .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.", [first_name, password]
+
+        # Access User's Info in DB
+        cursor =  mysql.connection.cursor()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM buyers WHERE email = %s', [recovery_email])
+        user_info = cursor.fetchone()
+
+        name = user_info[1]
+        pw = user_info[2]
+
+        msg = Message('Bazar Password Recovery', recipients = [recovery_email])
+        msg.body = "Hello {}!\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: {} .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.".format(name, pw)
         mail.send(msg)
         flash("Password recovery successful. Check your email!")
-        return "Sent"
+        return redirect(url_for("login"))
     else:
         return render_template("forgotpw.html")
 
@@ -182,7 +196,6 @@ def registration():
        flash("You are already logged in! Logout to register as different user.")
        return redirect(url_for("user"))
    elif request.method == "POST":
-       # INSERT FUNCTIONAL CODE HERE
        # Once you register as a user, you have to log in as
        # the new user to access site, so redirect to login
        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
