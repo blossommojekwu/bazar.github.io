@@ -110,7 +110,6 @@ def login():
             session["user"] = user
             session["password"] = password
         
-
             # Check seller table to see if buyer/user is also a seller
             userID = session["userID"]
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -176,8 +175,7 @@ def logout():
     session.pop("email", None)
     return redirect(url_for("home"))
 
-
-# DEBUG PROFILE PICTURE DISPLAY; MODIFY DATA
+# DISPLAY & MODIFY DATA
 @app.route("/user", methods = ["POST", "GET"])
 def user():
    if "user" in session:
@@ -197,7 +195,7 @@ def user():
        flash("You are not logged in!")
        return redirect(url_for("login"))
 
-# DEBUG
+# REGISTER NEW USER
 @app.route("/registration", methods = ["POST", "GET"])
 def registration():
    if "user" in session:
@@ -319,8 +317,6 @@ def modQuantity(id):
 # - all items in cart will be added to purchase history
 # - seller history will be updated with history of seller
 # - quantity of item available on seller side decreased by quantity checked OUT
-
-# Checkout Ability unsuccesful:
 # - if insufficient funds --> Flash "Insufficient Funds"
 # - if seller no longer has enough supply, "Insufficient number of copies of item: 
 # (current quantity of that item) items remaining. 
@@ -386,7 +382,6 @@ def checkSuccess(id, price):
         flash("Incorrect Payment Information")
         return redirect(url_for("home"))
 
-
 @app.route("/item/<id>", methods = ["POST","GET"])
 def item(id):
     if "user" in session: # Check if user is logged in
@@ -401,8 +396,6 @@ def item(id):
             cursor = mysql.connection.cursor()
             cursor.execute("INSERT INTO cart VALUES (%s,%s,%s)",[userID,id,num])
             mysql.connection.commit()
-
-            print(num)
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM items WHERE itemID = %s",[id])
@@ -419,8 +412,7 @@ def addreview():
         return render_template("addreview.html", logvar = logvar, userID = userID)
     else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in to add a review!")
-        return redirect(url_for("home"))
-            
+        return redirect(url_for("home")) 
 
 @app.route('/addreview/<id>', methods = ["POST", "GET"])
 def updatereview(id):
@@ -470,8 +462,6 @@ def seller():
         flash("You are not logged in as a seller")
         return redirect(url_for("home"))
 
-#UPDATE REVIEW
-
 @app.route("/addbalance")
 def addbalance():
    if "user" in session: # Check if user is logged in
@@ -513,7 +503,7 @@ def getDetails(id):
    itemDetails = cursor.fetchall()
    return render_template("item.html", itemDetails = itemDetails)
  
-# GET EMPLOYEE
+# Get current data and reroute to modify form
 @app.route('/update/<id>', methods =["POST","GET"])
 def update(id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -556,7 +546,6 @@ def modBalance(id):
     else: # If you somehow accessed this page and weren't logged in
         flash("Incorrect Payment Information")
         return redirect(url_for("home"))
-
 
 def validCreditCard(str):
     nums = str.replace(" ", "").replace("-", "")
@@ -720,7 +709,6 @@ def modorg():
         flash("You are not logged in!")
         return redirect(url_for("home"))
 
-
 @app.route('/additemspage')
 def additemspage():
     if "user" in session and session["seller"] == True:
@@ -730,7 +718,6 @@ def additemspage():
     else:
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
-
 
 @app.route('/additems', methods = ['POST','GET'])
 def additems():
@@ -783,9 +770,6 @@ def tradehistory():
     else:
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
-    
-
-
 
 
 if __name__ == "__main__":
