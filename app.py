@@ -67,23 +67,31 @@ def home():
     if "user" in session:
         logvar = True 
         first_name = session["first_name"]
+        if request.method == "POST": # If the method that is called in homepage.html is a post method
+            # Store Values from the form into searchinput variable
+            searchinput = request.form["search"]
+            print(searchinput)
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+            cursor.execute('SELECT * FROM Items WHERE name LIKE %s', [searchinput]) # Selects all items where searchinput matches
+            searchr = cursor.fetchall() # takes all of these instances into account
+            print(searchr)
         return render_template("homepage.html", logvar = logvar, first_name = first_name)
     else:
         logvar = False
         return render_template("homepage.html", logvar = logvar)
 #UNFINISHED, need to add matching for seller and functionality for showing results by jumping to results pagegit 
 
-@app.route("/searchresults", methods = ["POST","GET"])
-def search():
-    if request.method == "POST": # If the method that is called in homepage.html is a post method
-        # Store Values from the form into searchinput variable
-        searchinput = request.form["search"]
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
-        cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput]) # Selects all items where searchinput matches
-        searchr = cursor.fetchall() # takes all of these instances into account
-        searchresults()
-    else:
-        return render_template("login.html")
+# @app.route("/searchresults", methods = ["POST","GET"])
+# def search():
+#     if request.method == "POST": # If the method that is called in homepage.html is a post method
+#         # Store Values from the form into searchinput variable
+#         searchinput = request.form["search"]
+#         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor) # This opens a cursor that can interact with the databases
+#         cursor.execute('SELECT name, price, avg_rating, description, image FROM Items, Category, Sellers WHERE %s LIKE Items.name OR %s LIKE Category.name OR %s LIKE Sellers.organization', [searchinput]) # Selects all items where searchinput matches
+#         searchr = cursor.fetchall() # takes all of these instances into account
+#         searchresults()
+#     else:
+#         return render_template("login.html")
 
 # def display_recs():
 #     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
