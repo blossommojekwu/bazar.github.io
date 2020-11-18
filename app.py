@@ -381,15 +381,17 @@ def checkSuccess(id, price):
                     #reduce supply of item in Item
                     cursor.execute('SELECT num FROM items WHERE itemID = %s', [itemID])
                     itemQuantity = cursor.fetchone()['num']
-                    newCount = num - itemQuantity
+                    print("itemQ: ", itemQuantity)
+                    newCount = itemQuantity - num
+                    print("newCount = itemQ - num: ", newCount)
                     cursor.execute('UPDATE items SET num = %s WHERE itemID = %s', [newCount, itemID])
                     mysql.connection.commit()
                     #increase individual seller balance
-                    cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [sellerID])
-                    sellerBalance = cursor.fetchone()['currentBalance']
-                    newSellerBalance = sellerBalance + (num*price)
-                    cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newSellerBalance, sellerID])
-                    mysql.connection.commit()
+                    #cursor.execute('SELECT currentBalance FROM buyers WHERE userID = %s', [sellerID])
+                    #sellerBalance = cursor.fetchone()['currentBalance']
+                    #newSellerBalance = sellerBalance + (num*price)
+                    #cursor.execute('UPDATE buyers SET currentBalance = %s WHERE userID = %s', [newSellerBalance, sellerID])
+                    #mysql.connection.commit()
                 flash("Thank you for shopping at BAZAR!")
                 return redirect(url_for("cart"))
             else: #if insufficient funds

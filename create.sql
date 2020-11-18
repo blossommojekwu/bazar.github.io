@@ -76,7 +76,7 @@ PRIMARY KEY(buyerID, sellerID)
 
 -- Combine purchase and items
 CREATE VIEW itemhistory AS
-SELECT purchase.buyerID, purchase.itemID, items.name, items.price, items.num, purchase.dayTime, items.sellerID
+SELECT purchase.buyerID, purchase.itemID, items.name, items.price, purchase.num, purchase.dayTime, items.sellerID
 FROM purchase
 INNER JOIN items
 ON purchase.itemID = items.itemID;
