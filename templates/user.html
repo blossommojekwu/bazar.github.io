@@ -60,9 +60,8 @@
     </table>
      
     {% if seller == true %}
-    <center>
-      <a href="{{ url_for('seller')}}">Access Seller Page</a>
-    </center>
+    <center><a href="{{ url_for('seller')}}">View my Seller Page</a></center>
+    <center><a href="{{ url_for('updateuser')}}">Update my Information</a></center>
     {% endif %}
     {% endblock %}
     

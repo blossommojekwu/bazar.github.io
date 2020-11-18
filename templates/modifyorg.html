@@ -19,26 +19,20 @@
         {% endif %}
     {% endwith %}
     <center>
-        <h3>Update User Information</h3>
+        <h3>Update Organization Information</h3>
         
         <div class ="row">
         <div class ="col-md-4 offset-md-4">
             <div class = "card card-body">
-            <form action= "/modifymydata" method="post" enctype="multipart/form-data">
+            <form action= "/modifymyorgdata" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                <input type = "text" class ="form-control" name = "newfirst" placeholder ="First Name">
+                <input type = "text" class ="form-control" name = "newname" placeholder ="Organization Name">
                 </div>
                 <div class ="form-group">
-                <input type = "text" class ="form-control" name = "newlast" placeholder ="Last Name">
+                <input type = "text" class ="form-control" name = "newdescr" placeholder ="Organization Description">
                 </div>
                 <div class ="form-group">
-                <input type = "email" class ="form-control" name = "newemail" placeholder ="Email Address">
-                </div>
-                <div class ="form-group">
-                <input type = "text" class ="form-control" name = "newpass" placeholder ="Password">
-                </div>
-                <div class ="form-group">
-                <label for="avatar">Upload a Profile Image (Optional)</label><br>
+                <label for="avatar">Upload an Organization Photo (Optional)</label><br>
                 <input type = "file" class ="form-control" name = "newimage" id="newimage" placeholder ="Image">
                 </div>
                 <div class ="form-group">
@@ -53,33 +47,24 @@
     <br>
     <br>
 
-    <h3>Your Current Information</h3>
+    <h3>Current Organization Information</h3>
     <table class="table">
         <tr>
-        <th scope="row">Image</th>
+        <th scope="row">Profile Image</th>
         <td><img src=img_path alt="Avatar" class="avatar"></td> 
         </tr>
         <tr>
-        <th scope="col">First Name</th>
-        <td>{{first_name}}</td>
+        <th scope="col">Name</th>
+        <td>{{name}}</td>
         </tr>
         <tr>
-        <th scope="row">Last Name</th>
-        <td>{{last_name}}</td>
-        </tr>
-        <tr>
-        <th scope="row">Email Address</th>
-        <td>{{email}}</td>
+        <th scope="row">Description</th>
+        <td>{{descr}}</td>
         </tr>
     </table>
 
     <center> <a href="{{ url_for('user')}}">Back to User Profile</a> </center>
-    {% if seller == true %}
-    <center>
-      <a href="{{ url_for('seller')}}">View my Seller Page</a>
-      <a href="{{ url_for('modifymyorgdata')}}">Modify my Organization Information</a>
-    </center>
-    {% endif %}
+    <center> <a href="{{ url_for('seller')}}">View my Seller Profile</a> </center>
 
     {% endblock %}
     </body>

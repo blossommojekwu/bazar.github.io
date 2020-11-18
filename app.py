@@ -157,7 +157,7 @@ def login():
             return redirect(url_for("user"))
         return render_template("login.html")
 
-# DEBUG
+# # Sends email with password to recovery email!
 @app.route("/forgotpw", methods = ["POST","GET"])
 def forgotpw():
     if request.method == "POST":
@@ -165,6 +165,12 @@ def forgotpw():
 
         # Access User's Info in DB
         cursor =  mysql.connection.cursor()
+        cursor.execute('SELECT email FROM buyers WHERE email = %s',[recovery_email])
+        if_email_exists = cursor.fetchone()
+        if(if_email_exists != recovery_email):
+            flash("Whoops! No account matches this email address.")
+            return redirect(url_for("registration"))
+        
         cursor.execute('SELECT * FROM buyers WHERE email = %s', [recovery_email])
         user_info = cursor.fetchone()
 
@@ -172,7 +178,7 @@ def forgotpw():
         pw = user_info[2]
 
         msg = Message('Bazar Password Recovery', recipients = [recovery_email])
-        msg.body = "Hello {}!\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: {} .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.".format(name, pw)
+        msg.body = "Hello {}!\n\nYou recently selected the 'Forgot Password' option on our site.  Your current password is: {} .\nIf this request did not come from you, consider resetting your password on our site through your User Profile page.\n\nPlease do not reply to this email. This account is not monitored.".format(name, pw)
         mail.send(msg)
         flash("Password recovery successful. Check your email!")
         return redirect(url_for("login"))
@@ -248,7 +254,7 @@ def registration():
        print(maxID)
        userID = maxID["A"] + 1
 
-       # Handle avatar upload
+       # TODO: Handle avatar upload
        uploaded_file = request.files['avatar']
        filename = secure_filename(uploaded_file.filename)
        if filename != '':
@@ -264,7 +270,6 @@ def registration():
 
        # Create User in Buyers
        # Buyers(userID, email, password, currentBalance, firstname, lastname, image)
-       # TODO: FIGURE OUT IMAGE SITUATION
        cursor.execute('INSERT INTO Buyers VALUES(%s, %s, %s, %s, %s, %s, %s)',[userID, email, password, 0.00, first, last, avatar_path])
        mysql.connection.commit()
  
@@ -572,6 +577,93 @@ def moditem(id):
     else: # If you somehow accessed this page and weren't logged in
         flash("You are not logged in/a seller")
         return redirect(url_for("home"))
+
+@app.route('/updateuser', methods =["POST","GET"])
+def updateuser():
+    cursor = mysql.connection.cursor()
+    userID = session["userID"]
+    cursor.execute('SELECT * FROM buyers WHERE userID = %s',userID)
+    userdata = cursor.fetchone()
+    cursor.close()
+    return render_template("modifyuser.html", first_name = userdata[4], last_name = userdata[5], email = userdata[1])
+
+@app.route('/modifymydata', methods = ["POST","GET"])
+def moduser():
+    if "user" in session:
+        if request.method == 'POST':
+            logvar = True
+            userID = session["userID"]
+            cursor = mysql.connection.cursor()
+            # Buyers(userID, email, password, currentBalance, first_name, last_name, image);
+            newfirst = request.form['newfirst']
+            newlast = request.form['newlast']
+            newemail = request.form['newemail']
+            newpass = request.form['newpass']
+            newimage = request.files['newimage']
+            filename = secure_filename(newimage.filename)
+            if (len(newfirst) == 0) and (len(newlast) == 0) and (len(newemail) == 0) and (len(newpass)==0) and (len(filename)==0):
+                flash('You did not change any of your user information.')
+                return redirect(url_for("user"))
+            if len(newfirst) != 0:
+                cursor.execute('UPDATE buyers SET first_name = %s WHERE userID = %s',[newfirst, userID])
+                mysql.connection.commit()
+            if len(newlast) != 0:
+                cursor.execute('UPDATE buyers SET last_name = %s WHERE userID = %s',[newlast, userID])
+                mysql.connection.commit()
+            if len(newemail) != 0:
+                cursor.execute('UPDATE buyers SET email = %s WHERE userID = %s',[newemail, userID])
+                mysql.connection.commit()
+            if len(newpass) != 0:
+                cursor.execute('UPDATE buyers SET password = %s WHERE userID = %s',[newpass, userID])
+                mysql.connection.commit()
+            if len(filename) != 0:
+                cursor.execute('UPDATE buyers SET image = %s WHERE userID = %s',[newimage, userID])
+                mysql.connection.commit()
+            flash('You have successfully updated your user information!')
+            return redirect(url_for("user"))
+    else:
+        flash("You are not logged in!")
+        return redirect(url_for("home"))
+
+@app.route('/updateorg', methods =["POST","GET"])
+def updateorg():
+    cursor = mysql.connection.cursor()
+    userID = session["userID"]
+    cursor.execute('SELECT * FROM sellers WHERE userID = %s',userID)
+    orgdata = cursor.fetchone()
+    cursor.close()
+    return render_template("modifyorg.html", name = orgdata[1], descr = orgdata[3], image = orgdata[2])
+
+@app.route('/modifymyorgdata', methods = ["POST","GET"])
+def modorg():
+    if "user" in session:
+        if request.method == 'POST':
+            logvar = True
+            userID = session["userID"]
+            cursor = mysql.connection.cursor()
+            # Buyers(userID, email, password, currentBalance, first_name, last_name, image);
+            newname = request.form['newname']
+            newdescr = request.form['newdescr']
+            newimage = request.files['newimage']
+            filename = secure_filename(newimage.filename)
+            if (len(newname) == 0) and (len(newdescr) == 0) and (len(filename)==0):
+                flash('You did not change any of your organization information.')
+                return redirect(url_for("seller"))
+            if len(newname) != 0:
+                cursor.execute('UPDATE sellers SET organization = %s WHERE userID = %s',[newname, userID])
+                mysql.connection.commit()
+            if len(newdescr) != 0:
+                cursor.execute('UPDATE sellers SET description = %s WHERE userID = %s',[newdescr, userID])
+                mysql.connection.commit()
+            if len(filename) != 0:
+                cursor.execute('UPDATE sellers SET image = %s WHERE userID = %s',[newimage, userID])
+                mysql.connection.commit()
+            flash('You have successfully updated your organization information!')
+            return redirect(url_for("seller"))
+    else:
+        flash("You are not logged in!")
+        return redirect(url_for("home"))
+
 
 @app.route('/additemspage')
 def additemspage():
