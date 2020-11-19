@@ -14,7 +14,6 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-mysqlclient @ file:///C:/Users/Ruopu%20Jiao/Desktop/CS316/316Project/Repository/cs316-2020/mysqlclient-1.4.6-cp39-cp39-win32.whl
 python-dateutil==1.5
 pytz==2020.4
 PyYAML==5.3.1
