@@ -41,7 +41,11 @@
     <tbody>
         {% for row in searchr %}
         <tr>
-            <td>{{row['name']}}</td>
+            <td>
+              <a href="item/{{row['itemID']}}">
+                {{row['name']}}
+              </a>
+            </td>
             <td>{{row['category']}}</td>
             <td>{{row['description']}}</td>
             <td>{{row['price']}}</td>
