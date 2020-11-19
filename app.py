@@ -675,7 +675,7 @@ def updateorg():
     cursor.execute('SELECT * FROM sellers WHERE userID = %s',[userID])
     orgdata = cursor.fetchone()
     cursor.close()
-    return render_template("modifyorg.html", name = orgdata[1], descr = orgdata[3], image = orgdata[2])
+    return render_template("modifyorg.html", name = orgdata[1], descr = orgdata[3])
 
 @app.route('/modifymyorgdata', methods = ["POST","GET"])
 def modorg():
@@ -687,9 +687,7 @@ def modorg():
             # Buyers(userID, email, password, currentBalance, first_name, last_name, image);
             newname = request.form['newname']
             newdescr = request.form['newdescr']
-            newimage = request.files['newimage']
-            filename = secure_filename(newimage.filename)
-            if (len(newname) == 0) and (len(newdescr) == 0) and (len(filename)==0):
+            if (len(newname) == 0) and (len(newdescr) == 0):
                 flash('You did not change any of your organization information.')
                 return redirect(url_for("seller"))
             if len(newname) != 0:
@@ -699,9 +697,6 @@ def modorg():
             if len(newdescr) != 0:
                 cursor.execute('UPDATE sellers SET description = %s WHERE userID = %s',[newdescr, userID])
                 session["descr"] = newdescr
-                mysql.connection.commit()
-            if len(filename) != 0:
-                cursor.execute('UPDATE sellers SET image = %s WHERE userID = %s',[newimage, userID])
                 mysql.connection.commit()
             flash('You have successfully updated your organization information!')
             return redirect(url_for("seller"))
